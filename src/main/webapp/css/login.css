@@ -16,7 +16,7 @@ input::-ms-reveal{display:none;}
 /*logo*/
 .ecitic-logo {width:100%;height:47px;padding:20px 0;overflow:hidden;}
 	.ecitic-logo img {float:left;margin-right:15px;margin-top:-4px;}
-	.ecitic-logo span {float:left;/*! height:35pxpx; */display:inline-block;border-left:1px solid #3b3b3b;color:#3b3b3b;padding-left:15px;overflow:hidden;/*! margin-top: 10px; */}
+	.ecitic-logo span {float:left;/*! height:35pxpx; */display:inline-block;/*border-left:1px solid #3b3b3b;color:#3b3b3b*/;padding-left:15px;overflow:hidden;/*! margin-top: 10px; */}
 		.ecitic-logo span h2 {font-size:20px;font-weight:normal;height:20px;line-height:20px;letter-spacing:4px;margin-bottom:1px;overflow:hidden;padding-top: 5px;}
 		.ecitic-logo span p {font-size:12px;/*! height:18px; *//*! line-height:18px; */overflow:hidden;}
 /*背景图*/
