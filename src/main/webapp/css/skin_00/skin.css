@@ -1,0 +1,48 @@
+/* 头部颜色值 */
+.main_header {border-bottom: 4px solid #0080ff;}
+.main_header .list_tree_nav .tree_first {background-color:#0080ff;}
+.main_header .list_tree_nav li .list_tree_1nav .current {background: #0080ff;}
+.main_header .list_tree_nav .tree_last {background: url(../../img/icon_ecitic.png) no-repeat -91px 1px #009edb;}
+.main_header .list_tree_nav .tree_last:hover {background: url(../../img/icon_ecitic.png) no-repeat -91px 1px #1188ff;}
+
+/* 按钮的颜色 */
+.ecitic-operation button {border-right: 1px solid #0080ff;}
+.btn-ecitic {background-color:#41b6e2!important;border-color: #41b6e2!important;}
+.btn {border: 2px solid #41b6e2;}
+/* 按钮hover或者激活状态 */
+.btn-ecitic:hover {background-color: #0080ff!important;border-color: #0080ff !important;}
+.btn-ecitic:active:hover, .btn-ecitic.active:hover, .open > .dropdown-toggle.btn-ecitic:hover, .btn-ecitic:active:focus, .btn-ecitic.active:focus, .open > .dropdown-toggle.btn-ecitic:focus, .btn-ecitic:active.focus, .btn-ecitic.active.focus, .open > .dropdown-toggle.btn-ecitic.focus{background-color: #009edb !important ;border-color: #009edb !important;}
+.btn-ecitic:active, .btn-ecitic.active, .open > .dropdown-toggle.btn-ecitic {background-color: #009edb!important;border-color: #009edb!important;}
+.btn-ecitic:focus, .btn-ecitic.focus {background-color: #009edb!important; border-color: #009edb!important;}
+/* 左侧收缩按钮 */
+.suo {background-position: -137px -115px;}
+.marginLeft0 {background-color: #41b6e2; background-position: -175px -115px;}
+/* 提示框 */
+.ZebraDialog .ZebraDialog_Title {background: #0080ff;}
+.ZebraDialog .ZebraDialog_Buttons a {background: #0080ff;}
+.ZebraDialog .ZebraDialog_Buttons a:hover {background: #0080ff;}
+
+/* 各页面标题 */
+.ecitic-title span {color: #0080ff;border-bottom: 3px solid #0080ff;}
+/* iframe颜色 */
+.ecitic-title span.title {color:#0080ff;border-bottom:3px solid #0080ff}
+.ecitic-title .more {color:#0080ff;}
+.ecitic-title em {color:#0080ff;}
+.work-backlog-content li i, .work-remind-content li i, .work-remind-more li i {background:#D23131;}
+.work-backlog-content li:hover, .work-remind-content li:hover, .work-remind-more li:hover{color:#0080ff;}
+.work-remind-content li:hover em {background-color:#0080ff}
+.word-content li:hover {color:#0080ff;}
+.word-content li:hover span{color:#0080ff;}
+.work-backlog-content li:hover i, .work-remind-content li:hover i, .work-remind-more li:hover i {background:#0080ff;}
+
+/* 日历框的颜色 */
+.WdateDiv .MTitle {background-color: #0080ff !important;}
+.WdateDiv .MTitle td {color:#fff;}
+.WdateDiv .dpButton {background-color: #0080ff !important;color:#fff;}
+.WdateDiv .Wselday {background-color: #009edb!important;color:#fff;}
+.WdateDiv .WwdayOn {background-color: #0080ff !important;}
+.WdateDiv .WdayOn {background-color: #0080ff !important;}
+.WdateDiv .WotherDayOn {background-color: #0080ff !important;}
+
+/* 下拉框的选中和hover颜色 */
+.select2-container--default .select2-results__option--highlighted[aria-selected] {background-color:#0080ff !important;}

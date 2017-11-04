@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.xhl.dao.ProjectDao">
+
+
+	<!-- 查询项目列表 -->
+	<select id="queryProject" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 p.PROJECT_ID,
+		 p.PROJECT_NUM,
+		 p.PROJECT_NAME,
+		 p.PROJECT_EMPLOYER,
+		 p.PROJECT_MANAGER,
+		 p.TECHNICAL_DIRECTOR,
+		 p.START_TIME,
+		 p.FINISH_TIME,
+		 p.PROJECT_PRICE,
+		 p.PROJECT_TAX,
+		 p.TOTAL_PRICES,
+		 p.FINAL_NOTAX,
+		 p.FINAL_TAX,
+		 p.FINAL_TOTAL,
+		 p.PROJECT_STATE,
+		 p.REMARK
+		 from PROJECT_INFO p
+		 where 1=1
+		<if test="PROJECT_NUM!=null and PROJECT_NUM!=''">
+			and p.PROJECT_NUM  like CONCAT('%',#{PROJECT_NUM},'%')
+		</if>
+		<if test="PROJECT_NAME!=null and PROJECT_NAME!=''">
+			and p.PROJECT_NAME like CONCAT('%',#{PROJECT_NAME},'%')
+		</if>
+		<if test="PROJECT_EMPLOYER!=null and PROJECT_EMPLOYER!=''">
+			and p.PROJECT_EMPLOYER like CONCAT('%',#{PROJECT_EMPLOYER},'%')
+		</if>
+		<if test="PROJECT_MANAGER!=null and PROJECT_MANAGER!=''">
+			and p.PROJECT_MANAGER like CONCAT('%',#{PROJECT_MANAGER},'%')
+		</if>
+		 <choose>
+	        <when test="PROJECT_STATE!=null and PROJECT_STATE!=''">
+	            and  p.PROJECT_STATE = #{PROJECT_STATE}
+	        </when>
+	        <otherwise>
+	            and p.PROJECT_STATE = '00'
+	        </otherwise>
+    	</choose>
+	</select>	
+
+	
+	  <!-- 新建项目-->
+	<insert id="addProject" parameterType="java.util.Map">
+		insert into PROJECT_INFO
+		(PROJECT_NUM,PROJECT_NAME,PROJECT_EMPLOYER,PROJECT_MANAGER,TECHNICAL_DIRECTOR,
+		START_TIME,FINISH_TIME,PROJECT_PRICE,PROJECT_TAX,TOTAL_PRICES,FINAL_NOTAX,FINAL_TAX,FINAL_TOTAL,REMARK,PROJECT_STATE)
+		values
+		(#{PROJECT_NUM},#{PROJECT_NAME},#{PROJECT_EMPLOYER},#{PROJECT_MANAGER},#{TECHNICAL_DIRECTOR},
+		#{START_TIME},#{FINISH_TIME},${PROJECT_PRICE},${PROJECT_TAX},${TOTAL_PRICES},${FINAL_NOTAX},${FINAL_TAX},${FINAL_TOTAL},#{REMARK},#{PROJECT_STATE})
+	</insert>
+	
+	  <!-- 修改项目-->
+	<update id="editProject" parameterType="java.util.Map">
+		update PROJECT_INFO
+		set PROJECT_NAME = #{PROJECT_NAME},
+			PROJECT_EMPLOYER = #{PROJECT_EMPLOYER},
+			PROJECT_MANAGER = #{PROJECT_MANAGER},
+			TECHNICAL_DIRECTOR = #{TECHNICAL_DIRECTOR},
+			START_TIME = #{START_TIME},
+			FINISH_TIME = #{FINISH_TIME},
+			PROJECT_PRICE = ${PROJECT_PRICE},
+			PROJECT_TAX = ${PROJECT_TAX},
+			TOTAL_PRICES = ${TOTAL_PRICES},
+			FINAL_NOTAX = ${FINAL_NOTAX},
+			FINAL_TAX = ${FINAL_TAX},
+			FINAL_TOTAL = ${FINAL_TOTAL},
+			REMARK = #{REMARK}
+		where PROJECT_ID = #{PROJECT_ID}
+	</update>
+	
+ 		<!-- 查询甲方付款 --> 
+	<select id="queryFirstpayment" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 FIRST_ID,
+		 FIRST_NUM,
+		 PROJECT_ID,
+		 PAYDATE,
+		 PAYMENT,
+		 BALANCE,
+		 REMARK
+		 from FIRST_PAYMENT
+		 where PROJECT_ID = #{PROJECT_ID}
+		 union all
+		 select
+		 '-' as FIRST_ID,
+		 '-' as FIRST_NUM,
+		 '00' as PROJECT_ID,
+		 '合计' as PAYDATE,
+		 sum(PAYMENT) as PAYMENT,
+		 '-' as BALANCE,
+		 '-' as REMARK
+		 from FIRST_PAYMENT
+		 where PROJECT_ID = #{PROJECT_ID}
+		 order by PAYDATE asc 
+	</select>	
+		
+	  <!-- 新建甲方付款-->
+	<insert id="addFirstPayment" parameterType="java.util.Map">
+		insert into first_payment
+		(FIRST_NUM,PAYDATE,PAYMENT,BALANCE,REMARK,PROJECT_ID)
+		values
+		(#{FIRST_NUM},#{PAYDATE},${PAYMENT},${BALANCE},#{REMARK},#{PROJECT_ID})
+	</insert>	
+	
+		<!-- 查询给甲方开发票金额表--> 
+	<select id="queryOutinvoice" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 OUT_ID,
+		 OUT_NUM,
+		 PROJECT_ID,
+		 PAYDATE,
+		 PAYMENT,
+		 PAYNOTAX,
+		 TAXVALUE,
+		 UPTAX,
+		 ADDTAX,
+		 OTHERTAX,
+		 BALANCE,
+		 REMARK
+		 from out_invoice 
+		 where PROJECT_ID = #{PROJECT_ID}
+		 union all
+		  select
+		 '-' OUT_ID,
+		 '-' OUT_NUM,
+		 '00' PROJECT_ID,
+		 '合计' PAYDATE,
+		 sum(PAYMENT)  PAYMENT,
+		 sum(PAYNOTAX)  PAYNOTAX,
+		 sum(TAXVALUE)  TAXVALUE,
+		 sum(UPTAX) UPTAX,
+		 sum(ADDTAX) ADDTAX,
+		 sum(OTHERTAX) OTHERTAX,
+		 '-' BALANCE,
+		 '-' REMARK
+		 from out_invoice 
+		 where PROJECT_ID = #{PROJECT_ID}
+		 order by PAYDATE asc
+	</select>	
+	
+	
+	  <!-- 新建给甲方开发票-->
+	<insert id="addOutInvoice" parameterType="java.util.Map">
+		insert into out_invoice
+		(OUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,TAXVALUE,BALANCE,REMARK,PROJECT_ID,UPTAX,ADDTAX,OTHERTAX)
+		values
+		(#{OUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},${TAXVALUE},${BALANCE},#{REMARK},#{PROJECT_ID},${UPTAX},${ADDTAX},${OTHERTAX})
+	</insert>
+	
+	
+		<!-- 查询进项发票(普票)金额表--> 
+	<select id="queryInputinvoice" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 INPUT_ID,
+		 INPUT_NUM,
+		 PROJECT_ID,
+		 PAYDATE,
+		 PAYMENT,
+		 PAYNOTAX,
+		 TAXVALUE,
+		 TAXBALANCE,
+		 REMARK
+		 from input_invoice 
+		 where PROJECT_ID = #{PROJECT_ID}
+		 union all
+		 select
+		 '-' INPUT_ID,
+		 '-' INPUT_NUM,
+		 '00' PROJECT_ID,
+		 '合计' PAYDATE,
+		 sum(PAYMENT) PAYMENT,
+		 sum(PAYNOTAX) PAYNOTAX,
+		 sum(TAXVALUE) TAXVALUE,
+		 '-' TAXBALANCE,
+		 '-' REMARK
+		 from input_invoice 
+		 where PROJECT_ID = #{PROJECT_ID}
+		 order by PAYDATE asc
+	</select>	
+	
+	  <!-- 新建进项发票(普票)-->
+	<insert id="addInputInvoice" parameterType="java.util.Map">
+		insert into input_invoice
+		(INPUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,REMARK,PROJECT_ID,TAXVALUE,TAXBALANCE)
+		values
+		(#{INPUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},#{REMARK},#{PROJECT_ID},${TAXVALUE},${TAXBALANCE})
+	</insert>
+	
+			<!-- 查询进项发票(专票)金额表--> 
+	<select id="queryInputinvoices" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 INPUT_ID,
+		 INPUT_NUM,
+		 PROJECT_ID,
+		 PAYDATE,
+		 PAYMENT,
+		 PAYNOTAX,
+		 TAXVALUE,
+		 TAXBALANCE,
+		 REMARK
+		 from input_invoices 
+		 where PROJECT_ID = #{PROJECT_ID}
+		  union all
+		 select
+		 '-' INPUT_ID,
+		 '-' INPUT_NUM,
+		 '00' PROJECT_ID,
+		 '合计' PAYDATE,
+		 sum(PAYMENT) PAYMENT,
+		 sum(PAYNOTAX) PAYNOTAX,
+		 sum(TAXVALUE) TAXVALUE,
+		 '-' TAXBALANCE,
+		 '-' REMARK
+		 from input_invoices
+		 where PROJECT_ID = #{PROJECT_ID}
+		 order by PAYDATE asc
+	</select>	
+	
+	  <!-- 新建进项发票(专票)-->
+	<insert id="addInputInvoices" parameterType="java.util.Map">
+		insert into input_invoices
+		(INPUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,REMARK,PROJECT_ID,TAXVALUE,TAXBALANCE)
+		values
+		(#{INPUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},#{REMARK},#{PROJECT_ID},${TAXVALUE},${TAXBALANCE})
+	</insert>
+	
+	
+	  <!-- 删除甲方付款记录-->
+	<delete id="delFirstRecord" parameterType="java.util.Map">
+		delete from first_payment
+		where FIRST_ID = #{DEL_ID}
+	</delete>
+	
+	  <!-- 删除开发票-->
+	<delete id="delOutRecord" parameterType="java.util.Map">
+		delete from out_invoice
+		where OUT_ID = #{DEL_ID}
+	</delete>
+	
+	  <!-- 删除进项发票(普票)-->
+	<delete id="delInputRecord" parameterType="java.util.Map">
+		delete from input_invoice
+		where INPUT_ID = #{DEL_ID}
+	</delete>
+	
+	  <!-- 删除进项发票(专票)-->
+	<delete id="delSpecialRecord" parameterType="java.util.Map">
+		delete from input_invoices
+		where INPUT_ID = #{DEL_ID}
+	</delete>
+	
+	  <!-- 关闭一个项目-->
+	<update id="closeProject" parameterType="java.util.Map">
+		update project_info 
+		set PROJECT_STATE = #{PROJECT_STATE}
+		where PROJECT_ID = #{PROJECT_ID}
+	</update>
+	
+	<!-- 查询项目备忘录 -->
+	<select id="queryMemo" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		MEMO_ID,
+		MEMO_NUM,
+		MEMO_TITLE,
+		MEMO_CONTENT,
+		CREATE_PERSON,
+		CREATE_TIME,
+		UPDATE_PERSON,
+		UPDATE_TIME,
+		MEMO_STATE,
+		PROJECT_ID
+		from project_memo
+		where PROJECT_ID = #{PROJECT_ID}
+		<if test="MEMO_STATE != '' and MEMO_STATE != null">
+			and MEMO_STATE = #{MEMO_STATE}
+		</if>
+		order by CREATE_TIME asc
+	</select>
+		
+		<!-- 新增备忘录 -->
+	<insert id="addMemo" parameterType="java.util.Map" >
+		insert into project_memo(MEMO_NUM,MEMO_TITLE,MEMO_CONTENT,CREATE_PERSON,CREATE_TIME,MEMO_STATE,PROJECT_ID)
+		values(#{MEMO_NUM},#{MEMO_TITLE},#{MEMO_CONTENT},#{CREATE_PERSON},#{CREATE_TIME},#{MEMO_STATE},#{PROJECT_ID})
+	</insert>
+	
+		<!-- 修改备忘录 -->
+	<update id="editMemo" parameterType="java.util.Map" >
+		update project_memo
+		set MEMO_STATE = #{MEMO_STATE},
+			MEMO_TITLE = #{MEMO_TITLE},
+			MEMO_CONTENT = #{MEMO_CONTENT},
+			UPDATE_PERSON = #{UPDATE_PERSON},
+			UPDATE_TIME = #{UPDATE_TIME}
+		where MEMO_ID = #{MEMO_ID}
+	</update>
+	
+		<!-- 删除备忘录 -->
+	<delete id="delMemo" parameterType="java.util.Map" >
+		delete from project_memo
+		where MEMO_ID = #{MEMO_ID}
+	</delete>
+
+
+
+
+
+</mapper>

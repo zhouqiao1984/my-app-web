@@ -1,0 +1,119 @@
+字段	         长度		    类型
+ID		20		int
+编号		20		varchar
+日期		20		varchar
+名字		200		varchar
+人名		20		varchar
+下拉		2		varchar
+金额		12,2	decimal
+备注		2000	varchar
+
+项目管理系统一期工程 2017/10/06
+一、
+项目信息表  project_info     共16个字段
+PROJECT_ID    			项目ID
+PROJECT_NUM   			项目编号         PJ_
+PROJECT_NAME  			项目名称
+PROJECT_EMPLOYER   		发包商
+PROJECT_MANAGER			项目经理
+TECHNICAL_DIRECTOR		技术负责人
+START_TIME				开始时间
+FINISH_TIME				结束时间
+PROJECT_PRICES			总价(不含税)
+PROJECT_TAX				税额
+TOTAL_PRICES			总价
+FINAL_NOTAX				决算金额(不含税)
+FINAL_TAX				决算税额
+FINAL_TOTAL				决算金额
+PROJECT_STATE			项目状态
+REMARK					备注
+
+
+二、
+进项发票(普票)  input_invoice 	
+进项发票(专票)  input_invoices  
+
+INPUT_ID    ID
+INPUT_NUM	编号    			  GI_   SI_
+PAYDATE		发票日期
+PAYMENT		金额
+PAYNOTAX	金额(不含税)    余额改的
+TAXVALUE	税额
+TAXBALANCE	税额余额
+REMARK		备注
+PROJECT_ID	项目ID
+
+三、
+给甲方开发票  out_invoice		
+
+OUT_ID		ID				 
+OUT_NUM		编号			FI_
+PAYDATE		日期
+PAYMENT		开发票金额
+PAYNOTAX	金额(不含税)
+TAXVALUE	税额
+BALANCE		余额
+UPTAX		增值税额
+ADDTAX		附加税额
+OTHERTAX	其他税额
+REMARK		备注
+PROJECT_ID	项目ID
+
+四、
+甲方付款信息	first_payment							
+
+FIRST_ID	ID
+FIRST_NUM	编号				FP_
+PAYDATE		付款日期
+PAYMENT		甲方付款金额
+PAYNOTAX	金额(不含税)
+TAXVALUE	税额
+BALANCE		余额
+REMARK		备注
+PROJECT_ID	项目ID
+
+
+五、
+项目备忘录		project_memo
+
+MEMO_ID				主键
+MEMO_NUM			记事编号          ME_
+MEMO_TITLE			摘要
+MEMO_CONTENT		记事内容
+CREATE_PERSON		创建人
+CREATE_TIME			创建时间
+UPDATE_PERSON		修改人
+UPDATE_TIME			修改时间
+MEMO_STATE			记事状态  00 未完成  01 已完成
+PROJECT_ID			项目ID
+
+
+项目管理系统二期工程 2017/11/03
+
+六、
+账户信息表  card_info
+CARD_ID      		主键
+CARD_NAME	   		卡名
+CARD_NUM	 		卡号	
+CARD_BANK    		开户行
+REMARK				备注
+CREATE_PERSON		创建人
+CREATE_TIME			创建时间
+UPDATE_PERSON		修改人
+UPDATE_TIME			修改时间
+
+七、
+账户明细表 card_detail					MX_
+DETAIL_ID     		主键
+DETAIL_NUM  		明细编号
+DETAIL_DATE         日期
+AMOUNT				数额
+PAY_TYPE			收支类型  00收入  01支出
+BALANCE				余额
+PAY_CLASS			收支类别
+PAY_EXPLAIN			收支说明
+BILL_NUM			单据编号
+REMARK				备注
+CARD_ID				账户ID
+
+问题？费用发生不按时间顺序输入，怎么计算余额

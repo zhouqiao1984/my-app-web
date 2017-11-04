@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>项目信息</title>
+   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="main_iframe_con">
+        <div class="ecitic-title">
+            <span>项目信息</span>
+        </div>
+        <div class="ecitic-title-table">
+<!--         	<input id="FILE_ID_ADD" name="IU.FILE_ID" type="hidden" /> -->
+        	<input type="hidden" name="P.PROJECT_ID">
+            <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
+                <colgroup>
+						<col style="width: 15%">
+						<col style="width: 35%">
+						<col style="width: 15%">
+						<col style="width: 35%">
+				</colgroup>
+				<tr id="pronum">
+					<td class="table-text">项目编号：</td>
+					<td colspan="5">
+						<input type="text" name="P.PROJECT_NUM" class="requirement-ele-width" readonly>
+					</td>
+				</tr>
+                <tr>
+                    <td class="table-text">项目名称：</td>
+                    <td colspan="5"><input type="text" name="P.PROJECT_NAME" class="requirement-ele-width" validate="v.required" valititle="该项为必填项"></td>
+                </tr>
+                <tr>
+                    <td class="table-text">发包商：</td>
+                    <td colspan="5"><input type="text" name="P.PROJECT_EMPLOYER" class="requirement-ele-width" ></td>
+                </tr>
+                <tr>
+                    <td class="table-text">项目经理：</td>
+                    <td><input type="text" name="P.PROJECT_MANAGER" class="requirement-ele-width" ></td>
+                	<td class="table-text">技术负责人：</td>
+                    <td><input type="text" name="P.TECHNICAL_DIRECTOR" class="requirement-ele-width" ></td>
+                </tr>
+                <tr>
+                    <td class="table-text">开工日期：</td>
+					<td>
+						<input type="text" id="START_TIME" name="P.START_TIME" class="requirement-ele-width"  onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'FINISH_TIME\',{d:0});}'})" placeHolder="点击选择"   readonly/>
+					</td>
+					<td class="table-text">竣工日期：</td>		
+					<td>
+						<input type="text" id="FINISH_TIME" name="P.FINISH_TIME" class="requirement-ele-width" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'START_TIME\',{d:0});}'})" placeHolder="点击选择"  readonly/>
+					</td>
+                </tr>
+ 				 <tr>
+                    <td class="table-text">总价(不含税)：</td>
+                    <td><input type="text" name="P.PROJECT_PRICE"  class="requirement-ele-width" varify="is_money"></td>
+                	<td class="table-text">税额：</td>
+                    <td><input type="text" name="P.PROJECT_TAX" class="requirement-ele-width" varify="is_money"></td>
+                </tr>
+                <tr>
+                	<td class="table-text">总价：</td>
+                    <td ><input type="text" name="P.TOTAL_PRICES" class="requirement-ele-width" varify="is_money"></td>
+               		<td class="table-text"></td>
+               		<td></td>
+                </tr>
+                 <tr>
+                    <td class="table-text">决算金额(不含税)：</td>
+                    <td><input type="text" name="P.FINAL_NOTAX" class="requirement-ele-width" varify="is_money"></td>
+                	<td class="table-text">决算税额：</td>
+                    <td><input type="text" name="P.FINAL_TAX" class="requirement-ele-width" varify="is_money"></td>
+                </tr>
+                <tr>
+                	<td class="table-text">决算金额：</td>
+                    <td ><input type="text" name="P.FINAL_TOTAL" class="requirement-ele-width" varify="is_money"></td>
+               		<td class="table-text"></td>
+               		<td></td>
+                </tr>
+                <tr>
+                    <td class="table-text">备注：</td>
+                    <td colspan="5">
+                    	<textarea name="P.REMARK" class="requirement-ele-width" ></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="ecitic-save">
+            <input type="button"  class="btn btn-ecitic" btn="saveInfo" value="保存"/>
+            <input type="button" class="btn btn-ecitic" name="closePageTabConfirm" value="返回" />
+        </div>
+    </div>
+</body>
+<script src="bootstrap/js/bootstrap-table.min.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script src="pages/pm/project_add.js"></script>
+</html>

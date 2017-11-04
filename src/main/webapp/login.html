@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>项目管理</title>
+<link rel="shortcut icon" href="img/e-icon.png" type="image/x-icon" />
+<link rel="stylesheet" href="css/login.css" />
+<script type="text/javascript" src="js/jquery/jquery-1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/login/jquery.SuperSlide.2.1.1.js" ></script>
+<script type="text/javascript" src="js/login/login.js" ></script>
+</head>
+<body onkeydown="if(event.keyCode==13){onLogin()}">
+	<div class="ecitic-login-all">
+		<div class="ecitic-logo unselectable">
+			<span>
+				<h2>项目管理</h2>
+			</span>
+		</div>
+		<ul class="ecitic-user-password" style="left:450px;">
+			<li class="ecitic-title unselectable">登录</li>	
+			<li class="ecitic-user">
+				<i class="user"></i>
+				<input id="loginname" type="text" placeholder="请输入用户名" onfocus="if(this.placeholder=='请输入用户名')this.placeholder =''" onblur="if(this.placeholder=='')this.placeholder='请输入用户名'" />
+				<span class="ecitic-del"></span>
+				<span class="ecitic-error"><i></i>请输入用户名</span>
+			</li>
+			<li class="ecitic-password">
+				<i class="password"></i>
+				<input id="password" type="password" placeholder="请输入密码" onfocus="if(this.placeholder=='请输入密码')this.placeholder =''" onblur="if(this.placeholder=='')this.placeholder='请输入密码'" />
+				<span class="ecitic-del"></span>
+				<span class="ecitic-error"><i></i>请输入密码</span>
+			</li>
+			<li class="ecitic-btn">
+				<button id="login_btn" onClick="onLogin()">立即登录</button>
+			</li>
+		</ul>
+		<div class="ecitic-footer">@xhl</div>
+	</div>
+	<div class="ecitic-bg">
+		<div class="ecitic-bg-img">
+			<ul style="width:100%;">
+				<li style="background:url(img/bg1.jpg) center top no-repeat;background-size:100% 480px; -ms-behavior: url(css/htc/backgroundsize.min.htc);behavior: url(css/htc/backgroundsize.min.htc);"></li>
+				<li style="background:url(img/bg2.jpg) center top no-repeat;background-size:100% 480px; -ms-behavior: url(css/htc/backgroundsize.min.htc);behavior: url(css/htc/backgroundsize.min.htc);"></li>
+				<li style="background:url(img/bg3.jpg) center top no-repeat;background-size:100% 480px; -ms-behavior: url(css/htc/backgroundsize.min.htc);behavior: url(css/htc/backgroundsize.min.htc);"></li>
+			</ul>
+		</div>
+		<div class="ecitic-bg-circle">
+			<ul></ul>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+//获取焦点
+$(".ecitic-user-password li input").focus(function(){
+	$(this).parent().addClass("open");
+	$(".ecitic-user .ecitic-error").text("");
+  	$(".ecitic-user .ecitic-error").hide();
+  	$(".ecitic-password .ecitic-error").text("");
+  	$(".ecitic-password .ecitic-error").hide();
+});
+//失去焦点
+$(".ecitic-user-password li input").blur(function(){
+	$(this).parent().removeClass("open");
+});
+//input输入框实时输入触发事件
+$(".ecitic-user-password li input").bind("input propertychange",function(){
+	if($(this).val()==''){
+		$(this).next().removeClass("open");
+	}else{
+		$(this).next().addClass("open");
+	}
+});
+//清除文本框内容
+$(".ecitic-user-password .ecitic-del").click(function(){
+	$(this).prev().val("");
+	$(this).removeClass("open");
+});
+//登陆方法
+function onLogin(){
+	  	var loginname=$("#loginname");
+	  	var password=$("#password");
+	  	if($.trim(loginname.val())==""||$.trim(loginname.val())=="请输入用户名"){
+	  		$(".ecitic-user .ecitic-error").show();
+			$(".ecitic-user .ecitic-error").html("<i></i>请输入用户名!");
+	  		return;	
+	  	}else if($.trim(password.val())==""||$.trim(password.val())=="请输入密码"){
+	  		$(".ecitic-password .ecitic-error").show();
+			$(".ecitic-password .ecitic-error").html("<i></i>请输入密码!");
+	  		return;	
+	  	}
+	  	
+	  	if(onLogin.state==false){
+	  		return;
+	  	}
+	  	onLogin.state=false;
+	  	$("#login_btn").text("登录中...");
+	  	
+	  	$(".ecitic-user .ecitic-error").text("");
+	  	$(".ecitic-user .ecitic-error").hide();
+	  	$(".ecitic-password .ecitic-error").text("");
+	  	$(".ecitic-password .ecitic-error").hide();
+	    $.ajax({
+	 			type : "post",
+	 			url : "login.asp",
+	 			async : true,
+	 			data : {LOGINNAME:loginname.val(),PASSWORD:password.val()},
+	 			dataType : "json",
+	 			success : function(msg) {
+	 				if("true"==msg.result){
+	 					window.location="main.asp";
+	 					return;
+	 				}else{
+	 					$(".ecitic-password .ecitic-error").show();
+	 					$(".ecitic-password .ecitic-error").html("<i></i>"+msg.msg);
+	 				}
+	 				onLogin.state=true;
+	 				$("#login_btn").text("立即登录");
+	 			},
+	 			error : function() {
+	 				$(".ecitic-password .ecitic-error").show();
+					$(".ecitic-password .ecitic-error").html("<i></i>登录异常!");
+	 				onLogin.state=true;
+	 				$("#login_btn").text("立即登录");
+	 			}
+	 		});
+	    }
+	    
+//背景图
+$(function(){
+	jQuery(".ecitic-bg").slide({
+		 titCell:".ecitic-bg-circle ul", 
+		 mainCell:".ecitic-bg-img ul", 
+		 effect:"fold",  
+		 autoPlay:true, 
+		 autoPage:true,
+		 trigger:"click",
+		 interTime:2500
+	});
+	jQuery(".notice_box").slide({mainCell:"#notice_scroll",effect:"topLoop",autoPlay:true,interTime:3500});
+});
+
+
+
+
+</script>
+</html>
