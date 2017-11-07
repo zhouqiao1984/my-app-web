@@ -9,7 +9,11 @@ ul,li {list-style:none;}
 a {color:#fff;text-decoration:none;}
 a:hover {color:#fff;text-decoration:none;}
 /*顶部*/
-.main_header {width:100%;height:70px;background:url(../img/mylogin5.png);position:absolute;top:0;left:0;z-index:437;/*overflow:hidden;*/border-bottom: 4px solid #AE0A29;}
+.main_header {width:100%;height:70px;
+background:url(../img/top01.jpg);
+position:absolute;
+top:0;left:0;z-index:437;/*overflow:hidden;*/
+border-bottom: 4px solid #66b3ff;}
 /*logo*/
 .headerArea .logo {float: left;
 width: 195px;
@@ -68,43 +72,44 @@ overflow: hidden;}
 .main_all {width:100%;position:absolute;top:70px;bottom:0;}
 .main_all a {outline:none;blr:expression(this.onFocus=this.blur());}
 /*左侧菜单*/
-.main_container {width:214px;height:100%;background:#f4f4f4;border-right:1px #e3e3e3 solid;overflow-y:auto;overflow-x:hidden;position:absolute;left:0;top:0;}
+.main_container {width:214px;height:100%;background:rgba(68, 81, 97, 0.97);border-right:1px #e3e3e3 solid;overflow-y:auto;overflow-x:hidden;position:absolute;left:0;top:0;}
 .main_container a {color:#fff;cursor:pointer;}
 /*折叠按钮*/
 .suo {position:absolute;top:50%;left:199px;display:inline-block;height:31px;width:15px;border:1px solid #e3e3e3;border-right:none;margin-top:-15px;background:url(../img/icon_ecitic.png) no-repeat #fff;background-position:-137px -115px;border-top-left-radius:15px;border-bottom-left-radius:15px;}
 .suo:hover {cursor:pointer;}
 .marginLeft0 {left:0;background:url(../img/icon_ecitic.png) no-repeat;background-position:-175px -115px;background-color:#c9161d;border:none;border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:15px;border-bottom-right-radius:15px;}
 /*工作区*/
-.main_iframe {margin-left:215px;padding:0 16px 0 15px;height:100%;overflow-y:auto;/*min-width:960px;overflow:scroll;*/}
+.main_iframe {margin-left:215px;padding:0 16px 0 15px;height:100%;overflow-y:auto;background-color:rgba(0,0,0,0.05);}
 .main_iframe iframe {border:none;width:100%;}
 /*内容区域全部*/
 .main_iframe_con {/*padding:15px 0;*//* overflow:hidden; *//*height:2000px;overflow-y:auto;*/}
 .main_iframe_con table {margin-bottom:0;}
 /*当前位置*/
-.yourLocation {font-size:14px;height:16px;line-height:16px;margin:10px 0;padding:5px 0;overflow:hidden;display:none;}
+.yourLocation {font-size:14px;height:16px;line-height:16px;margin:10px 0;padding:5px 0;overflow:hidden;display:none;color:#32a4b7;}
 .yourLocation i {width:13px;height:13px;display:block;float:left;/* background:url(../img/icon_ecitic.png) no-repeat;background-position:-5px -220px; */margin:2px 5px 0 0;}
 .yourLocation span {float:left;}
 #contentHtml {padding-bottom:5px;}
 /*添加到常规操作*/
 .main-add {float:right;display:none;}
 /*左侧菜单*/
-.nui-tree-all {width:214px;/*height:100%;*/background:#f4f4f4;overflow-y:auto;overflow-x:hidden;position:absolute;top: 45px;bottom:0;}
+.nui-tree-all {width:214px;/*height:100%;*/background:rgba(68, 81, 97, 0.97);overflow-y:auto;overflow-x:hidden;position:absolute;top:10px;bottom:0;}
 .nui-tree {zoom:1;margin-left:0;font-size:14px;font-family:"微软雅黑", arial;}
-.nui-tree span {color:#000;}
+.nui-tree span {color:#eee;}
 .gundong li.gundongNav {border-bottom:1px solid #ebebeb;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
 .gundongNav i {position:absolute;top:152px;left:12px;width:19px;height:19px;-webkit-transition:all 0.4s ease;-o-transition:all 0.4s ease;transition:all 0.4s ease;background:url(../img/all.png) no-repeat;}
 .gundongNav i.list1 {background-position:-24px -87px;}
-.gundong li ul {background:#fff;}
+/*菜单背景颜色 MY*/
+.gundong li ul {background:rgba(68, 81, 97, 0.97);}
 .nui-tree-item {outline:0;white-space:nowrap;zoom:1;position:relative;width:201px;}
 .nui-tree-item-label {height:40px;line-height:40px;zoom:1;outline:0;cursor:pointer;position:relative;}
 .nui-tree-item-label .arrowNav {position:absolute;top:50%;right:5px;margin:-10px 0 0 0;}
 .nui-tree-item-labelList {text-align:left;padding-left:26px;}
 .arrowNav {margin:10px 10px 0 0;float:right;}
 .nui-tree-item-labelNav:hover .arrowNav {transform:rotate(70deg);-ms-transform:rotate(90deg);-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg);-o-transform:rotate(90deg);}
-/*二级菜单*/
-.nuinone {display:none;background:#fff;}
+/*二级菜单 背景色及鼠标悬停变色 MY*/
+.nuinone {display:none;background:rgba(68, 81, 97, 0.97);}
 .nuinone li.gundongNav {border-bottom:none;}
-.gundong div:hover {background-color:#e8e8e8;}
+.gundong div:hover {background-color:rgba(46, 48, 51, 0.97);}
 /*图标*/
 .nui-tree-item-img {width:16px;height:14px;display:block;float:left;margin:14px 5px 0 0;/* overflow:hidden; */}
 .nui-tree-item-img img {margin:-30px 0 0 0;padding:0;}
@@ -164,7 +169,7 @@ overflow: hidden;}
 .cgb-left-all.open {display:block;}
 /*标题*/
 .cgb-menu-title {width:100%;text-align:center;height: 44px;line-height: 45px;border-bottom:1px solid #ebebeb;color:#606060;position:relative;}
-.cgb-menu-title span {font-weight:bold;/* width:208px;display:inline-block;float:left; */font-size:15px;color:#333;}
+.cgb-menu-title span {font-weight:normal;font-size:17px;color:#B8860B;letter-spacing:1px;}
 /*系统-菜单选项*/
 .cgb-system-tab {width:214px;bottom: 0;position: fixed;}
 /*系统内容*/

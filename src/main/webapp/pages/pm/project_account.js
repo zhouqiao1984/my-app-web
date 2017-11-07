@@ -305,6 +305,7 @@ function editAccount(item){
 					singleSelect : true,// 复选框单选
 					jsonpCallback: 'firstpayment',
 					onLoadSuccess : function(data){
+						gaveInfo();
 					},onLoadError:function () {
 	                    alert("数据加载失败！");
 	                },
@@ -317,34 +318,34 @@ function editAccount(item){
 						field : 'ORDER_ID',
 						title : '序号',
 						align : "center",
-						width : "60",
+						width : "8%",
 						formatter:function(value,row,index){
 							return index + 1;
 						}
 					}, {
 						field : "PAYDATE",
 						title : "付款日期",
-						width : "100",
+						width : "12%",
 						align : "center"
 					}, {
 						field : "PAYMENT",
 						title : "金额",
-						width : "100",
+						width : "15%",
 						align : "center"
 					}, {
 						field : "BALANCE",
 						title : "余额",
-						width : "100",
+						width : "15%",
 						align : "center"
 					},{
 						field : "REMARK",
 						title : "备注",
-						width : "200",
+						width : "35%",
 						align : "center"
 					}, {
 						field : "FIRST_NUM",
 						title : "编号",
-						width : "100",
+						width : "15%",
 						align : "center"
 					}
 					]
@@ -383,6 +384,7 @@ function editAccount(item){
 					singleSelect : true,// 复选框单选
 					jsonpCallback: 'outinvoice',
 					onLoadSuccess : function(data){
+						gaveInfo();
 					},onLoadError:function () {
 	 
 	                    alert("数据加载失败！");
@@ -397,59 +399,59 @@ function editAccount(item){
 						field : 'ORDER_ID',
 						title : '序号',
 						align : "center",
-						width : "60",
+						width : "5%",
 						formatter:function(value,row,index){
 							return index + 1;
 						}
 					}, {
 						field : "PAYDATE",
 						title : "开发票日期",
-						width : "100",
+						width : "8%",
 						align : "center"
 					}, {
 						field : "PAYMENT",
 						title : "金额",
-						width : "100",
+						width : "10%",
 						align : "center"
 					}, {
 						field : "PAYNOTAX",
 						title : "金额(不含税)",
-						width : "100",
+						width : "10%",
 						align : "center"
 					}, {
 						field : "TAXVALUE",
 						title : "税额",
-						width : "100",
+						width : "10%",
 						align : "center"
 					}, {
 						field : "BALANCE",
 						title : "余额",
-						width : "100",
+						width : "10%",
 						align : "center"
 					},{
 						field : "UPTAX",
 						title : "增值税额",
-						width : "100",
+						width : "10%",
 						align : "center"
 					},{
 						field : "ADDTAX",
 						title : "附加税额",
-						width : "100",
+						width : "10%",
 						align : "center"
 					},{
 						field : "OTHERTAX",
 						title : "其他税额",
-						width : "100",
+						width : "10%",
 						align : "center"
 					},{
 						field : "REMARK",
 						title : "备注",
-						width : "200",
+						width : "10%",
 						align : "center"
 					}, {
 						field : "OUT_NUM",
 						title : "编号",
-						width : "100",
+						width : "9%",
 						align : "center"
 					}
 					]
@@ -487,6 +489,7 @@ function editAccount(item){
 					singleSelect : true,// 复选框单选
 					jsonpCallback: 'inputinvoice',
 					onLoadSuccess : function(data){
+						gaveInfo();
 					},onLoadError:function () {
 	 
 	                    alert("数据加载失败！");
@@ -576,6 +579,7 @@ function editAccount(item){
 					singleSelect : true,// 复选框单选
 					jsonpCallback: 'inputinvoices',
 					onLoadSuccess : function(data){
+						gaveInfo();
 					},onLoadError:function () {
 	 
 	                    alert("数据加载失败！");
@@ -666,6 +670,7 @@ function editAccount(item){
 					singleSelect : true,// 复选框单选
 					jsonpCallback: 'projectmemo',
 					onLoadSuccess : function(data){
+						gaveInfo();
 					},onLoadError:function () {
 	                    alert("数据加载失败！");
 	                },

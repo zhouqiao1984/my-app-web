@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.xhl.service.IProjectService;
+import com.xhl.service.ICardService;
 import com.xhl.utils.MyUtil;
 
 @Controller
@@ -16,241 +16,85 @@ import com.xhl.utils.MyUtil;
 public class CardController {
 	
 	@Resource
-	private IProjectService projectService;
+	private ICardService cardService;
 	
 	/**
-	 * 查询
+	 * 查询账户
 	 * 
 	 * @param req
 	 * @param res
 	 */
 
-//	@RequestMapping("/queryProject")
-//	public void queryProject(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryProject(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	@RequestMapping("/queryCard")
+	public void queryCard(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,cardService.queryCard(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
-	 * 项目信息编辑
+	 * 账户信息编辑
 	 * 
 	 * @param req
 	 * @param res
 	 */
-//	@RequestMapping("/editProject")
-//	public void editProject(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJson(projectService.editProject(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	@RequestMapping("/editCard")
+	public void editCard(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,cardService.editCard(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
-	 * 查询甲方付款信息
-	 * 
-	 * @param req
-	 * @param res
-	 */
-
-//	@RequestMapping("/queryFirstpayment")
-//	public void queryFirstpayment(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryFirstpayment(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	/**
-	 * 增加甲方付款信息
+	 * 查询账户明细
 	 * 
 	 * @param req
 	 * @param res
 	 */
 
-//	@RequestMapping("/addFirstPayment")
-//	public void addFirstPayment(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.addFirstPayment(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	@RequestMapping("/queryDetail")
+	public void queryDetail(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,cardService.queryDetail(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
-	 * 新增开发票金额
+	 * 账户明細编辑
 	 * 
 	 * @param req
 	 * @param res
 	 */
-
-//	@RequestMapping("/addOutInvoice")
-//	public void addOutInvoice(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.addOutInvoice(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
+	@RequestMapping("/editDetail")
+	public void editDetail(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,cardService.editDetail(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	/**
-	 * 查询开发票金额表
+	 * 账户明細删除
 	 * 
 	 * @param req
 	 * @param res
 	 */
-//
-//	@RequestMapping("/queryOutinvoice")
-//	public void queryOutinvoice(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryOutinvoice(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//	
-	
-	
-	/**
-	 * 新增进项发票(普票)
-	 * 
-	 * @param req
-	 * @param res
-	 */
-//
-//	@RequestMapping("/addInputInvoice")
-//	public void addInputInvoice(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.addInputInvoice(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	/**
-	 * 查询进项发票(普票)金额表
-	 * 
-	 * @param req
-	 * @param res
-	 */
-
-//	@RequestMapping("/queryInputinvoice")
-//	public void queryInputinvoice(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryInputinvoice(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-	
-	/**
-	 * 新增进项发票(专票)
-	 * 
-	 * @param req
-	 * @param res
-	 */
-
-//	@RequestMapping("/addInputInvoices")
-//	public void addInputInvoices(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.addInputInvoices(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	/**
-	 * 查询进项发票(专票)金额表
-	 * 
-	 * @param req
-	 * @param res
-	 */
-
-//	@RequestMapping("/queryInputinvoices")
-//	public void queryInputinvoices(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryInputinvoices(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
-	
-	/**
-	 * 删除一条记录
-	 * 
-	 * @param req
-	 * @param res
-	 */
-
-//	@RequestMapping("/delRecord")
-//	public void delRecord(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.delRecord(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	/**
-	 * 关闭一个项目
-	 * 
-	 * @param req
-	 * @param res
-	 */
-
-//	@RequestMapping("/closeProject")
-//	public void closeProject(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.closeProject(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//	
-	
-	/**
-	 * 查询备忘录
-	 * 
-	 * @param req
-	 * @param res
-	 */
-//	@RequestMapping("/queryMemo")
-//	public void queryMemo(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryMemo(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	
-	/**
-	 * 编辑备忘录
-	 * 
-	 * @param req
-	 * @param res
-	 */
-//	@RequestMapping("/saveMemo")
-//	public void saveMemo(HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.saveMemo(request)));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//	
-	
-	
-	
-	
+	@RequestMapping("/delDetail")
+	public void delDetail(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,cardService.delDetail(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
 

@@ -6,6 +6,7 @@
    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
     <link href="css/form.css" rel="stylesheet"/>
+     <link href="css/mystyle.css" rel="stylesheet"/>
 </head>
 
 <body>
@@ -107,8 +108,8 @@
             <span>进项发票(专用)信息记录<em></em></span> <i></i>
         </div>
         <div class="ecitic-operation">
-			<button class="btn btn-ecitic" btn="addInputInvoiceS" >新增进项发票(专用)信息</button>
-			<button class="btn btn-ecitic" btn="delInputInvoiceS" >删除进项发票(专用)记录</button>
+			<button class="btn btn-ecitic blue" btn="addInputInvoiceS" >新增进项发票(专用)信息</button>
+			<button class="btn btn-ecitic red" btn="delInputInvoiceS" >删除进项发票(专用)记录</button>
 		</div>
        	<div class="ecitic-title-table">
             <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
@@ -139,7 +140,7 @@
             </table>
         </div>
 		<div class="ecitic-title-table">
-            <table tb="inputInvoiceSTable" class="table table-bordered table-hover table-text-show"></table>
+            <table tb="inputInvoiceSTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
         </div>
  	</div>       
         
@@ -149,8 +150,8 @@
             <span>进项发票(普通)信息记录<em></em></span> <i></i>
         </div>
         <div class="ecitic-operation">
-			<button class="btn btn-ecitic" btn="addInputInvoice" >新增进项发票(普通)信息</button>
-			<button class="btn btn-ecitic" btn="delInputInvoice" >删除进项发票(普通)记录</button>
+			<button class="btn btn-ecitic blue" btn="addInputInvoice" >新增进项发票(普通)信息</button>
+			<button class="btn btn-ecitic red" btn="delInputInvoice" >删除进项发票(普通)记录</button>
 		</div>
        	<div class="ecitic-title-table">
             <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
@@ -181,7 +182,7 @@
             </table>
         </div>
 		<div class="ecitic-title-table">
-            <table tb="inputInvoiceTable" class="table table-bordered table-hover table-text-show"></table>
+            <table tb="inputInvoiceTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
         </div>
      </div>   
         
@@ -191,8 +192,8 @@
             <span>给甲方开发票金额信息记录<em></em></span> <i></i>
         </div>
         <div class="ecitic-operation">
-			<button class="btn btn-ecitic" btn="addOutInvoice" >新增开发票信息</button>
-			<button class="btn btn-ecitic" btn="delOutInvoice" >删除发票信息记录</button>
+			<button class="btn btn-ecitic blue" btn="addOutInvoice" >新增开发票信息</button>
+			<button class="btn btn-ecitic red" btn="delOutInvoice" >删除发票信息记录</button>
 		</div>
        	<div class="ecitic-title-table">
             <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
@@ -232,7 +233,7 @@
             </table>
         </div>
 		 <div class="ecitic-title-table">
-            <table tb="outInvoiceTable" class="table table-bordered table-hover table-text-show"></table>
+            <table tb="outInvoiceTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
         </div>
       </div>
         
@@ -244,8 +245,8 @@
             <span>甲方付款信息记录<em></em></span> <i></i>
         </div>
         <div class="ecitic-operation">
-			<button class="btn btn-ecitic" btn="addFirstPay" >新增甲方付款</button>
-			<button class="btn btn-ecitic" btn="delFirstPay" >删除甲方付款记录</button>
+			<button class="btn btn-ecitic blue" btn="addFirstPay" >新增甲方付款</button>
+			<button class="btn btn-ecitic red" btn="delFirstPay" >删除甲方付款记录</button>
 		</div>
        	<div class="ecitic-title-table">
             <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
@@ -270,7 +271,7 @@
             </table>
         </div>
 		<div class="ecitic-title-table">
-            <table tb="firstPaymentTable" class="table table-bordered table-hover table-text-show"></table>
+            <table tb="firstPaymentTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
         </div>
       </div>  
             
@@ -280,13 +281,13 @@
 	            <span>项目备忘录<em></em></span> <i></i>
 	        </div>
 	        <div class="ecitic-operation">
-				<button class="btn btn-ecitic" btn="addMemo" >新增</button>
-				<button class="btn btn-ecitic" btn="editMemo" >修改</button>
-				<button class="btn btn-ecitic" btn="delMemo" >删除</button>
-				<button class="btn btn-ecitic" btn="changeView" >切换至已完成</button>
+				<button class="btn btn-ecitic blue" btn="addMemo" >新增</button>
+				<button class="btn btn-ecitic gray" btn="editMemo" >修改</button>
+				<button class="btn btn-ecitic red" btn="delMemo" >删除</button>
+				<button class="btn btn-ecitic blue" btn="changeView" >切换至已完成</button>
 			</div>
 			<div class="ecitic-title-table">
-           		 <table tb="memoTable" class="table table-bordered table-hover table-text-show"></table>
+           		 <table tb="memoTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
         	</div>
         	
         	
@@ -353,9 +354,9 @@
 	
 	            </div>
 	            <div class="ecitic-save">
-	                <input type="button" class="btn btn-ecitic" value="保存" btn="memo_save">
-	                <button btn="close2" class="btn btn-ecitic" data-dismiss="modal" aria-hidden="true">关闭</button>
-	                <input type="button" class="btn btn-ecitic" value="返回" btn="close_modal">
+	                <input type="button" class="btn btn-ecitic green" value="保存" btn="memo_save">
+	                <button btn="close2" class="btn btn-ecitic rosy" data-dismiss="modal" aria-hidden="true">关闭</button>
+	                <input type="button" class="btn btn-ecitic rosy" value="返回" btn="close_modal">
 	            </div>
 	            <div class="modal-footer"></div>
 	        </div>
@@ -365,7 +366,7 @@
       	
       	
         <div class="ecitic-save">
-            <input type="button" class="btn btn-ecitic" name="closePageTabConfirm" value="返回" />
+            <input type="button" class="btn btn-ecitic rosy" name="closePageTabConfirm" value="返回" />
         </div>
         
         		</div> 

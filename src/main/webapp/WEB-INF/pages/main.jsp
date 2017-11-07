@@ -53,9 +53,9 @@
 	<input type="hidden" value="00" id="currentLoginskin"/>
 	<div class="main_header">
 		<div class="headerArea">
-			<div class="logo">
+<!-- 			<div class="logo"> -->
 <!-- 			<img src="img/login.png" />  -->
-			</div>
+<!-- 			</div> -->
 			<ul class="rightTopHelp">
 				<li class="ecitic-user"><i class="fa fa-user"></i><%=user_name %><b></b></li>
 				<li class="ecitic-exit" id="ecitic-exit"><i class="fa fa-power-off" aria-hidden="true"></i>退出</li>
@@ -94,7 +94,9 @@
 	<div class="main_all">
 		<div class="main_container" id="ecitic-sidebar">
 			<div class="cgb-left-all open">
-				<div class="cgb-menu-title"><span>项目管理</span></div>
+<!-- 				<div class="cgb-menu-title"> -->
+<!-- 					<span></span> -->
+<!-- 				</div> -->
 				<div class="nui-tree-all">
 				<ul class="nui-tree">
 					<li>

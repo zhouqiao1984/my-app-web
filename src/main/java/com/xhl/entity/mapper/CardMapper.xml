@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.xhl.dao.CardDao">
+
+	  <!-- 查询账户-->
+	<select id="queryCard" parameterType="java.lang.String" resultType="java.util.Map">
+		select 
+		CARD_ID,CARD_NAME,CARD_NUM,CARD_OWNER,CARD_BANK,REMARK,CARD_STATE
+		from CARD_INFO
+		where 1=1
+		<choose>
+	        <when test="_parameter!=null and _parameter!=''">
+	            and  CARD_STATE = #{_parameter}
+	        </when>
+	        <otherwise>
+	            and CARD_STATE = '00'
+	        </otherwise>
+    	</choose>
+		
+	</select>
+	
+		  <!-- 新建账户-->
+	<insert id="addCard" parameterType="java.util.Map">
+		insert into CARD_INFO
+		(CARD_NAME,CARD_NUM,CARD_OWNER,CARD_BANK,REMARK,CARD_STATE)
+		values
+		(#{CARD_NAME},#{CARD_NUM},#{CARD_OWNER},#{CARD_BANK},#{REMARK},#{CARD_STATE})
+	</insert>
+	
+	  <!-- 修改账户-->
+	<update id="editCard" parameterType="java.util.Map">
+		update CARD_INFO
+		set CARD_NAME = #{CARD_NAME},
+			CARD_NUM = #{CARD_NUM},
+			CARD_OWNER = #{CARD_OWNER},
+			CARD_BANK = #{CARD_BANK},
+			REMARK = #{REMARK}
+		where CARD_ID = #{CARD_ID}
+	</update>
+	
+	  <!-- 启用停用账户-->
+	<update id="optCard" parameterType="java.util.Map">
+		update CARD_INFO
+		set CARD_STATE = #{CARD_STATE}
+		where CARD_ID = #{CARD_ID}
+	</update>
+	
+	  <!-- 查询账户明细-->
+	<select id="queryDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		DETAIL_ID,
+		DETAIL_NUM,
+		DETAIL_DATE,
+		DETAIL_EXPLAIN,
+		AMOUNT,
+		PAY_TYPE,
+		BALANCE,
+		PAY_CLASS,
+		PAY_EXPLAIN,
+		BILL_NUM,
+		REMARK,
+		CARD_ID
+		from CARD_DETAIL
+		where CARD_ID = #{CARD_ID}
+		
+		
+	</select>
+	
+	  <!-- 查询当前余额-->
+	<select id="getBalance" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+		select BALANCE
+		from CARD_DETAIL
+		where  DETAIL_ID = (select max(DETAIL_ID) from CARD_DETAIL where CARD_ID = #{CARD_ID})
+		
+	</select>
+
+		  <!-- 新建明细-->
+	<insert id="addDetail" parameterType="java.util.Map">
+		insert into CARD_DETAIL
+		(DETAIL_NUM,DETAIL_DATE,DETAIL_EXPLAIN,AMOUNT,PAY_TYPE,BALANCE,PAY_CLASS,
+		PAY_EXPLAIN,BILL_NUM,REMARK,CARD_ID)
+		values
+		(#{DETAIL_NUM},#{DETAIL_DATE},#{DETAIL_EXPLAIN},${AMOUNT},#{PAY_TYPE},${BALANCE},#{PAY_CLASS},
+		#{PAY_EXPLAIN},#{BILL_NUM},#{REMARK},#{CARD_ID})
+	</insert>
+	
+	  <!-- 修改明细-->
+	<update id="editDetail" parameterType="java.util.Map">
+		update CARD_DETAIL
+		set PAY_CLASS = #{PAY_CLASS},
+		DETAIL_EXPLAIN = #{DETAIL_EXPLAIN},
+		BILL_NUM = #{BILL_NUM},
+		PAY_EXPLAIN = #{PAY_EXPLAIN},
+		REMARK = #{REMARK}
+		where DETAIL_ID = #{DETAIL_ID}
+	</update>
+	
+	
+	  <!-- 删除最近一条明细记录-->
+	<delete id="delDetail" parameterType="java.util.Map">
+		delete from CARD_DETAIL
+		where DETAIL_ID = (select c.DETAIL_ID from 
+		(select max(DETAIL_ID) as DETAIL_ID from CARD_DETAIL where CARD_ID = #{CARD_ID}) c)
+	</delete>
+	
+	
+	
+</mapper>

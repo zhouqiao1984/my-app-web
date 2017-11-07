@@ -9,14 +9,14 @@ function initProject(){
 	initProjectTable();//初始化列表
 	
 	//重置按钮
-	$page.find("[name='resetP']").click(function(){debugger;
+	$page.find("[name='resetP']").click(function(){
 		$page.find("table input").val("");
 		$page.find("select").val(" ").select2();
 	
 	});
 	
 	//查询按钮
-	 $page.find("[name='queryP']").click(function(){debugger;
+	 $page.find("[name='queryP']").click(function(){
 		 var param = formObj.serialize();
 		 pTable.bootstrapTable('refresh',{
 				url:"project/queryProject.asp?call="+pCall+"&"+param});
@@ -65,7 +65,7 @@ function initProject(){
 	 });
 	 
 	//关闭项目
-	 $page.find("[name='closeProject']").click(function(){debugger;
+	 $page.find("[name='closeProject']").click(function(){
 			var seles = pTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");
@@ -151,7 +151,7 @@ function initProject(){
 		
 	 });
 	 
-		//删除项目
+		//恢复项目
 	 $page.find("[name='reProject']").click(function(){
 			var seles = pTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
@@ -217,6 +217,7 @@ function initProject(){
 						singleSelect : true,// 复选框单选
 						jsonpCallback: pCall,
 						onLoadSuccess : function(data){
+							gaveInfo();
 						},onLoadError:function () {
 		                    alert("数据加载失败！");
 		                },
@@ -229,35 +230,35 @@ function initProject(){
 							field : 'ORDER_ID',
 							title : '序号',
 							align : "center",
-							width : "40",
+							width : "6%",
 							formatter:function(value,row,index){
 								return index + 1;
 							}
 						}, {
 							field : "PROJECT_NUM",
 							title : "项目编号",
-							width : "120",
+							width : "14%",
 							align : "center"
 						}, {
 							field : "PROJECT_NAME",
 							title : "项目名称",
-							width : "320",
+							width : "30%",
 							align : "center"
 						}, {
 							field : "PROJECT_EMPLOYER",
 							title : "发包商",
-							width : "200",
+							width : "30%",
 							align : "center"
 						},{
 							field : "PROJECT_MANAGER",
 							title : "项目经理",
-							width : "80",
+							width : "10%",
 							align : "center"
 						}, {
 							field : "PROJECT_STATE",
 							title : "项目状态",
 							align : "center",
-							width : "80",
+							width : "10%",
 							formatter:function(value,row,index){
 								var state = '';
 								if(value == '00'){state = '进行中';}
@@ -265,18 +266,7 @@ function initProject(){
 								if(value == '02'){state = '已删除';}
 								return state;
 							}
-						}, {
-							field : "START_TIME",
-							title : "开工日期",
-							align : "center",
-							width : "100"
-						}, {
-							field : "FINISH_TIME",
-							title : "竣工日期",
-							align : "center",
-							width : "100"
 						}
-		
 						]
 					});
 		}

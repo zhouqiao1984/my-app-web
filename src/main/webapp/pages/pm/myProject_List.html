@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
     <link href="css/form.css" rel="stylesheet"/>
+    <link href="css/mystyle.css" rel="stylesheet"/>
 </head>
 
 <body>
@@ -47,21 +48,21 @@
                 </form>
             </div>
             <ul class="ecitic-btn-all">
-                <li><input type="button" class="btn btn-ecitic" name="queryP" value="查询" /></li>
-                <li><input type="button" class="btn btn-ecitic" name="resetP" value="重置" /></li>
+                <li><input type="button" class="btn btn-ecitic blue" name="queryP" value="查询" /></li>
+                <li><input type="button" class="btn btn-ecitic blue" name="resetP" value="重置" /></li>
             </ul>
         </div>
         <div class="ecitic-operation">
-            <button class="btn btn-ecitic" name="addProject">新建项目</button>
-            <button class="btn btn-ecitic" name="editProject">项目基本信息维护</button>
-            <button class="btn btn-ecitic" name="accountManage">项目发票管理</button>
-            <button class="btn btn-ecitic" name="closeProject">关闭项目</button>
-            <button class="btn btn-ecitic" name="openProject">打开项目</button>
-             <button class="btn btn-ecitic" name="delProject">删除项目</button>
-             <button class="btn btn-ecitic" name="reProject">恢复项目</button>
+         	<button class="btn btn-ecitic blue" name="accountManage">项目发票管理</button>
+            <button class="btn btn-ecitic blue" name="addProject">新建项目</button>
+            <button class="btn btn-ecitic blue" name="editProject">项目基本信息维护</button>
+            <button class="btn btn-ecitic blue" name="closeProject">关闭项目</button>
+            <button class="btn btn-ecitic blue" name="openProject">打开项目</button>
+             <button class="btn btn-ecitic blue" name="delProject">删除项目</button>
+             <button class="btn btn-ecitic blue" name="reProject">恢复项目</button>
         </div>
         <div class="ecitic-new">
-            <table tb="projectTable" class="table table-bordered table-hover table-text-show"></table>
+            <table tb="projectTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
         </div>
     </div>
 </body>

@@ -15,7 +15,6 @@ function is_money($page,str){
 				if(money != ''&& !reg.test(money)){
 					return false;
 				}
-				debugger;
 				if(money.indexOf('.') == -1 && money.length>10){//如果没有小数点且大于10位数
 						return false;
 				}

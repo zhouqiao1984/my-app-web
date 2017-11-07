@@ -9,14 +9,14 @@ function initProject(){
 	initProjectTable();//初始化列表
 	
 	//重置按钮
-	$page.find("[name='resetP']").click(function(){debugger;
+	$page.find("[name='resetP']").click(function(){
 		$page.find("table input").val("");
 		$page.find("select").val(" ").select2();
 	
 	});
 	
 	//查询按钮
-	 $page.find("[name='queryP']").click(function(){debugger;
+	 $page.find("[name='queryP']").click(function(){
 		 var param = formObj.serialize();
 		 pTable.bootstrapTable('refresh',{
 				url:"project/queryProject.asp?call="+pCall+"&"+param});
@@ -65,7 +65,7 @@ function initProject(){
 	 });
 	 
 	//关闭项目
-	 $page.find("[name='closeProject']").click(function(){debugger;
+	 $page.find("[name='closeProject']").click(function(){
 			var seles = pTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");

@@ -169,7 +169,7 @@ function initMenu(){
 	
 	var msg = {
 			"level1":[{"MENU_NAME":"首页","ORDER_ID":"00","MENU_NO":"homepage","MENU_ICON":"001.icon","MENU_LEVEL":"0"},
-			{"MENU_NAME":"项目管理系统","ORDER_ID":"01","MENU_NO":"engineer_manager","MENU_ICON":"img/project_01.png","MENU_LEVEL":"0"}],
+			{"MENU_NAME":"企航项目管理系统","ORDER_ID":"01","MENU_NO":"engineer_manager","MENU_ICON":"img/project_01.png","MENU_LEVEL":"0"}],
 			"engineer_manager":[
 			{"MENU_NAME":"我的项目","ORDER_ID":"00","SUPMENU_NO":"engineer_manager","MENU_NO":"my_project","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"1"},
 			{"MENU_NAME":"项目管理","ORDER_ID":"1","SUPMENU_NO":"my_project","MENU_URL":"pages/pm/myProject_List.html","MENU_NO":"project_manage","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"},

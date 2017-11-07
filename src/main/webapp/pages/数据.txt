@@ -94,9 +94,11 @@ PROJECT_ID			项目ID
 账户信息表  card_info
 CARD_ID      		主键
 CARD_NAME	   		卡名
-CARD_NUM	 		卡号	
+CARD_NUM	 		卡号
+CARD_OWNER			持卡人
 CARD_BANK    		开户行
 REMARK				备注
+CARD_STATE			是否启用 00启用 01停用
 CREATE_PERSON		创建人
 CREATE_TIME			创建时间
 UPDATE_PERSON		修改人
@@ -107,13 +109,25 @@ UPDATE_TIME			修改时间
 DETAIL_ID     		主键
 DETAIL_NUM  		明细编号
 DETAIL_DATE         日期
+DETAIL_EXPLAIN		具体详情说明
 AMOUNT				数额
 PAY_TYPE			收支类型  00收入  01支出
-BALANCE				余额
+BALANCE				当前余额
 PAY_CLASS			收支类别
-PAY_EXPLAIN			收支说明
+PAY_EXPLAIN			类别说明
 BILL_NUM			单据编号
 REMARK				备注
 CARD_ID				账户ID
 
-问题？费用发生不按时间顺序输入，怎么计算余额
+
+if(value == '00'){state = '工资'}
+if(value == '01'){state = '往来款'}
+if(value == '02'){state = '保证金'}
+if(value == '03'){state = '工程款'}
+if(value == '04'){state = '餐费'}
+if(value == '05'){state = '日常花销'}
+if(value == '06'){state = '工程花销'}
+if(value == '07'){state = '开标费用'}
+if(value == '08'){state = '货款'}
+if(value == '09'){state = '收入'}
+if(value == '10'){state = '其他'}
