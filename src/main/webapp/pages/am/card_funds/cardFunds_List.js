@@ -38,7 +38,7 @@ function initCardList(){
 					alert("请选择一个账户!");
 					return;
 			}
-		 closeAndOpenInnerPageTab("cardManage","账户明细管理","pages/am/card_funds/card_detail.html", function(){
+		 closeAndOpenInnerPageTab("cardManage","账户明细管理","pages/am/card_funds/detail_List.html", function(){
 			 cardManage(seles[0]);
 			});
 	 });

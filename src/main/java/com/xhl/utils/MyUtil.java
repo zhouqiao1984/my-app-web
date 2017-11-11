@@ -2,8 +2,9 @@ package com.xhl.utils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -132,5 +133,25 @@ public class MyUtil {
     	return pmap;
     }
     
+    
+    /**
+     * 对查询的List<Map<String, String>>分页
+     *
+     * @param 
+     * @return
+     */
+    public static List<Map<String, String>> getPaging(Map<String, String> pmap,List<Map<String, String>> lmap){
+    	List<Map<String, String>> rmap = new ArrayList<Map<String, String>>();
+    	int offset = Integer.parseInt(pmap.get("offset"));
+    	int limit = Integer.parseInt(pmap.get("limit"));
+		int len = offset + limit;
+		if(lmap.size()<len){
+			len = lmap.size();
+		}
+		for(int i=offset;i<len;i++){
+			rmap.add(lmap.get(i));
+		}
+    	return rmap;
+    }
  
 }

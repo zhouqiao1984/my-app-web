@@ -115,12 +115,12 @@ function cardManage(item){
 						}, {
 							field : "AMOUNT",
 							title : "金额",
-							width : "9%",
+							width : "8%",
 							align : "center"
 						}, {
 							field : "PAY_TYPE",
 							title : "收入/支出",
-							width : "9%",
+							width : "10%",
 							align : "center",
 							formatter:function(value,row,index){
 								var state = '';
@@ -131,7 +131,7 @@ function cardManage(item){
 						}, {
 							field : "BALANCE",
 							title : "余额",
-							width : "9%",
+							width : "8%",
 							align : "center"
 						}, {
 							field : "PAY_CLASS",
@@ -171,7 +171,7 @@ function cardManage(item){
 						}, {
 							field : "DETAIL_NUM",
 							title : "流水号",
-							width : "12%",
+							width : "13%",
 							align : "center"
 						}
 						]

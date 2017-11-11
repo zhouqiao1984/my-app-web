@@ -30,9 +30,9 @@ public class ProjectService implements IProjectService{
 	 */
 	@Override
 	public Map<String, Object> queryProject(HttpServletRequest request) {
-		String[] must = new String[]{};
+		String[] must = new String[]{"limit","offset"};
 		String[] nomust = new String[]{"PROJECT_NUM","PROJECT_NAME","PROJECT_EMPLOYER",
-				"PROJECT_MANAGER","PROJECT_STATE","limit","offset"};
+				"PROJECT_MANAGER","PROJECT_STATE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -44,7 +44,7 @@ public class ProjectService implements IProjectService{
 		try {
 			//查询结果
 			List<Map<String, String>> lmap = projectDao.queryProject(pmap);
-			resultMap.put("rows", lmap);
+			resultMap.put("rows", MyUtil.getPaging(pmap, lmap));
 			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
 			return resultMap;
 		} catch (Exception e) {

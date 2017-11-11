@@ -1,6 +1,7 @@
 package com.xhl.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -98,8 +99,8 @@ public class CardService implements ICardService{
 	 */
 	@Override
 	public Map<String, Object> queryDetail(HttpServletRequest request) {
-		String[] must = new String[]{"CARD_ID"};
-		String[] nomust = new String[]{"limit","offset"};
+		String[] must = new String[]{"CARD_ID","limit","offset"};
+		String[] nomust = new String[]{};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -111,7 +112,7 @@ public class CardService implements ICardService{
 		try {
 			//查询结果
 			List<Map<String, String>> lmap = cardDao.queryDetail(pmap);
-			resultMap.put("rows", lmap);
+			resultMap.put("rows", MyUtil.getPaging(pmap, lmap));
 			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
 			return resultMap;
 		} catch (Exception e) {
