@@ -174,8 +174,8 @@ function initMenu(){
 			{"MENU_NAME":"我的项目","ORDER_ID":"00","SUPMENU_NO":"engineer_manager","MENU_NO":"my_project","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"1"},
 			{"MENU_NAME":"项目管理","ORDER_ID":"1","SUPMENU_NO":"my_project","MENU_URL":"pages/pm/myProject_List.html","MENU_NO":"project_manage","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"},
 			{"MENU_NAME":"我的账簿","ORDER_ID":"01","SUPMENU_NO":"engineer_manager","MENU_NO":"my_account","MENU_ICON":"img/icon/582766.png","MENU_LEVEL":"1"},
-			{"MENU_NAME":"账户管理","ORDER_ID":"1","SUPMENU_NO":"my_account","MENU_URL":"pages/am/card_funds/cardFunds_List.html","MENU_NO":"card_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"},
-			{"MENU_NAME":"工程款及其它","ORDER_ID":"2","SUPMENU_NO":"my_account","MENU_URL":"pages/am/project_funds/projectFunds_List.html","MENU_NO":"project_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"}
+			{"MENU_NAME":"账簿管理","ORDER_ID":"1","SUPMENU_NO":"my_account","MENU_URL":"pages/am/cardFunds_List.html","MENU_NO":"card_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"}
+			//{"MENU_NAME":"工程款及其它","ORDER_ID":"2","SUPMENU_NO":"my_account","MENU_URL":"pages/am/project_funds/projectFunds_List.html","MENU_NO":"project_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"}
 			],
 			//"level2":[
 			//{"MENU_NAME":"项目管理","ORDER_ID":"00","SUPMENU_NO":"engineer_manager","MENU_NO":"my_project","MENU_ICON":"img/project_01.png","MENU_LEVEL":"1"},

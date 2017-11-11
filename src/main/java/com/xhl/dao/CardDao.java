@@ -22,6 +22,8 @@ public interface CardDao {
 	List<Map<String, String>>  queryDetail(Map<String, String> map);
 	//得到当前余额
 	BigDecimal getBalance(Map<String, String> map);
+	//最新日期
+	String getDate(Map<String, String> map);
 	//新建明细
 	void addDetail(Map<String, String> map);
 	//修改明细

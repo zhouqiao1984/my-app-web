@@ -65,6 +65,7 @@
 		CARD_ID
 		from CARD_DETAIL
 		where CARD_ID = #{CARD_ID}
+		order by DETAIL_NUM desc
 		
 		
 	</select>
@@ -72,6 +73,14 @@
 	  <!-- 查询当前余额-->
 	<select id="getBalance" parameterType="java.util.Map" resultType="java.math.BigDecimal">
 		select BALANCE
+		from CARD_DETAIL
+		where  DETAIL_ID = (select max(DETAIL_ID) from CARD_DETAIL where CARD_ID = #{CARD_ID})
+		
+	</select>
+	
+	  <!-- 最新日期 -->
+	<select id="getDate" parameterType="java.util.Map" resultType="java.lang.String">
+		select DETAIL_DATE
 		from CARD_DETAIL
 		where  DETAIL_ID = (select max(DETAIL_ID) from CARD_DETAIL where CARD_ID = #{CARD_ID})
 		

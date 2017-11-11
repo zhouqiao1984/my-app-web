@@ -144,7 +144,15 @@ public class CardService implements ICardService{
 			String type = pmap.get("TYPE");
 			//新建
 			if("add".equals(type)){
-				currBalance = cardDao.getBalance(pmap); //得到当前余额
+				currBalance = cardDao.getBalance(pmap); //当前余额
+				String currDate = cardDao.getDate(pmap); //最新记录的日期
+				if(null != currDate){
+					if(pmap.get("DETAIL_DATE").compareTo(currDate)<0){
+						resultMap.put("msg","新增数据的日期不能早于当前最后一条数据的日期");
+						resultMap.put("result","false");
+						return resultMap;
+					}
+				}
 				String detail_num = DateTimeUtils.getNumber();
 				pmap.put("DETAIL_NUM", detail_num);
 				if(null == currBalance){//暂无记录
@@ -181,7 +189,7 @@ public class CardService implements ICardService{
 		}catch (Exception e) {
 			resultMap.put("msg","操作失败");
 			resultMap.put("result", "false");
-			//logger.info("操作  ProjectDao.editProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			//logger.info("操作  cardDao.editDetail 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
 			e.printStackTrace();
 		}
 		return resultMap;
