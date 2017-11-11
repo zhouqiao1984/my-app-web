@@ -26,6 +26,7 @@ function initCardList(){
 					alert("请选择一个账户进行修改!");
 					return;
 			}
+	
 		 closeAndOpenInnerPageTab("editCard","修改账户","pages/am/card_funds/card_add.html", function(){
 			 editCard(seles[0]);
 			});
