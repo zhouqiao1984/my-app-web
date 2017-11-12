@@ -1,7 +1,6 @@
 package com.xhl.service.impl;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +99,7 @@ public class CardService implements ICardService{
 	@Override
 	public Map<String, Object> queryDetail(HttpServletRequest request) {
 		String[] must = new String[]{"CARD_ID","limit","offset"};
-		String[] nomust = new String[]{};
+		String[] nomust = new String[]{"START_TIME","END_TIME","PAY_CLASS","PAY_TYPE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -110,9 +109,18 @@ public class CardService implements ICardService{
 		}
 	
 		try {
+			if("".equals(pmap.get("START_TIME")) && "".equals(pmap.get("END_TIME"))){
+				String firstDate = DateTimeUtils.getFirstDayOfMonthStr();
+				String lastDate = DateTimeUtils.getLastDayOfMonthStr();
+				pmap.put("START_TIME", firstDate);
+				pmap.put("END_TIME", lastDate);
+			}
 			//查询结果
-			List<Map<String, String>> lmap = cardDao.queryDetail(pmap);
-			resultMap.put("rows", MyUtil.getPaging(pmap, lmap));
+			List<Map<String, String>> lmap = cardDao.queryDetail(pmap);//查询明细
+			List<Map<String, String>> smap = cardDao.queryDetailSum(pmap);//查询明细合计
+			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);
+			rmap.add(smap.get(0));
+			resultMap.put("rows", MyUtil.getPaging(pmap, rmap));
 			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
 			return resultMap;
 		} catch (Exception e) {
@@ -156,12 +164,14 @@ public class CardService implements ICardService{
 				String detail_num = DateTimeUtils.getNumber();
 				pmap.put("DETAIL_NUM", detail_num);
 				if(null == currBalance){//暂无记录
-					if("01".equals(pmap.get("PAY_TYPE"))){
+					String pay_type = pmap.get("PAY_TYPE");
+					if("01".equals(pay_type)){
 						resultMap.put("msg","当前账户收入为0，不能继续支出");
 						resultMap.put("result","false");
 						return resultMap;
 					}
 					pmap.put("BALANCE", pmap.get("AMOUNT"));
+					pmap.put("REAL_AMOUNT", pmap.get("AMOUNT"));
 					cardDao.addDetail(pmap);
 				}else{//已有记录
 					BigDecimal amount = new BigDecimal(pmap.get("AMOUNT"));//操作金额
@@ -172,9 +182,11 @@ public class CardService implements ICardService{
 							resultMap.put("result","false");
 							return resultMap;
 						}
+						pmap.put("REAL_AMOUNT", "-"+pmap.get("AMOUNT"));
 					}
 					if("00".equals(pmap.get("PAY_TYPE"))){//收入
 						currBalance = currBalance.add(amount);
+						pmap.put("REAL_AMOUNT", pmap.get("AMOUNT"));
 					}
 					pmap.put("BALANCE", currBalance.toString());
 					cardDao.addDetail(pmap);
@@ -223,6 +235,35 @@ public class CardService implements ICardService{
 		return resultMap;
 	}
 	
+	
+	/**
+	 * @Description: 查询根据类别统计信息
+	 * @author zhouqiao
+	 */
+	@Override
+	public Map<String, Object> queryStatistic(HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String[] must = new String[]{"CARD_ID"};
+		String[] nomust = new String[]{"START_TIME","END_TIME"};
+		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if(null == pmap){
+			resultMap.put("msg","缺少必填项");
+			resultMap.put("result","false");
+			return resultMap;
+		}
+		try {
+			//查询结果
+			List<Map<String, String>> lmap = cardDao.queryStatistic(pmap);
+			resultMap.put("rows", lmap);
+			return resultMap;
+		} catch (Exception e) {
+			resultMap.put("result", "false");
+			//logger.info("操作 CardDao.queryStatistic 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
 }
 
 

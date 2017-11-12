@@ -259,7 +259,37 @@ public class DateTimeUtils {
         date = c.getTime();
         return date;
     }
+    
+    
+    /**
+     * 得到当前月的最后一天
+     *
+     * @return
+     */
+    public static String getLastDayOfMonthStr() {
+    	Date currDate = DateTimeUtils.getCurrentDate();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currDate);
+        c.add(Calendar.MONTH, 1);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.add(Calendar.DAY_OF_MONTH, -1);
+        currDate = c.getTime();
+        return format(currDate, DATE_PATTERN);
+    }
 
+    /**
+     * 得到当前月的第一天
+     *
+     * @return
+     */
+    public static String getFirstDayOfMonthStr() {
+    	Date currDate = DateTimeUtils.getCurrentDate();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currDate);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        currDate = c.getTime();
+        return format(currDate, DATE_PATTERN);
+    }
     /**
      * 判断一个日期是否在指定的时间段内
      *

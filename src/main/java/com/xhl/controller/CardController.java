@@ -96,6 +96,21 @@ public class CardController {
 		}
 	}
 	
+	/**
+	 * 查询根据类别统计信息
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/queryStatistic")
+	public void queryStatistic(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,cardService.queryStatistic(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 

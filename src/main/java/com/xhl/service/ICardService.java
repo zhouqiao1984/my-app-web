@@ -1,6 +1,5 @@
 package com.xhl.service;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,4 +15,6 @@ public interface ICardService {
 	public Map<String, String> editDetail(HttpServletRequest request);
 	//删除明细信息
 	public Map<String, String> delDetail(HttpServletRequest request);
+	//查询根据类别统计信息
+	public Map<String, Object> queryStatistic(HttpServletRequest request);
 }

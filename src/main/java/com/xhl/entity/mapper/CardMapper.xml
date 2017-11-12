@@ -8,18 +8,41 @@
 	  <!-- 查询账户-->
 	<select id="queryCard" parameterType="java.lang.String" resultType="java.util.Map">
 		select 
-		CARD_ID,CARD_NAME,CARD_NUM,CARD_OWNER,CARD_BANK,REMARK,CARD_STATE
-		from CARD_INFO
+		(select BALANCE from CARD_DETAIL where  DETAIL_ID = (select max(DETAIL_ID) from CARD_DETAIL where CARD_ID = c.CARD_ID) ) BALANCE,
+		c.CARD_ID,c.CARD_NAME,c.CARD_NUM,c.CARD_OWNER,c.CARD_BANK,c.REMARK,c.CARD_STATE
+		from CARD_INFO c
 		where 1=1
 		<choose>
 	        <when test="_parameter!=null and _parameter!=''">
-	            and  CARD_STATE = #{_parameter}
+	            and  c.CARD_STATE = #{_parameter}
 	        </when>
 	        <otherwise>
-	            and CARD_STATE = '00'
+	            and c.CARD_STATE = '00'
 	        </otherwise>
     	</choose>
-		
+		union all
+		select sum(a.BALANCE) BALANCE,
+		'00' as  CARD_ID,
+		'合计' as CARD_NAME,
+		'-' as CARD_NUM,
+		'-' as CARD_OWNER,
+		'-' as CARD_BANK,
+		'-' as REMARK,
+		'-' as CARD_STATE
+		from
+		(
+		select (select BALANCE from CARD_DETAIL where  DETAIL_ID = (select max(DETAIL_ID) from CARD_DETAIL where CARD_ID = c.CARD_ID) ) BALANCE
+				from CARD_INFO c
+					where 1=1
+			<choose>
+		        <when test="_parameter!=null and _parameter!=''">
+		            and  c.CARD_STATE = #{_parameter}
+		        </when>
+		        <otherwise>
+		            and c.CARD_STATE = '00'
+		        </otherwise>
+	    	</choose>
+		) a
 	</select>
 	
 		  <!-- 新建账户-->
@@ -65,10 +88,58 @@
 		CARD_ID
 		from CARD_DETAIL
 		where CARD_ID = #{CARD_ID}
+		<if test="START_TIME!=null and START_TIME!='' ">
+			and DETAIL_DATE &gt;= #{START_TIME}
+		</if>
+		<if test="END_TIME!=null and END_TIME!=''">
+			and DETAIL_DATE &lt;= #{END_TIME}
+		</if>
+		<if test="PAY_CLASS!=null and PAY_CLASS!=''">
+			and PAY_CLASS = #{PAY_CLASS}
+		</if>
+		<if test="PAY_TYPE!=null and PAY_TYPE!=''">
+			and PAY_TYPE = #{PAY_TYPE}
+		</if>
 		order by DETAIL_NUM desc
 		
 		
 	</select>
+	
+	  <!-- 查询账户明细的合计-->
+	<select id="queryDetailSum" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		'00' as DETAIL_ID,
+		'-' as DETAIL_NUM,
+		'合计' as DETAIL_DATE,
+		'-' as DETAIL_EXPLAIN,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL 
+			where CARD_ID = #{CARD_ID}
+		<if test="START_TIME!=null and START_TIME!='' ">
+			and DETAIL_DATE &gt;= #{START_TIME}
+		</if>
+		<if test="END_TIME!=null and END_TIME!=''">
+			and DETAIL_DATE &lt;= #{END_TIME}
+		</if>
+		<if test="PAY_CLASS!=null and PAY_CLASS!=''">
+			and PAY_CLASS = #{PAY_CLASS}
+		</if>
+		<if test="PAY_TYPE!=null and PAY_TYPE!=''">
+			and PAY_TYPE = #{PAY_TYPE}
+		</if>) as AMOUNT,
+		'-' as PAY_TYPE,
+		'-' as BALANCE,
+		'-' as PAY_CLASS,
+		'-' as PAY_EXPLAIN,
+		'-' as BILL_NUM,
+		'-' as REMARK,
+		'-' as CARD_ID
+		from dual
+	</select>
+	
+	
+	
+	
+	
 	
 	  <!-- 查询当前余额-->
 	<select id="getBalance" parameterType="java.util.Map" resultType="java.math.BigDecimal">
@@ -90,10 +161,10 @@
 	<insert id="addDetail" parameterType="java.util.Map">
 		insert into CARD_DETAIL
 		(DETAIL_NUM,DETAIL_DATE,DETAIL_EXPLAIN,AMOUNT,PAY_TYPE,BALANCE,PAY_CLASS,
-		PAY_EXPLAIN,BILL_NUM,REMARK,CARD_ID)
+		PAY_EXPLAIN,BILL_NUM,REMARK,CARD_ID,REAL_AMOUNT)
 		values
 		(#{DETAIL_NUM},#{DETAIL_DATE},#{DETAIL_EXPLAIN},${AMOUNT},#{PAY_TYPE},${BALANCE},#{PAY_CLASS},
-		#{PAY_EXPLAIN},#{BILL_NUM},#{REMARK},#{CARD_ID})
+		#{PAY_EXPLAIN},#{BILL_NUM},#{REMARK},#{CARD_ID},#{REAL_AMOUNT})
 	</insert>
 	
 	  <!-- 修改明细-->
@@ -115,6 +186,295 @@
 		(select max(DETAIL_ID) as DETAIL_ID from CARD_DETAIL where CARD_ID = #{CARD_ID}) c)
 	</delete>
 	
-	
+	  <!-- 查询根据类别统计信息-->
+	<select id="queryStatistic" parameterType="java.lang.String" resultType="java.util.Map">
+		select '工资' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '00'
+			<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '00'
+			<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '00'
+			<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '往来款' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '01'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '01'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '01'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '保证金' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '02'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '02'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '02'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '工程款' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '03'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '03'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '03'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '餐费' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '04'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '04'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '04'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '日常花销' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '05'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '05'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '05'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '工程花销' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '06'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '06'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '06'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '开标费用' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '07'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '07'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '07'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '货款' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '08'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '08'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '08'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '收入' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '09'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '09'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '09'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '其他' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' and PAY_CLASS = '10'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' and PAY_CLASS = '10'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_CLASS = '10'
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+		union all
+		select '合计' as NAME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '00' 
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as INCOME,
+		(select sum(AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} and PAY_TYPE = '01' 
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as EXPEND,
+		(select sum(REAL_AMOUNT) from CARD_DETAIL where CARD_ID = #{CARD_ID} 
+		<if test="START_TIME!=null and START_TIME!='' ">
+				and DETAIL_DATE &gt;= #{START_TIME}
+			</if>
+			<if test="END_TIME!=null and END_TIME!=''">
+				and DETAIL_DATE &lt;= #{END_TIME}
+			</if>) as BALANCE
+		from dual
+	</select>
 	
 </mapper>
