@@ -118,7 +118,7 @@ PAY_EXPLAIN			类别说明
 BILL_NUM			单据编号
 REMARK				备注
 CARD_ID				账户ID
-
+REAL_AMOUNT			实际发生金额(可负)
 
 if(value == '00'){state = '工资'}
 if(value == '01'){state = '往来款'}
@@ -131,3 +131,29 @@ if(value == '07'){state = '开标费用'}
 if(value == '08'){state = '货款'}
 if(value == '09'){state = '收入'}
 if(value == '10'){state = '其他'}
+
+
+
+八、
+其他款项信息表  other_info
+OTHER_ID      		其他款项ID
+OTHER_NAME	   		其他款项名称
+REMARK				备注
+OTHER_STATE			是否启用 00启用 01停用
+CREATE_PERSON		创建人
+CREATE_TIME			创建时间
+UPDATE_PERSON		修改人
+UPDATE_TIME			修改时间
+
+九、
+其他款项明细表 other_detail					
+OTHER_DETAIL_ID     	主键
+OTHER_DETAIL_NUM  		明细编号
+OTHER_DETAIL_DATE       日期
+OTHER_AMOUNT			数额
+OTHER_PAY_TYPE			收支类型  00收入  01支出
+REMARK					备注
+OTHER_ID				其他款项ID
+REAL_AMOUNT             实际发生金额(有负数)
+
+

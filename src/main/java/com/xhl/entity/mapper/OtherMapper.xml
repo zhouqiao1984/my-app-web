@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.xhl.dao.OtherDao">
+
+	  <!-- 查询其他款项-->
+	<select id="queryOther" parameterType="java.lang.String" resultType="java.util.Map">
+		select 
+		(select sum(REAL_AMOUNT) from other_detail where OTHER_ID = o.OTHER_ID) BALANCE,
+		o.OTHER_ID,o.OTHER_NAME,o.REMARK,o.OTHER_STATE
+		from OTHER_INFO o
+		where 1=1
+		<choose>
+	        <when test="_parameter!=null and _parameter!=''">
+	            and  o.OTHER_STATE = #{_parameter}
+	        </when>
+	        <otherwise>
+	            and o.OTHER_STATE = '00'
+	        </otherwise>
+    	</choose>
+		union all
+		select
+		sum(a.BALANCE) BALANCE,
+		'00' as OTHER_ID,
+		'合计' as OTHER_NAME,
+		'-' as REMARK,
+		'-' as OTHER_STATE
+		from
+		(select (select sum(REAL_AMOUNT) from other_detail where OTHER_ID = o.OTHER_ID) BALANCE
+		from OTHER_INFO o
+		where 1=1
+		<choose>
+	        <when test="_parameter!=null and _parameter!=''">
+	            and  o.OTHER_STATE = #{_parameter}
+	        </when>
+	        <otherwise>
+	            and o.OTHER_STATE = '00'
+	        </otherwise>
+    	</choose>) a
+    	
+	</select>
+	
+		  <!-- 新建其他款项-->
+	<insert id="addOther" parameterType="java.util.Map">
+		insert into OTHER_INFO
+		(OTHER_NAME,REMARK,OTHER_STATE)
+		values
+		(#{OTHER_NAME},#{REMARK},#{OTHER_STATE})
+	</insert>
+	
+	  <!-- 修改其他款项-->
+	<update id="editOther" parameterType="java.util.Map">
+		update OTHER_INFO
+		set OTHER_NAME = #{OTHER_NAME},
+			REMARK = #{REMARK}
+		where OTHER_ID = #{OTHER_ID}
+	</update>
+	
+	  <!-- 启用停用其他款项-->
+	<update id="optOther" parameterType="java.util.Map">
+		update OTHER_INFO
+		set OTHER_STATE = #{OTHER_STATE}
+		where OTHER_ID = #{OTHER_ID}
+	</update>
+	
+	  <!-- 查询其他款项明细-->
+	<select id="queryOtherDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		OTHER_DETAIL_ID,
+		OTHER_DETAIL_NUM,
+		OTHER_DETAIL_DATE,
+		OTHER_AMOUNT,
+		OTHER_PAY_TYPE,
+		REMARK,
+		OTHER_ID,
+		REAL_AMOUNT
+		from OTHER_DETAIL
+		where OTHER_ID = #{OTHER_ID}
+		<if test="OTHER_START_TIME!=null and OTHER_START_TIME!='' ">
+			and OTHER_DETAIL_DATE &gt;= #{OTHER_START_TIME}
+		</if>
+		<if test="OTHER_END_TIME!=null and OTHER_END_TIME!=''">
+			and OTHER_DETAIL_DATE &lt;= #{OTHER_END_TIME}
+		</if>
+		<if test="OTHER_PAY_TYPE!=null and OTHER_PAY_TYPE!=''">
+			and OTHER_PAY_TYPE = #{OTHER_PAY_TYPE}
+		</if>
+		order by OTHER_DETAIL_DATE desc
+	</select>
+
+
+		  <!-- 新建明细-->
+	<insert id="addOtherDetail" parameterType="java.util.Map">
+		insert into OTHER_DETAIL
+		(OTHER_DETAIL_NUM,OTHER_DETAIL_DATE,OTHER_AMOUNT,OTHER_PAY_TYPE,REMARK,OTHER_ID,REAL_AMOUNT)
+		values
+		(#{OTHER_DETAIL_NUM},#{OTHER_DETAIL_DATE},${OTHER_AMOUNT},#{OTHER_PAY_TYPE},#{REMARK},#{OTHER_ID},#{REAL_AMOUNT})
+	</insert>
+	
+	  <!-- 修改明细-->
+	<update id="editOtherDetail" parameterType="java.util.Map">
+		update OTHER_DETAIL
+		set OTHER_DETAIL_DATE = #{OTHER_DETAIL_DATE},
+		OTHER_AMOUNT = ${OTHER_AMOUNT},
+		OTHER_PAY_TYPE = #{OTHER_PAY_TYPE},
+		REAL_AMOUNT = ${REAL_AMOUNT},
+		REMARK = #{REMARK}
+		where OTHER_DETAIL_ID = #{OTHER_DETAIL_ID}
+	</update>
+	
+	
+	  <!-- 删除明细记录-->
+	<delete id="delOtherDetail" parameterType="java.util.Map">
+		delete from OTHER_DETAIL
+		where OTHER_DETAIL_ID = #{OTHER_DETAIL_ID}
+	</delete>
+	
+	  <!-- 查询合计-->
+	<select id="querySum" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		'00' OTHER_DETAIL_ID,
+		'-' OTHER_DETAIL_NUM,
+		'合计' OTHER_DETAIL_DATE,
+		'-' OTHER_AMOUNT,
+		'-' OTHER_PAY_TYPE,
+		'-' REMARK,
+		'-' OTHER_ID,
+		sum(REAL_AMOUNT) REAL_AMOUNT
+		from OTHER_DETAIL
+		where OTHER_ID = #{OTHER_ID}
+		<if test="OTHER_START_TIME!=null and OTHER_START_TIME!='' ">
+			and OTHER_DETAIL_DATE &gt;= #{OTHER_START_TIME}
+		</if>
+		<if test="OTHER_END_TIME!=null and OTHER_END_TIME!=''">
+			and OTHER_DETAIL_DATE &lt;= #{OTHER_END_TIME}
+		</if>
+		<if test="OTHER_PAY_TYPE!=null and OTHER_PAY_TYPE!=''">
+			and OTHER_PAY_TYPE = #{OTHER_PAY_TYPE}
+		</if>
+	</select>
+	
+	
+</mapper>

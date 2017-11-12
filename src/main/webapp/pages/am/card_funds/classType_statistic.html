@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>类别统计表</title>
+   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+    <link href="css/mystyle.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="main_iframe_con">
+        <div class="ecitic-title">
+            <span>类别统计表</span>
+        </div>
+        <div class="ecitic-table" id="ecitic-table">
+            <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
+        		 <colgroup>
+						<col style="width: 15%">
+						<col style="width: 10%">
+						<col style="width: 10%">
+						<col style="width: 30%">
+						<col style="width: 35%">
+				</colgroup>
+        		<tr style="font-size:18px;">
+        			<td >账户名称&nbsp&nbsp:&nbsp&nbsp</td>
+        			<td ><div id="CARDNAME"></div></td>
+        			<td class="ecitic-right" style="width:80px;font-size:18px;">日期：</td>
+					<td>
+						<div class="dateSelectZ_From">
+						<input type="text" id="STA_START_TIME" name="START_TIME" class="requirement-ele-width"  onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'STA_END_TIME\',{d:0});}'})" placeHolder="点击选择"   readonly/>
+						</div>
+						<div class="dateSelectZ_W">&nbsp至&nbsp</div>
+						<div class="dateSelectZ_From">
+						<input type="text" id="STA_END_TIME" name="END_TIME" class="requirement-ele-width" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'STA_START_TIME\',{d:0});}'})" placeHolder="点击选择"  readonly/>
+						</div>
+					</td>
+					<td>
+						<input type="button" class="btn btn-ecitic blue" name="queryS" value="查询" />
+					 	<div class="dateSelectZ_W">&nbsp</div>
+					 	<input type="button" class="btn btn-ecitic blue" name="resetS" value="重置" />
+					</td>
+        		</tr>
+        	</table>
+        </div>
+        
+        <br/>
+         <div class="ecitic-new">
+            <table tb="statisticTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
+        </div>
+        <div class="ecitic-save">
+            <input type="button" class="btn btn-ecitic rosy" name="closePageTabConfirm" value="返回" />
+        </div>
+    </div>
+</body>
+<script src="bootstrap/js/bootstrap-table.min.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script src="pages/am/card_funds/classType_statistic.js"></script>
+</html>

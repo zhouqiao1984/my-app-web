@@ -5,13 +5,39 @@ function cardManage(item){
 	var detailTable = $page.find("[tb='detailTable']");
 	var detailCall = getMillisecond();
 	var card_id = item.CARD_ID;
+	var card_name = item.CARD_NAME;
 	initDetailTable();//初始化列表
 	
-//	//查询按钮
-//	 $page.find("[name='queryC']").click(function(){
-//		 refreshTable();
-//	 });
-//	 
+	//查询按钮
+	 $page.find("[name='queryD']").click(function(){
+		 var pay_class = $page.find("[name='PAY_CLASS']").val();
+		 var pay_type = $page.find("[name='PAY_TYPE']").val();
+		 var start_time = $page.find("[name='START_TIME']").val();
+		 var end_time = $page.find("[name='END_TIME']").val();
+		 if('点击选择' == start_time){
+			 start_time = '';
+		 }
+		 if('点击选择' == end_time){
+			 end_time = '';
+		 }
+		 if('选择类别' == pay_class){
+			 pay_class = '';
+		 }
+		 if('选择类型' == pay_type){
+			 pay_type = '';
+		 }
+		 detailTable.bootstrapTable('refresh',{
+				url:'cardfunds/queryDetail.asp?call='+ detailCall +"&CARD_ID="+card_id
+				+"&START_TIME="+start_time+"&END_TIME="+end_time+"&PAY_CLASS="+pay_class+"&PAY_TYPE="+pay_type});
+	 });
+	 
+	 
+	//重置按钮
+	$page.find("[name='resetD']").click(function(){
+		$page.find("table input").not("table input[type='button']").val("");
+		$page.find("select").val(" ").select2();
+	}); 
+	
 	//新增收支明细
 	 $page.find("button[name='addDetail']").click(function(){
 		 closeAndOpenInnerPageTab("addDetail","新增收支明细","pages/am/card_funds/detail_edit.html", function(){
@@ -50,6 +76,13 @@ function cardManage(item){
 		
 	 });
 	 
+	//查看类别统计表
+	 $page.find("button[name='checkDetail']").click(function(){
+		 closeAndOpenInnerPageTab("checkDetail","类别统计表","pages/am/card_funds/classType_statistic.html", function(){
+			 initStatistic(card_id,card_name);
+			});
+	 });
+	 
 	 function refreshTable(){
 		 detailTable.bootstrapTable('refresh',{
 				url:'cardfunds/queryDetail.asp?call='+detailCall+'&CARD_ID=' + card_id});
@@ -74,9 +107,9 @@ function cardManage(item){
 						queryParams : queryParams,// 传递参数（*）
 						sidePagination : "server", // 分页方式：client客户端分页，server服务端分页（*）
 						pagination : true, // 是否显示分页（*）
-						pageList : [ 5, 10, 15], // 可供选择的每页的行数（*）
+						pageList : [ 10, 20], // 可供选择的每页的行数（*）
 						pageNumber : 1, // 初始化加载第一页，默认第一页
-						pageSize : 5, // 每页的记录行数（*）
+						pageSize : 10, // 每页的记录行数（*）
 						clickToSelect : true, // 是否启用点击选中行
 						// height: 460, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 						uniqueId : "", // 每一行的唯一标识，一般为主键列
@@ -105,17 +138,17 @@ function cardManage(item){
 						}, {
 							field : "DETAIL_DATE",
 							title : "日期",
-							width : "10%",
+							width : "9%",
 							align : "center"
 						}, {
 							field : "DETAIL_EXPLAIN",
 							title : "具体款项",
-							width : "9%",
+							width : "25%",
 							align : "center"
 						}, {
 							field : "AMOUNT",
 							title : "金额",
-							width : "8%",
+							width : "9%",
 							align : "center"
 						}, {
 							field : "PAY_TYPE",
@@ -131,7 +164,7 @@ function cardManage(item){
 						}, {
 							field : "BALANCE",
 							title : "余额",
-							width : "8%",
+							width : "9%",
 							align : "center"
 						}, {
 							field : "PAY_CLASS",
@@ -159,19 +192,9 @@ function cardManage(item){
 							width : "9%",
 							align : "center"
 						}, {
-							field : "BILL_NUM",
-							title : "单据号码",
-							width : "9%",
-							align : "center"
-						}, {
-							field : "REMARK",
-							title : "备注",
-							width : "9%",
-							align : "center"
-						}, {
 							field : "DETAIL_NUM",
 							title : "流水号",
-							width : "13%",
+							width : "14%",
 							align : "center"
 						}
 						]

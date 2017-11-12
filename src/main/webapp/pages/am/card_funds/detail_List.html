@@ -24,7 +24,34 @@
 						<input type="text" id="END_TIME" name="END_TIME" class="requirement-ele-width" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'START_TIME\',{d:0});}'})" placeHolder="点击选择"  readonly/>
 						</div>
 					</td>
-					 <td><input type="button" class="btn btn-ecitic blue" name="queryD" value="查询" /></td>
+					<td>
+						<select name="PAY_CLASS"  class="requirement-ele-width" style="width: 100%">
+							<option value="">选择类别</option>
+	                       	<option value="00">工资</option>
+	                       	<option value="01">往来款</option>
+	                       	<option value="02">保证金</option>
+	                       	<option value="03">工程款</option>
+	                       	<option value="04">餐费</option>
+	                       	<option value="05">日常花销</option>
+	                       	<option value="06">工程花销</option>
+	                       	<option value="07">开标费用</option>
+	                       	<option value="08">货款</option>
+	                       	<option value="09">收入</option>
+	                       	<option value="10">其他</option>
+                     	</select>
+					</td>
+					<td>
+						<select name="PAY_TYPE"  class="requirement-ele-width" style="width: 100%">
+							<option value="">选择类型</option>
+	                       	<option value="00">收入</option>
+	                       	<option value="01">支出</option>
+                     	</select>
+					</td>
+					 <td>
+					 	<input type="button" class="btn btn-ecitic blue" name="queryD" value="查询" />
+					 	<div class="dateSelectZ_W">&nbsp</div>
+					 	<input type="button" class="btn btn-ecitic blue" name="resetD" value="重置" />
+					 </td>
 				</tr>
             </table>
          </div>
@@ -33,6 +60,7 @@
             <button class="btn btn-ecitic blue" name="addDetail">新增</button>
             <button class="btn btn-ecitic blue" name="editDetail">修改</button>
             <button class="btn btn-ecitic blue" name="delDetail">删除</button>
+            <button class="btn btn-ecitic blue" name="checkDetail">类别统计表</button>
         </div>
         <div class="ecitic-new">
             <table tb="detailTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
