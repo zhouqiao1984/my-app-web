@@ -43,7 +43,8 @@
         <property name="mapperLocations" value="classpath:com/xhl/entity/mapper/*.xml"></property>  
 <!--     	<property name="plugins"> -->
 <!-- 		 	<array> -->
-<!-- 		 		<bean class="com.xhl.utils.PageInterceptor"/> -->
+<!-- 		 		分页拦截器  -->
+<!-- 		 		<bean class="com.xhl.utils.PagingInterceptor"/> -->
 <!-- 		 	</array> -->
 <!-- 	 	</property> -->
     </bean>  
