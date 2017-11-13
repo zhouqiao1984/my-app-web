@@ -117,11 +117,14 @@ public class CardService implements ICardService{
 			}
 			//查询结果
 			List<Map<String, String>> lmap = cardDao.queryDetail(pmap);//查询明细
-			List<Map<String, String>> smap = cardDao.queryDetailSum(pmap);//查询明细合计
-			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);
-			rmap.add(smap.get(0));
-			resultMap.put("rows", MyUtil.getPaging(pmap, rmap));
 			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
+			pmap.remove("limit");pmap.remove("offset");
+			List<Map<String, String>> smap = cardDao.queryDetailSum(pmap);//查询明细合计
+			//List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);
+			lmap.add(smap.get(0));
+			//resultMap.put("rows", MyUtil.getPaging(pmap, rmap));
+			resultMap.put("rows",lmap);//临时
+			
 			return resultMap;
 		} catch (Exception e) {
 			resultMap.put("result", "false");
