@@ -113,6 +113,16 @@
 		(#{FIRST_NUM},#{PAYDATE},${PAYMENT},${BALANCE},#{REMARK},#{PROJECT_ID})
 	</insert>	
 	
+				  <!-- 修改甲方付款-->
+	<update id="editFirstPayment" parameterType="java.util.Map">
+		update first_payment set 
+		PAYDATE = #{PAYDATE},
+		PAYMENT = ${PAYMENT},
+		BALANCE = ${BALANCE},
+		REMARK = #{REMARK}
+		where FIRST_ID = #{FIRST_ID}
+	</update>
+	
 		<!-- 查询给甲方开发票金额表--> 
 	<select id="queryOutinvoice" parameterType="java.util.Map" resultType="java.util.Map">
 		 select
@@ -158,6 +168,20 @@
 		(#{OUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},${TAXVALUE},${BALANCE},#{REMARK},#{PROJECT_ID},${UPTAX},${ADDTAX},${OTHERTAX})
 	</insert>
 	
+				  <!-- 修改甲方开发票-->
+	<update id="editOutInvoice" parameterType="java.util.Map">
+		update out_invoice set 
+		PAYDATE = #{PAYDATE},
+		PAYMENT = ${PAYMENT},
+		PAYNOTAX = ${PAYNOTAX},
+		TAXVALUE = ${TAXVALUE},
+		BALANCE = ${BALANCE},
+		UPTAX = ${UPTAX},
+		ADDTAX = ${ADDTAX},
+		OTHERTAX = ${OTHERTAX},
+		REMARK = #{REMARK}
+		where OUT_ID = #{OUT_ID}
+	</update>
 	
 		<!-- 查询进项发票(普票)金额表--> 
 	<select id="queryInputinvoice" parameterType="java.util.Map" resultType="java.util.Map">
@@ -197,6 +221,18 @@
 		(#{INPUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},#{REMARK},#{PROJECT_ID},${TAXVALUE},${TAXBALANCE})
 	</insert>
 	
+			  <!-- 修改进项发票(普票)-->
+	<update id="editInputInvoice" parameterType="java.util.Map">
+		update input_invoice set 
+		PAYDATE = #{PAYDATE},
+		PAYMENT = ${PAYMENT},
+		PAYNOTAX = ${PAYNOTAX},
+		TAXVALUE = ${TAXVALUE},
+		TAXBALANCE = ${TAXBALANCE},
+		REMARK = #{REMARK}
+		where INPUT_ID = #{INPUT_ID}
+	</update>
+	
 			<!-- 查询进项发票(专票)金额表--> 
 	<select id="queryInputinvoices" parameterType="java.util.Map" resultType="java.util.Map">
 		 select
@@ -235,6 +271,17 @@
 		(#{INPUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},#{REMARK},#{PROJECT_ID},${TAXVALUE},${TAXBALANCE})
 	</insert>
 	
+		  <!-- 修改进项发票(专票)-->
+	<update id="editInputInvoices" parameterType="java.util.Map">
+		update input_invoices set 
+		PAYDATE = #{PAYDATE},
+		PAYMENT = ${PAYMENT},
+		PAYNOTAX = ${PAYNOTAX},
+		TAXVALUE = ${TAXVALUE},
+		TAXBALANCE = ${TAXBALANCE},
+		REMARK = #{REMARK}
+		where INPUT_ID = #{INPUT_ID}
+	</update>
 	
 	  <!-- 删除甲方付款记录-->
 	<delete id="delFirstRecord" parameterType="java.util.Map">
@@ -312,7 +359,144 @@
 	</delete>
 
 
-
-
-
+	<!-- 查询成本 -->
+	<select id="queryCostByProid" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 COST_ID,
+		 COST_NUM,
+		 COST_DATE,
+		 COST_DETAIL,
+		 COST_AMOUNT,
+		 COST_TYPE,
+		 COST_REMARK,
+		 PROJECT_ID
+		 from project_cost
+		 where PROJECT_ID = #{PROJECT_ID}
+		 <if test="COST_START_TIME!=null and COST_START_TIME!='' ">
+			and COST_DATE &gt;= #{COST_START_TIME}
+		</if>
+		<if test="COST_END_TIME!=null and COST_END_TIME!=''">
+			and COST_DATE &lt;= #{COST_END_TIME}
+		</if>
+		<if test="COST_TYPE!=null and COST_TYPE!=''">
+			and COST_TYPE = #{COST_TYPE}
+		</if>
+		
+	</select>	
+	
+		  <!-- 查询成本合计-->
+	<select id="queryCostSum" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 '00' as COST_ID,
+		 '-' as COST_NUM,
+		 '合计' as COST_DATE,
+		 '-' as COST_DETAIL,
+		 sum(COST_AMOUNT) as COST_AMOUNT,
+		 '-' as COST_TYPE,
+		 '-' as COST_REMARK,
+		 '-' as PROJECT_ID
+		 from project_cost
+		 where PROJECT_ID = #{PROJECT_ID}
+		 <if test="COST_START_TIME!=null and COST_START_TIME!='' ">
+			and COST_DATE &gt;= #{COST_START_TIME}
+		</if>
+		<if test="COST_END_TIME!=null and COST_END_TIME!=''">
+			and COST_DATE &lt;= #{COST_END_TIME}
+		</if>
+		<if test="COST_TYPE!=null and COST_TYPE!=''">
+			and COST_TYPE = #{COST_TYPE}
+		</if>
+	</select>
+	
+	
+	
+		<!-- 新增成本 -->
+	<insert id="addCost" parameterType="java.util.Map" >
+		insert into project_cost(COST_NUM,COST_DATE,COST_DETAIL,COST_AMOUNT,COST_TYPE,COST_REMARK,PROJECT_ID)
+		values(#{COST_NUM},#{COST_DATE},#{COST_DETAIL},${COST_AMOUNT},#{COST_TYPE},#{COST_REMARK},#{PROJECT_ID})
+	</insert>
+	
+		<!-- 修改成本 -->
+	<update id="editCost" parameterType="java.util.Map" >
+		update project_cost set
+			COST_DATE = #{COST_DATE},
+			COST_DETAIL = #{COST_DETAIL},
+			COST_AMOUNT = ${COST_AMOUNT},
+			COST_TYPE = #{COST_TYPE},
+			COST_REMARK = #{COST_REMARK}
+		where COST_ID = #{COST_ID}
+	</update>
+	
+		<!-- 删除成本  -->
+	<delete id="delCost" parameterType="java.util.Map" >
+		delete from project_cost
+		where COST_ID = #{COST_ID}
+	</delete>
+	
+	
+	
+	
+	<!-- 查询付款 -->
+	<select id="queryPayByProid" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 PAY_ID,
+		 PAY_NUM,
+		 PAY_DATE,
+		 PAY_AMOUNT,
+		 PAY_REMARK,
+		 PROJECT_ID
+		 from project_pay
+		 where PROJECT_ID = #{PROJECT_ID}
+		 <if test="PAY_START_TIME!=null and PAY_START_TIME!='' ">
+			and PAY_DATE &gt;= #{PAY_START_TIME}
+		</if>
+		<if test="PAY_END_TIME!=null and PAY_END_TIME!=''">
+			and PAY_DATE &lt;= #{PAY_END_TIME}
+		</if>
+		
+	</select>	
+	
+		  <!-- 查询付款合计-->
+	<select id="queryPaySum" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 '00' as PAY_ID,
+		 '-' as PAY_NUM,
+		 '合计' as PAY_DATE,
+		 sum(PAY_AMOUNT) as PAY_AMOUNT,
+		 '-' as PAY_REMARK,
+		 '-' as PROJECT_ID
+		 from project_pay
+		 where PROJECT_ID = #{PROJECT_ID}
+		 <if test="PAY_START_TIME!=null and PAY_START_TIME!='' ">
+			and PAY_DATE &gt;= #{PAY_START_TIME}
+		</if>
+		<if test="PAY_END_TIME!=null and PAY_END_TIME!=''">
+			and PAY_DATE &lt;= #{PAY_END_TIME}
+		</if>
+	</select>
+	
+	
+	
+		<!-- 新增付款 -->
+	<insert id="addPay" parameterType="java.util.Map" >
+		insert into project_pay(PAY_NUM,PAY_DATE,PAY_AMOUNT,PAY_REMARK,PROJECT_ID)
+		values(#{PAY_NUM},#{PAY_DATE},${PAY_AMOUNT},#{PAY_REMARK},#{PROJECT_ID})
+	</insert>
+	
+		<!-- 修改付款 -->
+	<update id="editPay" parameterType="java.util.Map" >
+		update project_pay set
+			PAY_DATE = #{PAY_DATE},
+			PAY_AMOUNT = ${PAY_AMOUNT},
+			PAY_REMARK = #{PAY_REMARK}
+		where PAY_ID = #{PAY_ID}
+	</update>
+	
+		<!-- 删除付款  -->
+	<delete id="delPay" parameterType="java.util.Map" >
+		delete from project_pay
+		where PAY_ID = #{PAY_ID}
+	</delete>
+	
+	
 </mapper>

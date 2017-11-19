@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.xhl.dao.RecordDao">
+
+    
+<!--      	查询    -->
+    <select id="queryRecord" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+		c.RECORD_ID,
+		c.RECORD_NUM,
+		c.RECORD_NAME,
+		c.RECORD_DATE,
+		c.RECORD_STATE,
+		c.RECORD_REMARK,
+		c.CREATE_PERSON,
+		c.CREATE_TIME,
+		(select username from test_user where c.CREATE_PERSON = loginname) CREATE_PERSON_NAME,
+		c.UPDATE_PERSON,
+		c.UPDATE_TIME,
+		(select username from test_user where c.UPDATE_PERSON = loginname) UPDATE_PERSON_NAME
+		from company_record c
+		where 1=1
+		<if test="RECORD_NAME!=null and RECORD_NAME!=''">
+ 			and c.RECORD_NAME like  CONCAT('%',#{RECORD_NAME},'%')
+ 		</if>
+ 		<if test="RECORD_STATE!=null and RECORD_STATE!=''">
+ 			and c.RECORD_STATE =  #{RECORD_STATE}
+ 		</if>
+ 		order by c.RECORD_DATE desc
+	</select>
+	
+		  <!-- 新建-->
+	<insert id="addRecord" parameterType="java.util.Map">
+		insert into company_record
+		(RECORD_NUM,RECORD_NAME,RECORD_DATE,RECORD_STATE,RECORD_REMARK,CREATE_PERSON,CREATE_TIME)
+		values
+		(#{RECORD_NUM},#{RECORD_NAME},#{RECORD_DATE},#{RECORD_STATE},#{RECORD_REMARK},#{CREATE_PERSON},#{CREATE_TIME})
+	</insert>
+	
+	  <!-- 修改-->
+	<update id="editRecord" parameterType="java.util.Map">
+		update company_record set
+			RECORD_NAME = #{RECORD_NAME},
+			RECORD_DATE = #{RECORD_DATE},
+			RECORD_STATE = #{RECORD_STATE},
+			RECORD_REMARK = #{RECORD_REMARK},
+			UPDATE_PERSON = #{UPDATE_PERSON},
+			UPDATE_TIME = #{UPDATE_TIME}
+		where RECORD_ID = #{RECORD_ID}
+	</update>
+	
+</mapper>

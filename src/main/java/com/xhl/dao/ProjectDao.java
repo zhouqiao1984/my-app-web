@@ -21,21 +21,29 @@ public interface ProjectDao {
 	List<Map<String, String>>  queryFirstpayment(Map<String, String> map);
 	//新建甲方付款
 	void addFirstPayment(Map<String, String> map);
+	//修改甲方付款
+	void editFirstPayment(Map<String, String> map);
 	
 	//查询开发票金额表
 	List<Map<String, String>>  queryOutinvoice(Map<String, String> map);
 	//新建开发票
 	void addOutInvoice(Map<String, String> map);
+	//修改开发票
+	void editOutInvoice(Map<String, String> map);
 	
 	//查询进项发票(普票)金额表
 	List<Map<String, String>>  queryInputinvoice(Map<String, String> map);
 	//新建进项发票(普票)
 	void addInputInvoice(Map<String, String> map);
+	//修改进项发票(普票)
+	void editInputInvoice(Map<String, String> map);
 	
 	//查询进项发票金额表(专票)
 	List<Map<String, String>>  queryInputinvoices(Map<String, String> map);
 	//新建进项发票(专票)
 	void addInputInvoices(Map<String, String> map);
+	//修改进项发票(专票)
+	void editInputInvoices(Map<String, String> map);
 		
 	//删除甲方付款记录
 	void delFirstRecord(Map<String, String> map);
@@ -57,6 +65,27 @@ public interface ProjectDao {
 	//删除备忘录
 	void delMemo(Map<String, String> map);
 	
+	//查询成本
+	List<Map<String, String>>  queryCostByProid(Map<String, String> map);
+	//查询成本合计
+	List<Map<String, String>>  queryCostSum(Map<String, String> map);
+	//新建成本
+	void addCost(Map<String, String> map);
+	//修改成本
+	void editCost(Map<String, String> map);
+	//删除成本
+	void delCost(Map<String, String> map);
+	
+	//查询付款
+	List<Map<String, String>>  queryPayByProid(Map<String, String> map);
+	//查询付款合计
+	List<Map<String, String>>  queryPaySum(Map<String, String> map);
+	//新建付款
+	void addPay(Map<String, String> map);
+	//修改付款
+	void editPay(Map<String, String> map);
+	//删除付款
+	void delPay(Map<String, String> map);
 }
 
 

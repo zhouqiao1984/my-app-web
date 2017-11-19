@@ -10,11 +10,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONObject;
 
 public class MyUtil {
 	
-	
+	private static final Logger logger = Logger.getLogger(MyUtil.class);
 	/**
 	 * 将json字符串处理为utf-8格式的编码并返回
 	 * @param res
@@ -47,6 +49,30 @@ public class MyUtil {
         JSONObject json = JSONObject.fromObject(bean);
         return json.toString();
 
+    }
+    
+    
+    /**
+     * 输出Json信息
+     * @param res
+     * @param message 标准的JOSN信息
+     * @throws IOException
+     */
+    public static void jsonMessage(HttpServletResponse res,String message) {
+        res.setCharacterEncoding("UTF-8");
+        res.setContentType("text/html;charset=UTF-8");
+        PrintWriter printWriter = null;
+        try {
+            printWriter = res.getWriter();
+            printWriter.print(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error(e);
+        } finally {
+            if (null != printWriter) {
+                printWriter.close();
+            }
+        }
     }
     
     /**
@@ -153,5 +179,16 @@ public class MyUtil {
 		}
     	return rmap;
     }
- 
+    
+    /**
+	 * 由登陆名获取用户姓名
+	 * @param req
+	 * @param paramName
+	 * @return
+	 */
+	public static String getUserName(String login_name){
+		
+		return null;
+	}
+    
 }

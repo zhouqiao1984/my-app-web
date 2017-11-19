@@ -41,4 +41,19 @@ public interface IProjectService {
 	public Map<String, String> saveMemo(HttpServletRequest request);
 	
 	
+	//查询成本List
+	public Map<String, Object> queryCost(HttpServletRequest request);
+	//查询成本
+	public Map<String, Object> queryCostByProid(HttpServletRequest request);
+	//编辑成本
+	public Map<String, String> editProjectCost(HttpServletRequest request);
+	
+	
+	//查询付款List
+	public Map<String, Object> queryPay(HttpServletRequest request);
+	//查询付款
+	public Map<String, Object> queryPayByProid(HttpServletRequest request);
+	//编辑付款
+	public Map<String, String> editProjectPay(HttpServletRequest request);
+	
 }

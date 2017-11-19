@@ -7,14 +7,57 @@
 
 	<select id="findUser" parameterType="java.util.Map" resultType="com.xhl.entity.User">
 		select 
+		u.USERID,
+		u.LOGINNAME,
+		u.PASSWORD,
 		u.USERNAME,
-		u.PASSWORD
+		u.ROLE,
+		u.USERSTATE,
+		u.REMARK
 		from test_user u
-		where 
-		u.username = #{LOGINNAME}
+		where u.LOGINNAME = #{LOGINNAME} 
+		and u.USERSTATE = '00'
 		<if test="PASSWORD!=null and PASSWORD!=''">
  			and u.PASSWORD = #{PASSWORD}
  		</if>
 	</select>
     
+<!--      	查询所有用户    -->
+    <select id="queryAllUser" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+		u.USERID,
+		u.LOGINNAME,
+		u.PASSWORD,
+		u.USERNAME,
+		u.ROLE,
+		u.USERSTATE,
+		u.REMARK
+		from test_user u
+		where u.USERID != '0'
+		<if test="LOGINNAME!=null and LOGINNAME!=''">
+ 			and u.LOGINNAME like  CONCAT('%',#{LOGINNAME},'%')
+ 		</if>
+ 		<if test="USERNAME!=null and USERNAME!=''">
+ 			and u.USERNAME like  CONCAT('%',#{USERNAME},'%')
+ 		</if>
+	</select>
+	
+		  <!-- 新建用户-->
+	<insert id="addUser" parameterType="java.util.Map">
+		insert into test_user
+		(LOGINNAME,PASSWORD,USERNAME,ROLE,REMARK,USERSTATE)
+		values
+		(#{LOGINNAME},#{PASSWORD},#{USERNAME},#{ROLE},#{REMARK},#{USERSTATE})
+	</insert>
+	
+	  <!-- 修改用户-->
+	<update id="editUser" parameterType="java.util.Map">
+		update test_user set
+			PASSWORD = #{PASSWORD},
+			USERNAME = #{USERNAME},
+			ROLE = #{ROLE},
+			REMARK = #{REMARK}
+		where USERID = #{USERID}
+	</update>
+	
 </mapper>

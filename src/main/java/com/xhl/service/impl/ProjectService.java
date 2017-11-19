@@ -1,6 +1,5 @@
 package com.xhl.service.impl;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,7 +140,7 @@ public class ProjectService implements IProjectService{
 	@Override
 	public Map<String, String> addFirstPayment(HttpServletRequest req) {
 		Map<String, String> resultMap = new HashMap<String, String>();
-		String[] must = new String[]{"PAYDATE","PROJECT_ID"};
+		String[] must = new String[]{"PAYDATE","PROJECT_ID","OPT_TYPE"};
 		String[] nomust = new String[]{"REMARK","PAYMENT","BALANCE"};
 		Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust);
 		if(null == pmap){
@@ -151,10 +150,18 @@ public class ProjectService implements IProjectService{
 		}
 		
 		try{
-			pmap = MyUtil.formatMoney(pmap, nomust);
-			String first_num  = "FP_"+ DateTimeUtils.getNumber();
-			pmap.put("FIRST_NUM",first_num);
-			projectDao.addFirstPayment(pmap);
+			String opt_type = pmap.get("OPT_TYPE");
+			if("add".equals(opt_type)){
+				pmap = MyUtil.formatMoney(pmap, nomust);
+				String first_num  = "FP_"+ DateTimeUtils.getNumber();
+				pmap.put("FIRST_NUM",first_num);
+				projectDao.addFirstPayment(pmap);
+			}
+			if("edit".equals(opt_type)){
+				String first_id = MyUtil.getParamValue(req,"FIRST_ID");
+				pmap.put("FIRST_ID", first_id);
+				projectDao.editFirstPayment(pmap);
+			}
 			resultMap.put("msg", "操作成功");
 			resultMap.put("result", "true");
 		}catch (Exception e) {
@@ -203,7 +210,7 @@ public class ProjectService implements IProjectService{
 	@Override
 	public Map<String, String> addOutInvoice(HttpServletRequest req) {
 		Map<String, String> resultMap = new HashMap<String, String>();
-		String[] must = new String[]{"PAYDATE","PROJECT_ID"};
+		String[] must = new String[]{"PAYDATE","PROJECT_ID","OPT_TYPE"};
 		String[] nomust = new String[]{"PAYMENT","PAYNOTAX","TAXVALUE","BALANCE","REMARK","UPTAX","ADDTAX","OTHERTAX"};
 		Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust);
 		if(null == pmap){
@@ -213,10 +220,19 @@ public class ProjectService implements IProjectService{
 		}
 		
 		try{
-			pmap = MyUtil.formatMoney(pmap, nomust);
-			String out_num = "FI_"+ DateTimeUtils.getNumber();
-			pmap.put("OUT_NUM", out_num);
-			projectDao.addOutInvoice(pmap);
+			String opt_type = pmap.get("OPT_TYPE");
+			if("add".equals(opt_type)){
+				pmap = MyUtil.formatMoney(pmap, nomust);
+				String out_num = "FI_"+ DateTimeUtils.getNumber();
+				pmap.put("OUT_NUM", out_num);
+				projectDao.addOutInvoice(pmap);
+			}
+			if("edit".equals(opt_type)){
+				String out_id = MyUtil.getParamValue(req,"OUT_ID");
+				pmap.put("OUT_ID", out_id);
+				projectDao.editOutInvoice(pmap);
+			}
+		
 			resultMap.put("msg", "操作成功");
 			resultMap.put("result", "true");
 		}catch (Exception e) {
@@ -264,7 +280,7 @@ public class ProjectService implements IProjectService{
 	@Override
 	public Map<String, String> addInputInvoice(HttpServletRequest req) {
 		Map<String, String> resultMap = new HashMap<String, String>();
-		String[] must = new String[]{"PAYDATE","PROJECT_ID"};
+		String[] must = new String[]{"PAYDATE","PROJECT_ID","OPT_TYPE"};
 		String[] nomust = new String[]{"PAYMENT","PAYNOTAX","TAXVALUE","TAXBALANCE","REMARK"};
 		Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust);
 		if(null == pmap){
@@ -274,10 +290,18 @@ public class ProjectService implements IProjectService{
 		}
 		
 		try{
-			pmap = MyUtil.formatMoney(pmap, nomust);
-			String input_num = "GI_"+ DateTimeUtils.getNumber();
-			pmap.put("INPUT_NUM", input_num);
-			projectDao.addInputInvoice(pmap);
+			String opt_type = pmap.get("OPT_TYPE");
+			if("add".equals(opt_type)){
+				pmap = MyUtil.formatMoney(pmap, nomust);
+				String input_num = "GI_"+ DateTimeUtils.getNumber();
+				pmap.put("INPUT_NUM", input_num);
+				projectDao.addInputInvoice(pmap);
+			}
+			if("edit".equals(opt_type)){
+				String input_id = MyUtil.getParamValue(req,"INPUT_ID");
+				pmap.put("INPUT_ID", input_id);
+				projectDao.editInputInvoice(pmap);
+			}
 			resultMap.put("msg", "操作成功");
 			resultMap.put("result", "true");
 		}catch (Exception e) {
@@ -321,12 +345,12 @@ public class ProjectService implements IProjectService{
 	}
 	
 	/**
-	 * 新增进项发票(专票)
+	 * 新增或修改进项发票(专票)
 	 */
 	@Override
 	public Map<String, String> addInputInvoices(HttpServletRequest req) {
 		Map<String, String> resultMap = new HashMap<String, String>();
-		String[] must = new String[]{"PAYDATE","PROJECT_ID"};
+		String[] must = new String[]{"PAYDATE","PROJECT_ID","OPT_TYPE"};
 		String[] nomust = new String[]{"PAYMENT","PAYNOTAX","TAXVALUE","TAXBALANCE","REMARK"};
 		Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust);
 		if(null == pmap){
@@ -336,10 +360,18 @@ public class ProjectService implements IProjectService{
 		}
 		
 		try{
-			pmap = MyUtil.formatMoney(pmap, nomust);
-			String input_num = "SI_"+ DateTimeUtils.getNumber();
-			pmap.put("INPUT_NUM", input_num);
-			projectDao.addInputInvoices(pmap);
+			String opt_type = pmap.get("OPT_TYPE");
+			if("add".equals(opt_type)){
+				pmap = MyUtil.formatMoney(pmap, nomust);
+				String input_num = "SI_"+ DateTimeUtils.getNumber();
+				pmap.put("INPUT_NUM", input_num);
+				projectDao.addInputInvoices(pmap);
+			}
+			if("edit".equals(opt_type)){
+				String input_id = MyUtil.getParamValue(req,"INPUT_ID");
+				pmap.put("INPUT_ID", input_id);
+				projectDao.editInputInvoices(pmap);
+			}
 			resultMap.put("msg", "操作成功");
 			resultMap.put("result", "true");
 		}catch (Exception e) {
@@ -507,7 +539,231 @@ public class ProjectService implements IProjectService{
 		}
 		return resultMap;
 	}
+	
+	/**
+	 * @Description: 查询成本list
+	 * @author zq
+	 */
+	@Override
+	public Map<String, Object> queryCost(HttpServletRequest request) {
+		String[] must = new String[]{"limit","offset"};
+		String[] nomust = new String[]{};
+		Map<String, Object> resultMap = new HashMap<String,Object>();
+ 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if (null == pmap) {
+			resultMap.put("result", "false");
+			resultMap.put("mess", "缺少参数!");
+			return resultMap;
+		}
+	
+		try {
+			//查询结果
+			List<Map<String, String>> lmap = projectDao.queryProject(pmap);
+			resultMap.put("rows", MyUtil.getPaging(pmap, lmap));
+			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
+			return resultMap;
+		} catch (Exception e) {
+			resultMap.put("result", "false");
+			//logger.info("操作 ProjectDao.queryProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * @Description: 查询成本
+	 * @author zq
+	 */
+	@Override
+	public Map<String, Object> queryCostByProid(HttpServletRequest request) {
+		String[] must = new String[]{"limit","offset","PROJECT_ID"};
+		String[] nomust = new String[]{"COST_START_TIME","COST_END_TIME","COST_TYPE"};
+		Map<String, Object> resultMap = new HashMap<String,Object>();
+ 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if (null == pmap) {
+			resultMap.put("result", "false");
+			resultMap.put("mess", "缺少参数!");
+			return resultMap;
+		}
+	
+		try {
+			//查询结果
+			List<Map<String, String>> lmap = projectDao.queryCostByProid(pmap);//查询结果
+			List<Map<String, String>> smap = projectDao.queryCostSum(pmap);//查询合计
+			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);//分页结果
+			rmap.add(smap.get(0));//合计与结果合并
+			resultMap.put("rows", rmap);
+			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
+			return resultMap;
+		} catch (Exception e) {
+			resultMap.put("result", "false");
+			//logger.info("操作 ProjectDao.queryProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
+	
+	
+	/**
+	 * 编辑成本
+	 */
+	@Override
+	public Map<String, String> editProjectCost(HttpServletRequest request) {
+		Map<String, String> resultMap = new HashMap<String, String>();
+		String[] must = new String[]{};
+		String[] nomust = new String[]{"COST_TYPE","COST_DETAIL","COST_REMARK",
+				"TYPE","COST_DATE","COST_AMOUNT","PROJECT_ID","COST_ID"};
+		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if(null == pmap){
+			resultMap.put("msg","必填项未填");
+			resultMap.put("result","false");
+			return resultMap;
+		}
+		
+		try{
+			String type = pmap.get("TYPE");
+			//新建
+			if("add".equals(type)){
+				String cost_num  = "PC_"+ DateTimeUtils.getNumber();
+				pmap.put("COST_NUM", cost_num);
+				projectDao.addCost(pmap);
+			}
+			//修改
+			if("edit".equals(type)){
+				projectDao.editCost(pmap);
+			}
+			//删除
+			if("del".equals(type)){
+				projectDao.delCost(pmap);
+			}
+		
+			resultMap.put("msg", "操作成功");
+			resultMap.put("result", "true");
+		}catch (Exception e) {
+			resultMap.put("msg","操作失败");
+			resultMap.put("result", "false");
+			//logger.info("操作  otherDao.editOther 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		return resultMap;
+	}
+	
+	/**
+	 * @Description: 查询付款list
+	 * @author zq
+	 */
+	@Override
+	public Map<String, Object> queryPay(HttpServletRequest request) {
+		String[] must = new String[]{"limit","offset"};
+		String[] nomust = new String[]{};
+		Map<String, Object> resultMap = new HashMap<String,Object>();
+ 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if (null == pmap) {
+			resultMap.put("result", "false");
+			resultMap.put("mess", "缺少参数!");
+			return resultMap;
+		}
+	
+		try {
+			//查询结果
+			List<Map<String, String>> lmap = projectDao.queryProject(pmap);
+			resultMap.put("rows", MyUtil.getPaging(pmap, lmap));
+			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
+			return resultMap;
+		} catch (Exception e) {
+			resultMap.put("result", "false");
+			//logger.info("操作 ProjectDao.queryProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * @Description: 查询付款
+	 * @author zq
+	 */
+	@Override
+	public Map<String, Object> queryPayByProid(HttpServletRequest request) {
+		String[] must = new String[]{"limit","offset","PROJECT_ID"};
+		String[] nomust = new String[]{"PAY_START_TIME","PAY_END_TIME"};
+		Map<String, Object> resultMap = new HashMap<String,Object>();
+ 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if (null == pmap) {
+			resultMap.put("result", "false");
+			resultMap.put("mess", "缺少参数!");
+			return resultMap;
+		}
+	
+		try {
+			//查询结果
+			List<Map<String, String>> lmap = projectDao.queryPayByProid(pmap);//查询结果
+			List<Map<String, String>> smap = projectDao.queryPaySum(pmap);//查询合计
+			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);//分页结果
+			rmap.add(smap.get(0));//合计与结果合并
+			resultMap.put("rows", rmap);
+			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
+			return resultMap;
+		} catch (Exception e) {
+			resultMap.put("result", "false");
+			//logger.info("操作 ProjectDao.queryProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
+	
+	
+	/**
+	 * 编辑付款
+	 */
+	@Override
+	public Map<String, String> editProjectPay(HttpServletRequest request) {
+		Map<String, String> resultMap = new HashMap<String, String>();
+		String[] must = new String[]{};
+		String[] nomust = new String[]{"PAY_REMARK","TYPE","PAY_DATE",
+				"PAY_AMOUNT","PROJECT_ID","PAY_ID"};
+		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if(null == pmap){
+			resultMap.put("msg","必填项未填");
+			resultMap.put("result","false");
+			return resultMap;
+		}
+		
+		try{
+			String type = pmap.get("TYPE");
+			//新建
+			if("add".equals(type)){
+				String pay_num  = "PP_"+ DateTimeUtils.getNumber();
+				pmap.put("PAY_NUM", pay_num);
+				projectDao.addPay(pmap);
+			}
+			//修改
+			if("edit".equals(type)){
+				projectDao.editPay(pmap);
+			}
+			//删除
+			if("del".equals(type)){
+				projectDao.delPay(pmap);
+			}
+		
+			resultMap.put("msg", "操作成功");
+			resultMap.put("result", "true");
+		}catch (Exception e) {
+			resultMap.put("msg","操作失败");
+			resultMap.put("result", "false");
+			//logger.info("操作  otherDao.editOther 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		return resultMap;
+	}
+	
+	
+	
 }
+
 
 
 

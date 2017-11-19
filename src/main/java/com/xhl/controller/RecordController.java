@@ -13,9 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.xhl.entity.User;
-import com.xhl.service.IProjectService;
-import com.xhl.service.IUserService;
+import com.xhl.service.IRecordService;
 import com.xhl.utils.MyUtil;
 
 import net.sf.json.JSONObject;
@@ -23,38 +21,38 @@ import net.sf.json.JSONObject;
 
 
 @Controller  
-@RequestMapping("/user")  
-public class UserController {
+@RequestMapping("/record")  
+public class RecordController {
     @Resource  
-    private IUserService userService;  
+    private IRecordService recordService;  
       
 	
 	/**
-	 * 查询所有用户
+	 * 查询所有事件
 	 * 
 	 * @param req
 	 * @param res
 	 */
 
-	@RequestMapping("/queryAllUser")
-	public void queryAllUser(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/queryRecord")
+	public void queryRecord(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,userService.queryAllUser(request)));
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,recordService.queryRecord(request)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
     
 	/**
-	 * 用户信息编辑
+	 * 事件信息编辑
 	 * 
 	 * @param req
 	 * @param res
 	 */
-	@RequestMapping("/editUser")
-	public void editUser(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/editRecord")
+	public void editRecord(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			MyUtil.writeUTFJson(response, MyUtil.beanToJson(userService.editUser(request)));
+			MyUtil.writeUTFJson(response, MyUtil.beanToJson(recordService.editRecord(request)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

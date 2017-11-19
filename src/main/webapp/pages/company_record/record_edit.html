@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>重要事件备忘录</title>
+   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+    <link href="css/mystyle.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="main_iframe_con">
+        <div class="ecitic-title">
+            <span>事件信息</span>
+        </div>
+        <div class="ecitic-title-table">
+        	<input type="hidden" name="R.RECORD_ID">
+            <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
+                 <colgroup>
+						<col style="width: 20%">
+						<col style="width: 30%">
+						<col style="width: 20%">
+						<col style="width: 30%">
+				</colgroup>
+                   <tr>
+                        <td class="table-text">日期：</td>
+                        <td >
+                            <input type="text" name="R.RECORD_DATE" onFocus="WdatePicker({})" placeHolder="点击选择" readonly>
+                        </td> 
+                         <td class="table-text" >状态设置：</td>
+                       	<td >
+                            <select id="R.RECORD_STATE" name="R.RECORD_STATE"   style="width: 100%">
+                           		<option value="00">进行中</option>
+                           		<option value="01">已完成</option>
+                           	</select>
+                        </td> 
+                    </tr>
+                    <tr>
+                     <td class="table-text">事件摘要：</td>
+                        <td >
+                            <input type="text" name="R.RECORD_NAME">
+                        </td> 
+                    </tr>
+                     <tr>
+                    	<td class="table-text">内容：</td>
+                        <td colspan="5">
+							<textarea name="R.RECORD_REMARK" class="requirement-ele-width" ></textarea>
+						</td> 
+	             </tr>
+            </table>
+        </div>
+
+        <div class="ecitic-save">
+            <input type="button"  class="btn btn-ecitic green" btn="saveInfo" value="保存"/>
+            <input type="button" class="btn btn-ecitic rosy" name="closePageTabConfirm" value="返回" />
+        </div>
+    </div>
+</body>
+<script src="bootstrap/js/bootstrap-table.min.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script src="pages/company_record/record_edit.js"></script>
+</html>

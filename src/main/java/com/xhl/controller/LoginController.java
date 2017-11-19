@@ -54,15 +54,15 @@ public class LoginController {
 		}
 	}
 	
-	@RequestMapping("nav")
-	public void toIndex_top(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			request.getRequestDispatcher("WEB-INF/nav.jsp").forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@RequestMapping("nav")
+//	public void toIndex_top(HttpServletRequest request, HttpServletResponse response) {
+//		try {
+//			request.getRequestDispatcher("WEB-INF/nav.jsp").forward(request, response);
+//		} catch (ServletException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 }

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>款项明细管理</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+    <link href="css/mystyle.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="main_iframe_con">
+   	  	 <div class="ecitic-table" id="ecitic-table">
+   	  	 <form id="costManageForm">
+            <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
+         		<tr>
+	         		<td class="ecitic-left" style="width:80px;font-size:18px;">日期：</td>
+					<td>
+						<div class="dateSelectZ_From">
+						<input type="text" id="COST_START_TIME" name="COST_START_TIME" class="requirement-ele-width"  onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'COST_END_TIME\',{d:0});}'})" placeHolder="点击选择"   readonly/>
+						</div>
+						<div class="dateSelectZ_W">&nbsp至&nbsp</div>
+						<div class="dateSelectZ_From">
+						<input type="text" id="COST_END_TIME" name="COST_END_TIME" class="requirement-ele-width" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'COST_START_TIME\',{d:0});}'})" placeHolder="点击选择"  readonly/>
+						</div>
+					</td>
+					<td>
+						<select name="COST_TYPE"  class="requirement-ele-width" style="width: 100%">
+								<option value="">选择类型</option>
+	                       		<option value="00">材料</option>
+                              	<option value="01">工资</option>
+                              	<option value="02">买水</option>
+                              	<option value="03">吃饭</option>
+                              	<option value="04">机械</option>
+                              	<option value="05">发票</option>
+                              	<option value="06">税费</option>
+                              	<option value="07">管理费</option>
+                              	<option value="08">分包费</option>
+                              	<option value="09">其它</option>
+                     	</select>
+					</td>
+					 <td>
+					 	<input type="button" class="btn btn-ecitic blue" name="queryCost" value="查询" />
+					 	<div class="dateSelectZ_W">&nbsp</div>
+					 	<input type="button" class="btn btn-ecitic blue" name="resetCost" value="重置" />
+					 </td>
+				</tr>
+            </table>
+            </form>
+         </div>
+
+        <div class="ecitic-operation">
+            <button class="btn btn-ecitic blue" name="addCost">新增</button>
+            <button class="btn btn-ecitic blue" name="editCost">修改</button>
+            <button class="btn btn-ecitic blue" name="delCost">删除</button>
+        </div>
+        <div class="ecitic-new">
+            <table tb="costManageTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
+        </div>
+    </div>
+</body>
+<script src="js/commons/commons.js"></script>
+<script src="bootstrap/js/bootstrap-table.min.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script src="pages/project_manage/cost_manage/cost_List.js"></script>
+</html>
+
+
+
+
+
+
+
+

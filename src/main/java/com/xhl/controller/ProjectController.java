@@ -247,9 +247,103 @@ public class ProjectController {
 	}
 	
 	
+	/**
+	 * 查询成本管理
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/queryCost")
+	public void queryCost(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryCost(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 查询成本管理由项目ID
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/queryCostByProid")
+	public void queryCostByProid(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryCostByProid(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 编辑成本管理
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/editProjectCost")
+	public void editProjectCost(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.editProjectCost(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	
+	/**
+	 * 查询付款管理
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/queryPay")
+	public void queryPay(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryPay(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 查询付款管理由项目ID
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/queryPayByProid")
+	public void queryPayByProid(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryPayByProid(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 编辑付款管理
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/editProjectPay")
+	public void editProjectPay(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.editProjectPay(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
 

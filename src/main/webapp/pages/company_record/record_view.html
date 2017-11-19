@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>重要事件备忘录</title>
+   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+    <link href="css/mystyle.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="main_iframe_con">
+        <div class="ecitic-title">
+            <span>事件信息</span>
+        </div>
+        <div class="ecitic-title-table">
+            <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
+                 <colgroup>
+						<col style="width: 15%">
+						<col style="width: 35%">
+						<col style="width: 15%">
+						<col style="width: 35%">
+				</colgroup>
+                   <tr>
+                   	<td class="table-text">事件摘要：</td>
+                        <td >
+                            <div id="RECORD_NAME"></div>
+                        </td> 
+                        <td class="table-text">编号：</td>
+                        <td >
+                            <div id="RECORD_NUM"></div>
+                        </td> 
+                    </tr>
+                    <tr>
+                     <td class="table-text" >状态：</td>
+                       	<td >
+                            <select id="RECORD_STATE" name="RECORD_STATE"   style="width: 100%" disabled="disabled">
+                           		<option value="00">进行中</option>
+                           		<option value="01">已完成</option>
+                           	</select>
+                        </td> 
+                      <td class="table-text">日期：</td>
+                        <td >
+                            <div id="RECORD_DATE"></div>
+                        </td> 
+                     
+                    </tr>
+                     <tr>
+                    	<td class="table-text">内容：</td>
+                        <td colspan="5">
+                            <div id="RECORD_REMARK"></div>
+					</td> 
+					  <tr>
+                      <td class="table-text">创建人：</td>
+                        <td >
+                            <div id="CREATE_PERSON_NAME"></div>
+                        </td> 
+                     <td class="table-text">创建时间：</td>
+                        <td >
+                            <div id="CREATE_TIME"></div>
+                        </td> 
+                    </tr>
+                      <tr>
+                      <td class="table-text">最后编辑人：</td>
+                        <td >
+                            <div id="UPDATE_PERSON_NAME"></div>
+                        </td> 
+                     <td class="table-text">编辑时间：</td>
+                        <td >
+                            <div id="UPDATE_TIME"></div>
+                        </td> 
+                    </tr>
+	             </tr>
+            </table>
+        </div>
+
+        <div class="ecitic-save">
+            <input type="button" class="btn btn-ecitic rosy" name="closePageTabConfirm" value="返回" />
+        </div>
+    </div>
+</body>
+<script src="bootstrap/js/bootstrap-table.min.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script src="pages/company_record/record_view.js"></script>
+</html>
