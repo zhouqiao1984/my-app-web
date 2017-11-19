@@ -34,7 +34,7 @@ function otherManage(item){
 		
 	//新增款项明细
 	 $page.find("button[name='addOtherDetail']").click(function(){
-		 closeAndOpenInnerPageTab("addOtherDetail","新增款项明细","pages/am/other_funds/otherDetail_edit.html", function(){
+		 closeAndOpenInnerPageTab("addOtherDetail","新增款项明细","pages/account_manage/other_funds/otherDetail_edit.html", function(){
 			 editOtherDetail(null,other_id);
 			});
 	 });
@@ -50,7 +50,7 @@ function otherManage(item){
 				alert("修改合计?你真淘气！");
 				return;
 			}
-		 closeAndOpenInnerPageTab("editDetail","修改","pages/am/other_funds/otherDetail_edit.html", function(){
+		 closeAndOpenInnerPageTab("editDetail","修改","pages/account_manage/other_funds/otherDetail_edit.html", function(){
 			 editOtherDetail(seles[0],other_id);
 			});
 	 });

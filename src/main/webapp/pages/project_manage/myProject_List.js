@@ -1,7 +1,7 @@
 //初始化表
 
 initProject();
-function initProject(){
+function initProject(){debugger;
 	var $page = getCurrentPageObj();//当前页
 	var pTable = $page.find("[tb='projectTable']");
 	var formObj = $page.find("#projectForm");//表单对象
@@ -24,7 +24,7 @@ function initProject(){
 	 
 	//新建项目
 	 $page.find("button[name='addProject']").click(function(){
-		 closeAndOpenInnerPageTab("addProject","新建项目","pages/pm/project_add.html", function(){
+		 closeAndOpenInnerPageTab("addProject","新建项目","pages/project_manage/project_add.html", function(){
 			 editProject(null);
 			});
 	 });
@@ -42,7 +42,7 @@ function initProject(){
 				alert("已竣工项目不能修改");
 				return;
 			}
-		 closeAndOpenInnerPageTab("editProject","修改项目","pages/pm/project_add.html", function(){
+		 closeAndOpenInnerPageTab("editProject","修改项目","pages/project_manage/project_add.html", function(){
 			 editProject(seles[0]);
 			});
 	 });
@@ -59,7 +59,7 @@ function initProject(){
 				alert("已关闭项目不能操作");
 				return;
 			}
-		 closeAndOpenInnerPageTab("accountManage","账目管理","pages/pm/project_account.html", function(){
+		 closeAndOpenInnerPageTab("accountManage","账目管理","pages/project_manage/project_account.html", function(){
 			 	editAccount(seles[0]);
 			});
 	 });
@@ -218,8 +218,14 @@ function initProject(){
 						jsonpCallback: pCall,
 						onLoadSuccess : function(data){
 							gaveInfo();
-						},onLoadError:function () {
-		                    alert("数据加载失败！");
+						},onLoadError:function (data) {
+							if(data	&& data=='200'){
+								nconfirm("登录超时,请重新登录!",function(){
+			            			toLoginPage();
+			            		});
+							}else{
+								alert("数据加载失败！");
+							}
 		                },
 						columns : [ {
 							checkbox : true,

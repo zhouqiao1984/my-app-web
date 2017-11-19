@@ -27,6 +27,8 @@ FINAL_TAX				决算税额
 FINAL_TOTAL				决算金额
 PROJECT_STATE			项目状态
 REMARK					备注
+COST_STATE				成本管理状态00未01已
+PAY_STATE				付款管理状态00未01已
 
 
 二、
@@ -155,5 +157,42 @@ OTHER_PAY_TYPE			收支类型  00收入  01支出
 REMARK					备注
 OTHER_ID				其他款项ID
 REAL_AMOUNT             实际发生金额(有负数)
+
+项目管理系统三期工程 2017/11/18
+
+十、
+公司重要事件表  company_record				
+RECORD_ID     	主键
+RECORD_NUM  	编号
+RECORD_NAME		摘要
+RECORD_DATE     日期
+RECORD_STATE	状态
+RECORD_REMARK	内容	
+CREATE_PERSON	创建人
+CREATE_TIME		创建时间
+UPDATE_PERSON	编辑人
+UPDATE_TIME		编辑时间
+
+
+十一、
+项目关联成本表  project_cost				
+COST_ID     	主键
+COST_NUM  		编号			PC_
+COST_DATE     	日期
+COST_DETAIL     成本明细
+COST_AMOUNT		金额
+COST_TYPE		类别
+COST_REMARK	          备注
+PROJECT_ID		关联项目编号
+
+
+十二、
+项目关联付款表  project_pay			
+PAY_ID     	主键
+PAY_NUM  		编号			PP_
+PAY_DATE     	日期
+PAY_AMOUNT		金额
+PAY_REMARK	          备注
+PROJECT_ID	关联项目编号
 
 

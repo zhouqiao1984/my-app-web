@@ -16,7 +16,7 @@ function initCardFundsList(){
 	 
 	//新建账户
 	 $page.find("button[name='addCard']").click(function(){
-		 closeAndOpenInnerPageTab("addCard","创建账户","pages/am/card_funds/card_add.html", function(){
+		 closeAndOpenInnerPageTab("addCard","创建账户","pages/account_manage/card_funds/card_add.html", function(){
 			 editCard(null);
 			});
 	 });
@@ -32,7 +32,7 @@ function initCardFundsList(){
 				alert("合计不能修改!");
 				return;
 			}
-		 closeAndOpenInnerPageTab("editCard","修改账户","pages/am/card_funds/card_add.html", function(){
+		 closeAndOpenInnerPageTab("editCard","修改账户","pages/account_manage/card_funds/card_add.html", function(){
 			 editCard(seles[0]);
 			});
 	 });
@@ -48,7 +48,7 @@ function initCardFundsList(){
 				alert("这是合计!");
 				return;
 			}
-		 closeAndOpenInnerPageTab("cardManage","账户明细管理","pages/am/card_funds/detail_List.html", function(){
+		 closeAndOpenInnerPageTab("cardManage","账户明细管理","pages/account_manage/card_funds/detail_List.html", function(){
 			 cardManage(seles[0]);
 			});
 	 });
@@ -214,7 +214,7 @@ function initCardFundsList(){
 	 
 	//新建其他款项
 	 $page.find("button[name='addOther']").click(function(){
-		 closeAndOpenInnerPageTab("addOther","新建款项","pages/am/other_funds/other_add.html", function(){
+		 closeAndOpenInnerPageTab("addOther","新建款项","pages/account_manage/other_funds/other_add.html", function(){
 			 editOther(null);
 			});
 	 });
@@ -230,7 +230,7 @@ function initCardFundsList(){
 				alert("合计你还想改!");
 				return;
 			}
-		 closeAndOpenInnerPageTab("editOther","修改款项","pages/am/other_funds/other_add.html", function(){
+		 closeAndOpenInnerPageTab("editOther","修改款项","pages/account_manage/other_funds/other_add.html", function(){
 			 editOther(seles[0]);
 			});
 	 });
@@ -246,7 +246,7 @@ function initCardFundsList(){
 				alert("这里没有明细管理!");
 				return;
 			}
-		 closeAndOpenInnerPageTab("otherManage","款项明细管理","pages/am/other_funds/otherDetail_List.html", function(){
+		 closeAndOpenInnerPageTab("otherManage","款项明细管理","pages/account_manage/other_funds/otherDetail_List.html", function(){
 			 otherManage(seles[0]);
 			});
 	 });

@@ -3,7 +3,8 @@
 <%
 		User user=(User)request.getSession().getAttribute("userinfo");
 		String user_name=user.getUserName();
-		String user_no = "001";
+		String login_name=user.getLoginName();
+		int user_id = user.getUserId();
 		
 %>
 <!DOCTYPE html>
@@ -48,7 +49,7 @@
 	<!--主页头部部分公共-->
 	<input type="hidden" value="" id="isCreate"/>
 	<input type="hidden" value="" id="currentLoginName"/>
-	<input type="hidden" value="<%=user_name%>" id="currentUserName"/>
+	<input type="hidden" value="<%=login_name%>" id="currentUserId"/>
 	<input type="hidden" value="" id="currentLoginNoOrg_no"/>
 	<input type="hidden" value="00" id="currentLoginskin"/>
 	<div class="main_header">
@@ -75,7 +76,12 @@
 			<div class="cgb-system-research" id="cgb-system-research" style="height: 216px;"></div>
 		</div>
 		<div class="ecitic-user-content">
-
+			<div class="user-ast"></div>
+				<div class="user-Info" >
+					<h2>姓名：<%=user_name %></h2>
+					<h2>用户名：<%=login_name %></h2>
+				</div>
+				<div class="clear"></div>
 		</div>
 		<div class="ecitic-change-skin theme">
 
@@ -133,7 +139,7 @@
 </body>
 </html>
 <script type="text/javascript">
-    var SID = $("#currentUserName").val();//全局变更SID
+    var LN_ID = $("#currentUserId").val();//全局变更SID
     var skinFlag = $("#currentLoginskin").val();//用户皮肤值;
     var lastPage="";//记录上次打开的页签
     var stopInterval=true;//停止计时器的标志

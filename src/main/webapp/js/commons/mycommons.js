@@ -21,10 +21,7 @@ function is_money($page,str){
 				if(money.indexOf('.') != -1 && money.length>12){//如果有小数点且大于12位数
 					return false;
 				}
-//				var n=(money.split('.')).length-1;
-//				if(n>1){
-//					return false;
-//				}
+
 			}
 			
 		}
@@ -40,4 +37,21 @@ function is_money($page,str){
 		}
  	}
  	return true;
+}
+
+
+
+/*
+ * $page 页面对象
+ * 
+ * str 验证密码格式
+ * 
+ * */
+
+function is_password(str){
+ 	var reg=/^[a-zA-Z0-9]{3,8}$/;
+ 	if(reg.test(str)){
+ 		return true;
+ 	}
+ 	return false;
 }

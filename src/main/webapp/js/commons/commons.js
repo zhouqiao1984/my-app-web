@@ -140,6 +140,28 @@ function baseAjaxJsonp(url, param, callback,method, async) {
 	   D = d.getDate();        // 获取日。
 	   return y+'-'+(m<10?"0":"")+m+'-'+(D<10?"0":"")+D;
 	}
+	
+	/**
+	 * 获取当前的年月日时分秒
+	 * @returns {String}
+	 */
+	function getCurrentYMDHMS() {
+	    var date = new Date();
+	    var seperator1 = "-";
+	    var seperator2 = ":";
+	    var month = date.getMonth() + 1;
+	    var strDate = date.getDate();
+	    if (month >= 1 && month <= 9) {
+	        month = "0" + month;
+	    }
+	    if (strDate >= 0 && strDate <= 9) {
+	        strDate = "0" + strDate;
+	    }
+	    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+	            + " " + date.getHours() + seperator2 + date.getMinutes()
+	            + seperator2 + date.getSeconds();
+	    return currentdate;
+	}
 /**
  * 根据URl设置下拉框数据
  * @param obj $("#id")
@@ -704,7 +726,7 @@ function initSelectByData(obj,show,data,default_v,arr){
 				$(this).parent().append('<div  id="'+uuid+'"  class="tag-content" >'+'请填写数字，保留两位小数'+'</div>');
 				result=false;
 			}//验证为必填项且字符数小于500;
-			else if(form.attr("validate")=="v.charCountLimit"&&formVal==""||(form.val().length>500)){
+			else if(form.attr("validate")=="v.charCountLimit"&&formVal==""||(form.val().length>1200)){
 				$(this).parent().append('<div  id="'+uuid+'"  class="tag-content" >'+'描述信息为必填项且字数不可大于500! 当前字数：'+form.val().length+'</div>'); //然后将它追加到文档中
 				result=false;
 			}//验证为必填项且字符数;
@@ -745,7 +767,7 @@ function hideVlidate(){
  * 去登录页面
  */
 function toLoginPage(){
-	baseAjax("logout.asp", {}, function(){});
+	//baseAjax("logout.asp", {}, function(){});
 	window.location="login.html";
 	//window.parent.reLog();
 }
@@ -774,6 +796,7 @@ var isloginTip=false;
                 fn.error(XMLHttpRequest, textStatus, errorThrown);  
             },  
             success:function(data, textStatus){
+            	//debugger;
             	if(data!=null&&("object"== typeof data&&data["logintimeout"]==true&&isloginTip==false)){
             		isloginTip=true;
             		nconfirm("登录超时,请重新登录!",function(){
@@ -1154,30 +1177,7 @@ function initAttentTaskEvent(){
         });
     };
 })(jQuery);
-/**
- * POP框垂直居中
- */
-/*function initModal(){
-	var ModalMarginTop=-$(".modal").outerHeight()/2;
-	var ModalMarginLeft=-$(".modal").outerWidth()/2;
-	document.getElementById($(".modal").attr("id")).style.marginTop=ModalMarginTop+"px";
-	document.getElementById($(".modal").attr("id")).style.marginLeft=ModalMarginLeft+"px";
-}*/
 
-//查询条件隐藏显示
-/*$(document).on("click",".ecitic-more",function(){
-	var EciticInquire=getCurrentPageObj().find("#ecitic-inquire");
-	var EciticTable=getCurrentPageObj().find("#ecitic-table");
-	if($(this).is(".open")){
-		$(this).removeClass("open");
-		EciticInquire.css({"height":"95px"});
-		EciticTable.css({"height":"95px"});
-	}else{
-		$(this).addClass("open");
-		EciticInquire.css({"height":"145px"});
-		EciticTable.css({"height":"145px"});
-	}
-});*/
 
 $(".ecitic-more").click(function(){
 	var EciticInquire=document.getElementById("ecitic-inquire");
@@ -1516,20 +1516,119 @@ function initMoreSelect(obj,show,param,default_v,preStr){
 		}
 	});
 }
+//时间比较
+function checkTimeSupCompare_common(startTimeId,endTimeId){
+	WdatePicker({onpicked:function(){
+		var check_starttime = getCurrentPageObj().find("#"+startTimeId).val();
+		var check_endtime = getCurrentPageObj().find("#"+endTimeId).val();
+		if(check_starttime!=""&&check_endtime!=""){
+			if(check_starttime>check_endtime){
+				alert('开始时间不能大于结束时间!',function(){
+					getCurrentPageObj().find("#"+startTimeId).val("");
+					getCurrentPageObj().find("#"+endTimeId).val("");
+				});
+			}
+		}
+	}});
+}
 
+/**
+ * 定义树的常用回调事件
+ * @param $ztreeObj
+ * @param data
+ * @param beforeClickFun
+ * @param onClickFun
+ * @param beforeCheckFun
+ * @param onCheckFun
+ * @param beforeDbClickFun
+ * @param onDbClickFu
+ * @returns treeObj
+ */
+function iniZtreeByDataAndClickFun($treeObj, data, beforeClickFun, onClickFun, beforeCheckFun, onCheckFun, beforeDbClickFun, onDbClickFu){
+	var callFun = {
+		beforeClick : beforeClickFun,
+		onClick : onClickFun,
+		beforeCheck : beforeCheckFun,
+		onCheck : onCheckFun,
+		beforeDbClick : beforeDbClickFun,
+		onDbClick : onDbClickFu
+	};
+	return initZtreeByDataWithCall($treeObj, data, callFun);
+}
 
+/**
+ * z-tree数据初始化(无配置)
+ * @param $treeObj
+ * @param data
+ * @param callFun
+ */
+function initZtreeByDataWithCall($treeObj, data, callFun){
+	var setting = {
+		view : {
+			showIcon : true
+		},
+		check : {
+			enable : false,
+			chkStyle : "checkbox",
+			radioType : "level"
+		},
+		data : {
+			simpleData : {
+				enable : true,
+				idKey : "id",
+				pIdKey : "pid",
+				rootPId : ""
+			}
+		},
+		callback : callFun
+	};
+	return doInitZtreeByData($treeObj, data, setting);
+}
 
-///////////////////////////////
-//跨域请求url配置说明
-///////////////////////////////192.168.1.109
-//跨域请求url配置说明
-var dev_report ="http://localhost:8080/dev_report/";//报表及监控管理
-var dev_workbench="http://localhost:8042/dev_workbench/";//督办及工作台管理
-var dev_construction="http://localhost:8022/dev_construction/";//工程管理
-var dev_background="http://localhost:8012/dev_background/";//后台管理
-var dev_planwork="http://localhost:8083/dev_planwork/";//计划及报工管理
-var dev_project="http://localhost:8052/dev_project/";//项目管理
-var dev_application="http://localhost:8012/dev_application/";//应用及工单管理83
-var dev_comprehensive="http://localhost:8090/dev_comprehensive/";//综合管理
-var dev_resource="http://localhost:8062/dev_resource/";//资源管理
+/**
+ * z-tree跨域数据ztree加载
+ * @param $treeObj
+ * @param data
+ * @param setting
+ */
+function doInitZtreeByData($treeObj, data, setting){
+	return $.fn.zTree.init($treeObj, setting, data);
+}
+
+/**
+ * z-tree下拉菜单跨域数据加载
+ */
+function openSelectTreeDivByDataToBody(clickObj, treeId, data, topY, onClickFun){
+	var offset=clickObj.offset();
+	var left=offset.left;
+	var top=offset.top+topY;
+	if($("#"+treeId).length<=0){
+		$("body:eq(0)").append('<div id="'+treeId+'" style="top:'+top+'px;left:'+left+'px;z-index:10;" class="org_select_tree ztree"></div>');
+	}else{
+		$("#"+treeId).css({top:top,left:left});
+	}
+	$("#"+treeId).css({"width":clickObj.width()});
+	
+	var isvisable=true;
+	$("#"+treeId).unbind("click").click(function(){
+		isvisable=false;
+	});
+	
+	$("body:eq(0)").unbind("click").click(function(e){
+		if(isvisable){
+			$("#"+treeId).hide();
+			$("#"+treeId).remove();
+		}
+		isvisable=true;
+
+	});
+	
+	onClickFunB = function(event, treeId, treeNode){
+		if(onClickFun!=null){
+			onClickFun(treeNode);
+			$("#"+treeId).hide();
+		}
+	};
+	return iniZtreeByDataAndClickFun($("#"+treeId), data, null, onClickFunB);
+}
 

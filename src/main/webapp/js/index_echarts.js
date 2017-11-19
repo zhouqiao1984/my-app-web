@@ -1,4 +1,4 @@
-var SID1=window.parent.SID;
+var SID1=window.parent.LN_ID;
 // 基于准备好的dom，初始化echarts图表
 /*		 
 		var requirement_echarts = echarts.init(document.getElementById('requirement_echarts'));

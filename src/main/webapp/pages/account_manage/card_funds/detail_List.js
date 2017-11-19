@@ -40,7 +40,7 @@ function cardManage(item){
 	
 	//新增收支明细
 	 $page.find("button[name='addDetail']").click(function(){
-		 closeAndOpenInnerPageTab("addDetail","新增收支明细","pages/am/card_funds/detail_edit.html", function(){
+		 closeAndOpenInnerPageTab("addDetail","新增收支明细","pages/account_manage/card_funds/detail_edit.html", function(){
 			 editDetail(null,card_id);
 			});
 	 });
@@ -52,7 +52,7 @@ function cardManage(item){
 					alert("请选择一条数据进行修改!");
 					return;
 			}
-		 closeAndOpenInnerPageTab("editDetail","修改","pages/am/card_funds/detail_edit.html", function(){
+		 closeAndOpenInnerPageTab("editDetail","修改","pages/account_manage/card_funds/detail_edit.html", function(){
 			 editDetail(seles[0],card_id);
 			});
 	 });
@@ -78,7 +78,7 @@ function cardManage(item){
 	 
 	//查看类别统计表
 	 $page.find("button[name='checkDetail']").click(function(){
-		 closeAndOpenInnerPageTab("checkDetail","类别统计表","pages/am/card_funds/classType_statistic.html", function(){
+		 closeAndOpenInnerPageTab("checkDetail","类别统计表","pages/account_manage/card_funds/classType_statistic.html", function(){
 			 initStatistic(card_id,card_name);
 			});
 	 });

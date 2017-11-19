@@ -27,7 +27,7 @@
 				</colgroup>
                 <tr>
                 	<td class="table-text">日期：</td>
-                    <td ><input type="text" name="D.DETAIL_DATE" onFocus="WdatePicker({})" placeHolder="点击选择" readonly></td>
+                    <td ><input type="text" name="D.DETAIL_DATE" onFocus="WdatePicker({maxDate:new Date()})" placeHolder="点击选择" readonly></td>
                     <td class="table-text">金额：</td>
                     <td ><input type="text" name="D.AMOUNT" class="requirement-ele-width" validate="v.required" valititle="该项为必填项" varify="is_money"></td>
                 	<td class="table-text">收支类型：</td>
@@ -84,5 +84,5 @@
 <script src="bootstrap/js/bootstrap-table.min.js"></script>
 <script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
 <script src="js/commons/mycommons.js"></script>
-<script src="pages/am/card_funds/detail_edit.js"></script>
+<script src="pages/account_manage/card_funds/detail_edit.js"></script>
 </html>

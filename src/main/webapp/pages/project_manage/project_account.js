@@ -17,8 +17,52 @@ function editAccount(item){
 	initInputInvoiceSTable();//初始化进项发票(专票)金额表	
 	initMemoTable();//初始化项目备忘录表
 	initButton();//初始化按钮
-	//新增甲方付款
+	
+	
+	//初始化项目信息
+	function initProjectInfo(){
+		for(var k in item){
+		
+			$page.find("[name='P."+ k +"']").val(item[k]);
+		}
+	}
+	
+/*************************  甲方付款   *************************/	
+	//新增甲方甲方付款
+	$page.find("[btn='addFirstPay']").unbind('click');
 	$page.find("[btn='addFirstPay']").click(function(){
+		$page.find("[name^='F.']").val('');
+		$page.find("#first_modal").modal('show');
+		$page.find("[name='F.OPT_TYPE']").val('add');
+	});	
+	
+	//修改甲方付款
+	$page.find("[btn='editFirstPay']").unbind('click');
+	$page.find("[btn='editFirstPay']").click(function(){
+		var seles = $fp_table.bootstrapTable("getSelections");
+		if(seles.length!=1){
+				alert("请选择一条记录!");
+				return;
+		}
+		if(seles[0].PROJECT_ID == '00'){
+			alert("合计项不能执行修改操作");
+			return;
+		}
+		$page.find("[name^='F.']").val('');
+		$page.find("#first_modal").modal('show');
+		for(var k in seles[0]){
+			$page.find("[name='F."+k+"']").val(seles[0][k]);
+		}
+		
+		$page.find("[name='F.OPT_TYPE']").val('edit');
+	});	
+	
+	
+	
+	
+	//保存甲方付款
+	$page.find("[btn='first_save']").unbind('click');
+	$page.find("[btn='first_save']").click(function(){
 		var params = getPageParam("F");
 		if("" == params.PAYDATE || "点击选择" == params.PAYDATE){
 			alert("请选择付款日期");
@@ -33,13 +77,14 @@ function editAccount(item){
 		baseAjaxJsonp('project/addFirstPayment.asp?PROJECT_ID='+project_id + "&call=" + fCall, params, function(data) {
 			if(data && data.result=="true"){
 				alert(data.msg);
-				$page.find("input[name^='F.']").val('');
+				$page.find("[name^='F.']").val('');
 				refreshFirstPayment();
 			}else{
 				alert(data.msg);
 				
 			}
 		},fCall,false);
+		$page.find("#first_modal").modal('hide');
 	});
 	
 	//删除甲方付款
@@ -71,8 +116,44 @@ function editAccount(item){
 		 
 	 });
 	 
+	//刷新甲方付款表
+	function refreshFirstPayment(){
+		$fp_table.bootstrapTable('refresh',{
+					url:'project/queryFirstpayment.asp?PROJECT_ID='+project_id+'&call=firstpayment'});
+	}
+/*************************  甲方开发票金额   *************************/	 
 	//新增甲方开发票金额
+	$page.find("[btn='addOutInvoice']").unbind('click');
 	$page.find("[btn='addOutInvoice']").click(function(){
+		$page.find("[name^='O.']").val('');
+		$page.find("#out_modal").modal('show');
+		$page.find("[name='O.OPT_TYPE']").val('add');
+	});	
+	
+	//修改甲方开发票金额
+	$page.find("[btn='editOutInvoice']").unbind('click');
+	$page.find("[btn='editOutInvoice']").click(function(){
+		var seles = $oi_table.bootstrapTable("getSelections");
+		if(seles.length!=1){
+				alert("请选择一条记录!");
+				return;
+		}
+		if(seles[0].PROJECT_ID == '00'){
+			alert("合计项不能执行修改操作");
+			return;
+		}
+		$page.find("[name^='O.']").val('');
+		$page.find("#out_modal").modal('show');
+		for(var k in seles[0]){
+			$page.find("[name='O."+k+"']").val(seles[0][k]);
+		}
+		
+		$page.find("[name='O.OPT_TYPE']").val('edit');
+	});	
+	
+	//保存甲方开发票金额
+	$page.find("[btn='out_save']").unbind('click');
+	$page.find("[btn='out_save']").click(function(){
 		var params = getPageParam("O");
 		if("" == params.PAYDATE || "点击选择" == params.PAYDATE){
 			alert("请选择开发票日期");
@@ -87,14 +168,14 @@ function editAccount(item){
 		baseAjaxJsonp('project/addOutInvoice.asp?PROJECT_ID='+project_id + "&call=" + oCall, params, function(data) {
 			if(data && data.result=="true"){
 				alert(data.msg);
-				$page.find("input[name^='O.']").val('');
+				$page.find("[name^='O.']").val('');
 				refreshOutInvoice();
 			}else{
 				alert(data.msg);
 				
 			}
 		},oCall,false);
-		
+		$page.find("#out_modal").modal('hide');
 	});
 	
 
@@ -117,7 +198,7 @@ function editAccount(item){
 				baseAjaxJsonp('project/delRecord.asp?call=' + doCall, params, function(data) {
 					if(data && data.result=="true"){
 						alert(data.msg);
-						$page.find("input[name^='O.']").val('');
+						$page.find("[name^='O.']").val('');
 						refreshOutInvoice();
 					}else{
 						alert(data.msg);
@@ -128,8 +209,137 @@ function editAccount(item){
 		 
 	 });
 	
+	//刷新开发票金额
+	function refreshOutInvoice(){
+		$oi_table.bootstrapTable('refresh',{
+					url:'project/queryOutinvoice.asp?PROJECT_ID='+project_id+'&call=outinvoice'});
+	}
+/*************************  进项发票(专票)   *************************/ 
+	 	//新增进项发票(专票)
+		$page.find("[btn='addInputInvoiceS']").unbind('click');
+		$page.find("[btn='addInputInvoiceS']").click(function(){
+			$page.find("[name^='S.']").val('');
+			$page.find("#inputs_modal").modal('show');
+			$page.find("[name='S.OPT_TYPE']").val('add');
+		});	
+		
+		//修改进项发票(专票)
+		$page.find("[btn='editInputInvoiceS']").unbind('click');
+		$page.find("[btn='editInputInvoiceS']").click(function(){
+			var seles = $ss_table.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一条记录!");
+					return;
+			}
+			if(seles[0].PROJECT_ID == '00'){
+				alert("合计项不能执行修改操作");
+				return;
+			}
+			$page.find("[name^='S.']").val('');
+			$page.find("#inputs_modal").modal('show');
+			for(var k in seles[0]){
+				$page.find("[name='S."+k+"']").val(seles[0][k]);
+			}
+			
+			$page.find("[name='S.OPT_TYPE']").val('edit');
+		});	
+		
+		//保存进项发票(专票)		
+		$page.find("[btn='inputs_save']").unbind('click');
+		$page.find("[btn='inputs_save']").click(function(){
+			var params = getPageParam("S");
+			if("" == params.PAYDATE || "点击选择" == params.PAYDATE){
+				alert("请选择进项发票(专用)的日期");
+				return;
+			}
+			var $valiObj = $page.find("#inputs_tab");
+			if(!is_money($valiObj)){
+				alert('金额输入格式有误');
+				return;
+			}
+			var iCall = getMillisecond();
+			baseAjaxJsonp('project/addInputInvoices.asp?PROJECT_ID='+project_id + "&call=" + iCall, params, function(data) {
+				if(data && data.result=="true"){
+					alert(data.msg);
+					$page.find("[name^='S.']").val('');
+					refreshInputInvoiceS();
+				}else{
+					alert(data.msg);
+					
+				}
+			},iCall,false);
+			$page.find("#inputs_modal").modal('hide');
+		}); 
+	 
+		//删除进项发票(专票)
+		 $page.find("[btn='delInputInvoiceS']").click(function(){
+				var seles = $ss_table.bootstrapTable("getSelections");
+				if(seles.length!=1){
+						alert("请选择一条开发票记录删除!");
+						return;
+				}
+				if(seles[0].PROJECT_ID == '00'){
+					alert("合计项不能执行删除操作");
+					return;
+				}
+				nconfirm("确定删除该进项发票(专用)的记录?",function(){
+					var diCall = getMillisecond();
+					var params = {};
+					params.DEL_ID = seles[0].INPUT_ID;
+					params.TYPE = 'special';
+					baseAjaxJsonp('project/delRecord.asp?call=' + diCall, params, function(data) {
+						if(data && data.result=="true"){
+							alert(data.msg);
+							$page.find("[name^='S.']").val('');
+							refreshInputInvoiceS();
+						}else{
+							alert(data.msg);
+							
+						}
+					},diCall,false);
+				});
+			 
+		 });
+		 
+		//刷新进项发票(专票)
+		function refreshInputInvoiceS(){
+			$ss_table.bootstrapTable('refresh',{
+						url:'project/queryInputinvoices.asp?PROJECT_ID='+project_id+'&call=inputinvoices'});
+		}
+		 
+/*************************  进项发票(普票)   *************************/ 	
 	//新增进项发票(普票)
+	$page.find("[btn='addInputInvoice']").unbind('click');
 	$page.find("[btn='addInputInvoice']").click(function(){
+		$page.find("[name^='I.']").val('');
+		$page.find("#input_modal").modal('show');
+		$page.find("[name='I.OPT_TYPE']").val('add');
+	});	
+	
+	//修改进项发票(普票)
+	$page.find("[btn='editInputInvoice']").unbind('click');
+	$page.find("[btn='editInputInvoice']").click(function(){
+		var seles = $ii_table.bootstrapTable("getSelections");
+		if(seles.length!=1){
+				alert("请选择一条记录!");
+				return;
+		}
+		if(seles[0].PROJECT_ID == '00'){
+			alert("合计项不能执行修改操作");
+			return;
+		}
+		$page.find("[name^='I.']").val('');
+		$page.find("#input_modal").modal('show');
+		for(var k in seles[0]){
+			$page.find("[name='I."+k+"']").val(seles[0][k]);
+		}
+		
+		$page.find("[name='I.OPT_TYPE']").val('edit');
+	});	
+	
+	//保存进项发票(普票)
+	$page.find("[btn='input_save']").unbind('click');
+	$page.find("[btn='input_save']").click(function(){
 		var params = getPageParam("I");
 		if("" == params.PAYDATE || "点击选择" == params.PAYDATE){
 			alert("请选择新增进项发票(普通)的日期");
@@ -144,14 +354,13 @@ function editAccount(item){
 		baseAjaxJsonp('project/addInputInvoice.asp?PROJECT_ID='+project_id + "&call=" + iCall, params, function(data) {
 			if(data && data.result=="true"){
 				alert(data.msg);
-				$page.find("input[name^='I.']").val('');
+				$page.find("[name^='I.']").val('');
 				refreshInputInvoice();
 			}else{
 				alert(data.msg);
-				
 			}
 		},iCall,false);
-		
+		$page.find("#input_modal").modal('hide');
 	});
 	
 	//删除进项发票(普票)
@@ -173,7 +382,7 @@ function editAccount(item){
 				baseAjaxJsonp('project/delRecord.asp?call=' + diCall, params, function(data) {
 					if(data && data.result=="true"){
 						alert(data.msg);
-						$page.find("input[name^='I.']").val('');
+						$page.find("[name^='I.']").val('');
 						refreshInputInvoice();
 					}else{
 						alert(data.msg);
@@ -184,95 +393,15 @@ function editAccount(item){
 		 
 	 });
 
-	//新增进项发票(专票)
-		$page.find("[btn='addInputInvoiceS']").click(function(){
-			var params = getPageParam("S");
-			if("" == params.PAYDATE || "点击选择" == params.PAYDATE){
-				alert("请选择进项发票(专用)的日期");
-				return;
-			}
-			var $valiObj = $page.find("#inputs_tab");
-			if(!is_money($valiObj)){
-				alert('金额输入格式有误');
-				return;
-			}
-			var iCall = getMillisecond();
-			baseAjaxJsonp('project/addInputInvoices.asp?PROJECT_ID='+project_id + "&call=" + iCall, params, function(data) {
-				if(data && data.result=="true"){
-					alert(data.msg);
-					$page.find("input[name^='S.']").val('');
-					refreshInputInvoiceS();
-				}else{
-					alert(data.msg);
-					
-				}
-			},iCall,false);
-			
-		});
-		
-		//删除进项发票(专票)
-		 $page.find("[btn='delInputInvoiceS']").click(function(){
-				var seles = $ss_table.bootstrapTable("getSelections");
-				if(seles.length!=1){
-						alert("请选择一条开发票记录删除!");
-						return;
-				}
-				if(seles[0].PROJECT_ID == '00'){
-					alert("合计项不能执行删除操作");
-					return;
-				}
-				nconfirm("确定删除该进项发票(专用)的记录?",function(){
-					var diCall = getMillisecond();
-					var params = {};
-					params.DEL_ID = seles[0].INPUT_ID;
-					params.TYPE = 'special';
-					baseAjaxJsonp('project/delRecord.asp?call=' + diCall, params, function(data) {
-						if(data && data.result=="true"){
-							alert(data.msg);
-							$page.find("input[name^='S.']").val('');
-							refreshInputInvoiceS();
-						}else{
-							alert(data.msg);
-							
-						}
-					},diCall,false);
-				});
-			 
-		 });
-	 
-	 
-	//初始化信息
-	function initProjectInfo(){
-		for(var k in item){
-		
-			$page.find("[name='P."+ k +"']").val(item[k]);
-		}
-	}
-	
-	//刷新甲方付款表
-	function refreshFirstPayment(){
-		$fp_table.bootstrapTable('refresh',{
-					url:'project/queryFirstpayment.asp?PROJECT_ID='+project_id+'&call=firstpayment'});
-	}
-	
-	//刷新开发票金额
-	function refreshOutInvoice(){
-		$oi_table.bootstrapTable('refresh',{
-					url:'project/queryOutinvoice.asp?PROJECT_ID='+project_id+'&call=outinvoice'});
-	}
-	
-	
 	//刷新进项发票(普票)
 	function refreshInputInvoice(){
 		$ii_table.bootstrapTable('refresh',{
 					url:'project/queryInputinvoice.asp?PROJECT_ID='+project_id+'&call=inputinvoice'});
 	}
+	 
+/**************************************************/ 	
 	
-	//刷新进项发票(专票)
-	function refreshInputInvoiceS(){
-		$ss_table.bootstrapTable('refresh',{
-					url:'project/queryInputinvoices.asp?PROJECT_ID='+project_id+'&call=inputinvoices'});
-	}
+
 	
 	//初始化甲方付款表
 	function initFirstPaymentTable() {

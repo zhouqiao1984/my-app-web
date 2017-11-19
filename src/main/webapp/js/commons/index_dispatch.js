@@ -10,6 +10,60 @@ var menuData={};
 
 var menuLevel1="level1";//一级菜单key
 
+
+function initMenu(){
+//	$.ajax({
+//		type : "post",
+//		url : "user/usermenu.asp",
+//		data : {},
+//		async:false,
+//		dataType : "json",
+//		success : function(msg) {
+//			if(msg==undefined||msg.level1==undefined){
+//				alert("用户权限数据异常");
+//			}else{
+	
+	var msg = {
+			"level1":[{"MENU_NAME":"首页","ORDER_ID":"00","MENU_NO":"homepage","MENU_ICON":"001.icon","MENU_LEVEL":"0"},
+			{"MENU_NAME":"企航项目管理系统","ORDER_ID":"01","MENU_NO":"engineer_manager","MENU_ICON":"img/project_01.png","MENU_LEVEL":"0"}],
+			"engineer_manager":[
+			{"MENU_NAME":"项目管理","ORDER_ID":"00","SUPMENU_NO":"engineer_manager","MENU_NO":"project_manage","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"1"},
+			{"MENU_NAME":"项目信息及发票管理","ORDER_ID":"01","SUPMENU_NO":"project_manage","MENU_URL":"pages/project_manage/myProject_List.html","MENU_NO":"project_info","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"},
+			{"MENU_NAME":"项目成本管理","ORDER_ID":"02","SUPMENU_NO":"project_manage","MENU_URL":"pages/project_manage/cost_manage/projectCost_List.html","MENU_NO":"project_cost","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"},
+			{"MENU_NAME":"项目付款管理","ORDER_ID":"03","SUPMENU_NO":"project_manage","MENU_URL":"pages/project_manage/pay_manage/projectPay_List.html","MENU_NO":"project_pay","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"},
+			
+			{"MENU_NAME":"账户管理","ORDER_ID":"01","SUPMENU_NO":"engineer_manager","MENU_NO":"account_manage","MENU_ICON":"img/icon/582766.png","MENU_LEVEL":"1"},
+			{"MENU_NAME":"账户及款项管理","ORDER_ID":"1","SUPMENU_NO":"account_manage","MENU_URL":"pages/account_manage/cardFunds_List.html","MENU_NO":"card_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"},
+			
+			{"MENU_NAME":"公司记事","ORDER_ID":"02","SUPMENU_NO":"engineer_manager","MENU_NO":"company_record","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"1"},
+			{"MENU_NAME":"备忘录","ORDER_ID":"1","SUPMENU_NO":"company_record","MENU_URL":"pages/company_record/record_List.html","MENU_NO":"my_record","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"2"},
+			
+			{"MENU_NAME":"系统管理","ORDER_ID":"03","SUPMENU_NO":"engineer_manager","MENU_NO":"system_manage","MENU_ICON":"img/icon/582766.png","MENU_LEVEL":"1"},
+			{"MENU_NAME":"用户管理","ORDER_ID":"1","SUPMENU_NO":"system_manage","MENU_URL":"pages/system_manage/user_manage/user_List.html","MENU_NO":"user_manage","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"}
+			],
+			"homepage":[{"MENU_NAME":"首页1","ORDER_ID":"00","SUPMENU_NO":"homepage","MENU_URL":"indexC.html","MENU_NO":"index","MENU_LEVEL":"1"}]
+			};
+
+				initMasterMenu(msg[menuLevel1],msg);
+				ResearchSystem();
+//			}
+//		},
+//		error : function() {
+//			alert("用户权限数据异常");
+//		}
+//	});
+}
+
+
+
+
+
+
+
+
+
+
+
 /**
  * 初始化主菜单
  * @param level1
@@ -155,49 +209,6 @@ function initLeftMenu(leftMenu){
 //		}
 //	});
 //}
-function initMenu(){
-//	$.ajax({
-//		type : "post",
-//		url : "user/usermenu.asp",
-//		data : {},
-//		async:false,
-//		dataType : "json",
-//		success : function(msg) {
-//			if(msg==undefined||msg.level1==undefined){
-//				alert("用户权限数据异常");
-//			}else{
-	
-	var msg = {
-			"level1":[{"MENU_NAME":"首页","ORDER_ID":"00","MENU_NO":"homepage","MENU_ICON":"001.icon","MENU_LEVEL":"0"},
-			{"MENU_NAME":"企航项目管理系统","ORDER_ID":"01","MENU_NO":"engineer_manager","MENU_ICON":"img/project_01.png","MENU_LEVEL":"0"}],
-			"engineer_manager":[
-			{"MENU_NAME":"我的项目","ORDER_ID":"00","SUPMENU_NO":"engineer_manager","MENU_NO":"my_project","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"1"},
-			{"MENU_NAME":"项目管理","ORDER_ID":"1","SUPMENU_NO":"my_project","MENU_URL":"pages/pm/myProject_List.html","MENU_NO":"project_manage","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"},
-			{"MENU_NAME":"我的账簿","ORDER_ID":"01","SUPMENU_NO":"engineer_manager","MENU_NO":"my_account","MENU_ICON":"img/icon/582766.png","MENU_LEVEL":"1"},
-			{"MENU_NAME":"账簿管理","ORDER_ID":"1","SUPMENU_NO":"my_account","MENU_URL":"pages/am/cardFunds_List.html","MENU_NO":"card_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"}
-			//{"MENU_NAME":"工程款及其它","ORDER_ID":"2","SUPMENU_NO":"my_account","MENU_URL":"pages/am/project_funds/projectFunds_List.html","MENU_NO":"project_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"}
-			],
-			//"level2":[
-			//{"MENU_NAME":"项目管理","ORDER_ID":"00","SUPMENU_NO":"engineer_manager","MENU_NO":"my_project","MENU_ICON":"img/project_01.png","MENU_LEVEL":"1"},
-			//{"MENU_NAME":"系统管理","ORDER_ID":"00","SUPMENU_NO":"engineer_manager","MENU_NO":"system_manager","MENU_ICON":"img/nav/nav54.png","MENU_LEVEL":"1"},
-			//{"MENU_NAME":"首页1","ORDER_ID":"00","SUPMENU_NO":"homepage","MENU_URL":"indexC.html","MENU_NO":"index","MENU_LEVEL":"1"}
-			//],
-			//"peoject_manager_2":[
-			//{"MENU_NAME":"项目管理","ORDER_ID":"1","SUPMENU_NO":"my_project","MENU_URL":"pages/pm/myProject_List.html","MENU_NO":"project_manage","MENU_ICON":"img/project_01.png","MENU_LEVEL":"2"}
-			//{"MENU_NAME":"项目查询","ORDER_ID":"1","SUPMENU_NO":"peoject_manager","MENU_URL":"pages/pm/project_add.html","MENU_NO":"query_project","MENU_ICON":"img/nav/nav50.png","MENU_LEVEL":"2"}
-			//],
-			"homepage":[{"MENU_NAME":"首页1","ORDER_ID":"00","SUPMENU_NO":"homepage","MENU_URL":"indexC.html","MENU_NO":"index","MENU_LEVEL":"1"}]
-			};
-
-				initMasterMenu(msg[menuLevel1],msg);
-				ResearchSystem();
-//			}
-//		},
-//		error : function() {
-//			alert("用户权限数据异常");
-//		}
-//	});
-}
 
 $(".btn_close").click(function(){
 	$.ajax({
