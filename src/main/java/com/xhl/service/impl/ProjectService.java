@@ -81,6 +81,8 @@ public class ProjectService implements IProjectService{
 				String project_num = "PJ_" + DateTimeUtils.getNumber();
 				pmap.put("PROJECT_NUM", project_num);
 				pmap.put("PROJECT_STATE", "00");//执行中
+				pmap.put("COST_STATE", "00");//执行中
+				pmap.put("PAY_STATE", "00");//执行中
 				projectDao.addProject(pmap);
 			}
 			//修改项目
@@ -439,20 +441,6 @@ public class ProjectService implements IProjectService{
 		}
 		
 		try{
-			String type = pmap.get("TYPE");
-			pmap.put("PROJECT_STATE", "");
-			if(type.equals("close")){//关闭
-				pmap.put("PROJECT_STATE", "01");
-			}
-			if(type.equals("open")){//打开
-				pmap.put("PROJECT_STATE", "00");
-			}
-			if(type.equals("del")){//删除
-				pmap.put("PROJECT_STATE", "02");
-			}
-			if(type.equals("recover")){//恢复项目
-				pmap.put("PROJECT_STATE", "01");
-			}
 			projectDao.closeProject(pmap);
 			resultMap.put("msg", "操作成功");
 			resultMap.put("result", "true");
@@ -547,7 +535,7 @@ public class ProjectService implements IProjectService{
 	@Override
 	public Map<String, Object> queryCost(HttpServletRequest request) {
 		String[] must = new String[]{"limit","offset"};
-		String[] nomust = new String[]{};
+		String[] nomust = new String[]{"PROJECT_NUM","PROJECT_NAME","COST_STATE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -558,7 +546,7 @@ public class ProjectService implements IProjectService{
 	
 		try {
 			//查询结果
-			List<Map<String, String>> lmap = projectDao.queryProject(pmap);
+			List<Map<String, String>> lmap = projectDao.queryCost(pmap);
 			resultMap.put("rows", MyUtil.getPaging(pmap, lmap));
 			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
 			return resultMap;
@@ -657,7 +645,7 @@ public class ProjectService implements IProjectService{
 	@Override
 	public Map<String, Object> queryPay(HttpServletRequest request) {
 		String[] must = new String[]{"limit","offset"};
-		String[] nomust = new String[]{};
+		String[] nomust = new String[]{"PROJECT_NUM","PROJECT_NAME","PAY_STATE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -668,7 +656,7 @@ public class ProjectService implements IProjectService{
 	
 		try {
 			//查询结果
-			List<Map<String, String>> lmap = projectDao.queryProject(pmap);
+			List<Map<String, String>> lmap = projectDao.queryPay(pmap);
 			resultMap.put("rows", MyUtil.getPaging(pmap, lmap));
 			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
 			return resultMap;

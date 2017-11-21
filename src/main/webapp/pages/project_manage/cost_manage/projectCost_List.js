@@ -18,7 +18,7 @@ function initCost(){
 	//查询按钮
 	 $page.find("[name='queryC']").click(function(){
 		 var param = formObj.serialize();
-		 pTable.bootstrapTable('refresh',{
+		 costTable.bootstrapTable('refresh',{
 				url:"project/queryCost.asp?call="+cCall+"&"+param});
 	 });
 	 
@@ -41,24 +41,24 @@ function initCost(){
 			});
 	 });
 	 
-	//关闭项目
-	 $page.find("[name='closeCost']").click(function(){
+	//关闭成本管理
+	 $page.find("[name='costClose']").click(function(){
 			var seles = costTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");
 					return;
 			}
-			if(seles[0].Cost_STATE != '00'){
-				alert("项目不在进行中!");
+			if(seles[0].COST_STATE != '00'){
+				alert("操作无效，项目成本管理已在完成状态!");
 				return;
 			}
-			var Cost_name = seles[0].Cost_NAME;
-			nconfirm("确定关闭项目:"+Cost_name+"?",function(){
+			var project_name = seles[0].PROJECT_NAME;
+			nconfirm("确定关闭项目:"+project_name+"的成本管理吗?",function(){
 				var dcCall = getMillisecond();
 				var params = {};
-				params.Cost_ID = seles[0].Cost_ID;
-				params.TYPE = 'close';
-				baseAjaxJsonp('Cost/closeCost.asp?call=' + dcCall, params, function(data) {
+				params.PROJECT_ID = seles[0].PROJECT_ID;
+				params.TYPE = 'closecost';
+				baseAjaxJsonp('project/closeProject.asp?call=' + dcCall, params, function(data) {
 					if(data && data.result=="true"){
 						alert(data.msg);
 						refreshCostTable();
@@ -70,24 +70,24 @@ function initCost(){
 		
 	 });
 	 
-		//打开项目
-	 $page.find("[name='openCost']").click(function(){
+		//打开成本管理
+	 $page.find("[name='costOpen']").click(function(){
 			var seles = costTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");
 					return;
 			}
-			if(seles[0].Cost_STATE != '01'){
-				alert("项目不在关闭状态!");
+			if(seles[0].COST_STATE != '01'){
+				alert("操作无效，项目成本管理尚未完成!");
 				return;
 			}
-			var Cost_name = seles[0].Cost_NAME;
-			nconfirm("确定重新打开项目:"+Cost_name+"?",function(){
+			var project_name = seles[0].PROJECT_NAME;
+			nconfirm("确定打开项目:"+project_name+"的成本管理吗?",function(){
 				var ocCall = getMillisecond();
 				var params = {};
-				params.Cost_ID = seles[0].Cost_ID;
-				params.TYPE = 'open';
-				baseAjaxJsonp('project/closeCost.asp?call=' + ocCall, params, function(data) {
+				params.PROJECT_ID = seles[0].PROJECT_ID;
+				params.TYPE = 'opencost';
+				baseAjaxJsonp('project/closeProject.asp?call=' + ocCall, params, function(data) {
 					if(data && data.result=="true"){
 						alert(data.msg);
 						refreshCostTable();
@@ -103,7 +103,7 @@ function initCost(){
 	 
 	//刷新项目列表
 		function refreshCostTable(){
-			pTable.bootstrapTable('refresh',{
+			costTable.bootstrapTable('refresh',{
 				url:'project/queryCost.asp?call='+cCall});
 			
 		}
@@ -118,7 +118,7 @@ function initCost(){
 				return temp;
 			};
 			costTable.bootstrapTable({
-				url : 'project/queryProject.asp?call='+ cCall,
+				url : 'project/queryCost.asp?call='+ cCall,
 				method : 'get', // 请求方式（*）
 				striped : false, // 是否显示行间隔色
 				cache : false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -151,30 +151,49 @@ function initCost(){
 							field : 'ORDER_ID',
 							title : '序号',
 							align : "center",
-							width : "6%",
+							width : "7%",
 							formatter:function(value,row,index){
 								return index + 1;
 							}
 						}, {
 							field : "PROJECT_NUM",
 							title : "项目编号",
-							width : "14%",
+							width : "18%",
 							align : "center"
 						}, {
 							field : "PROJECT_NAME",
 							title : "项目名称",
-							width : "30%",
+							width : "27%",
 							align : "center"
 						}, {
-							field : "PROJECT_EMPLOYER",
-							title : "发包商",
-							width : "30%",
+							field : "FINAL_TOTAL",
+							title : "决算金额",
+							width : "12%",
 							align : "center"
 						},{
-							field : "PROJECT_MANAGER",
-							title : "项目经理",
-							width : "10%",
+							field : "COST_SUM",
+							title : "成本",
+							width : "12%",
 							align : "center"
+						},{
+							field : "PROFIT",
+							title : "利润",
+							width : "12%",
+							align : "center",
+							formatter:function(value,row,index){
+								return row.FINAL_TOTAL - row.COST_SUM;
+							}
+						},{
+							field : "COST_STATE",
+							title : "状态",
+							width : "12%",
+							align : "center",
+							formatter:function(value,row,index){
+								var state = '';
+								if(value == '00'){state = '未完成'};
+								if(value == '01'){state = '已完成'};
+								return state;
+							}
 						}
 						]
 					});

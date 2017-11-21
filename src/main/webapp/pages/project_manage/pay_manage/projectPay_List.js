@@ -5,7 +5,7 @@ function initpay(){
 	var $page = getCurrentPageObj();//当前页
 	var payTable = $page.find("[tb='payTable']");
 	var formObj = $page.find("#payForm");//表单对象
-	var cCall = getMillisecond() + '0';
+	var payCall = getMillisecond() + '1';
 	initpayTable();//初始化列表
 	
 	//重置按钮
@@ -18,8 +18,8 @@ function initpay(){
 	//查询按钮
 	 $page.find("[name='queryP']").click(function(){
 		 var param = formObj.serialize();
-		 pTable.bootstrapTable('refresh',{
-				url:"project/queryPay.asp?call="+cCall+"&"+param});
+		 payTable.bootstrapTable('refresh',{
+				url:"project/queryPay.asp?call="+payCall+"&"+param});
 	 });
 	 
 
@@ -41,70 +41,70 @@ function initpay(){
 			});
 	 });
 	 
-	//关闭项目
-//	 $page.find("[name='closepay']").click(function(){
-//			var seles = payTable.bootstrapTable("getSelections");
-//			if(seles.length!=1){
-//					alert("请选择一个项目!");
-//					return;
-//			}
-//			if(seles[0].pay_STATE != '00'){
-//				alert("项目不在进行中!");
-//				return;
-//			}
-//			var pay_name = seles[0].PAY_NAME;
-//			nconfirm("确定关闭项目:"+pay_name+"?",function(){
-//				var dcCall = getMillisecond();
-//				var params = {};
-//				params.pay_ID = seles[0].pay_ID;
-//				params.TYPE = 'close';
-//				baseAjaxJsonp('pay/closepay.asp?call=' + dcCall, params, function(data) {
-//					if(data && data.result=="true"){
-//						alert(data.msg);
-//						refreshpayTable();
-//					}else{
-//						alert(data.msg);
-//					}
-//				},dcCall,false);
-//			});
-//		
-//	 });
+	//关闭成本管理
+	 $page.find("[name='payClose']").click(function(){
+			var seles = payTable.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一个项目!");
+					return;
+			}
+			if(seles[0].PAY_STATE != '00'){
+				alert("操作无效，该项目付款管理已在完成状态!");
+				return;
+			}
+			var project_name = seles[0].PROJECT_NAME;
+			nconfirm("确定关闭项目:"+project_name+"的付款管理吗?",function(){
+				var dpCall = getMillisecond();
+				var params = {};
+				params.PROJECT_ID = seles[0].PROJECT_ID;
+				params.TYPE = 'closepay';
+				baseAjaxJsonp('project/closeProject.asp?call=' + dpCall, params, function(data) {
+					if(data && data.result=="true"){
+						alert(data.msg);
+						refreshPayTable();
+					}else{
+						alert(data.msg);
+					}
+				},dpCall,false);
+			});
+		
+	 });
 	 
-		//打开项目
-//	 $page.find("[name='openpay']").click(function(){
-//			var seles = payTable.bootstrapTable("getSelections");
-//			if(seles.length!=1){
-//					alert("请选择一个项目!");
-//					return;
-//			}
-//			if(seles[0].pay_STATE != '01'){
-//				alert("项目不在关闭状态!");
-//				return;
-//			}
-//			var pay_name = seles[0].pay_NAME;
-//			nconfirm("确定重新打开项目:"+pay_name+"?",function(){
-//				var ocCall = getMillisecond();
-//				var params = {};
-//				params.pay_ID = seles[0].pay_ID;
-//				params.TYPE = 'open';
-//				baseAjaxJsonp('project/closepay.asp?call=' + ocCall, params, function(data) {
-//					if(data && data.result=="true"){
-//						alert(data.msg);
-//						refreshpayTable();
-//					}else{
-//						alert(data.msg);
-//					}
-//				},ocCall,false);
-//			});
-//		
-//	 });
+		//打开成本管理
+	 $page.find("[name='payOpen']").click(function(){
+			var seles = payTable.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一个项目!");
+					return;
+			}
+			if(seles[0].PAY_STATE != '01'){
+				alert("操作无效，项目付款管理尚未完成!");
+				return;
+			}
+			var project_name = seles[0].PROJECT_NAME;
+			nconfirm("确定打开项目:"+project_name+"的付款管理吗?",function(){
+				var opCall = getMillisecond();
+				var params = {};
+				params.PROJECT_ID = seles[0].PROJECT_ID;
+				params.TYPE = 'openpay';
+				baseAjaxJsonp('project/closeProject.asp?call=' + opCall, params, function(data) {
+					if(data && data.result=="true"){
+						alert(data.msg);
+						refreshPayTable();
+					}else{
+						alert(data.msg);
+					}
+				},opCall,false);
+			});
+		
+	 });
 	 
 	
 	 
 	//刷新项目列表
-		function refreshpayTable(){
-			pTable.bootstrapTable('refresh',{
-				url:'project/queryPay.asp?call='+cCall});
+		function refreshPayTable(){
+			payTable.bootstrapTable('refresh',{
+				url:'project/queryPay.asp?call='+payCall});
 			
 		}
 	//初始化项目表	
@@ -118,7 +118,7 @@ function initpay(){
 				return temp;
 			};
 			payTable.bootstrapTable({
-				url : 'project/queryProject.asp?call='+ cCall,
+				url : 'project/queryPay.asp?call='+ payCall,
 				method : 'get', // 请求方式（*）
 				striped : false, // 是否显示行间隔色
 				cache : false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -136,7 +136,7 @@ function initpay(){
 				cardView : false, // 是否显示详细视图
 				detailView : false, // 是否显示父子表
 				singleSelect : true,// 复选框单选
-				jsonpCallback: cCall,
+				jsonpCallback: payCall,
 						onLoadSuccess : function(data){
 							gaveInfo();
 						},onLoadError:function () {
@@ -151,30 +151,49 @@ function initpay(){
 							field : 'ORDER_ID',
 							title : '序号',
 							align : "center",
-							width : "6%",
+							width : "7%",
 							formatter:function(value,row,index){
 								return index + 1;
 							}
 						}, {
 							field : "PROJECT_NUM",
 							title : "项目编号",
-							width : "14%",
+							width : "18%",
 							align : "center"
 						}, {
 							field : "PROJECT_NAME",
 							title : "项目名称",
-							width : "30%",
+							width : "27%",
 							align : "center"
 						}, {
-							field : "PROJECT_EMPLOYER",
-							title : "发包商",
-							width : "30%",
+							field : "FINAL_TOTAL",
+							title : "决算金额",
+							width : "12%",
 							align : "center"
 						},{
-							field : "PROJECT_MANAGER",
-							title : "项目经理",
-							width : "10%",
+							field : "PAY_SUM",
+							title : "已付款金额",
+							width : "12%",
 							align : "center"
+						},{
+							field : "PAY_NOT",
+							title : "未付款金额",
+							width : "12%",
+							align : "center",
+							formatter:function(value,row,index){
+								return row.FINAL_TOTAL - row.PAY_SUM;
+							}
+						},{
+							field : "PAY_STATE",
+							title : "状态",
+							width : "12%",
+							align : "center",
+							formatter:function(value,row,index){
+								var state = '';
+								if(value == '00'){state = '未完成'};
+								if(value == '01'){state = '已完成'};
+								return state;
+							}
 						}
 						]
 					});

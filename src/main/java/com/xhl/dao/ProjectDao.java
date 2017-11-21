@@ -65,6 +65,9 @@ public interface ProjectDao {
 	//删除备忘录
 	void delMemo(Map<String, String> map);
 	
+	
+	//查询成本list
+	List<Map<String, String>>  queryCost(Map<String, String> map);
 	//查询成本
 	List<Map<String, String>>  queryCostByProid(Map<String, String> map);
 	//查询成本合计
@@ -76,6 +79,8 @@ public interface ProjectDao {
 	//删除成本
 	void delCost(Map<String, String> map);
 	
+	//查询付款list
+	List<Map<String, String>>  queryPay(Map<String, String> map);
 	//查询付款
 	List<Map<String, String>>  queryPayByProid(Map<String, String> map);
 	//查询付款合计

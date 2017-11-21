@@ -24,6 +24,8 @@
 		 p.FINAL_TAX,
 		 p.FINAL_TOTAL,
 		 p.PROJECT_STATE,
+		 p.COST_STATE,
+		 p.PAY_STATE,
 		 p.REMARK
 		 from PROJECT_INFO p
 		 where 1=1
@@ -54,10 +56,12 @@
 	<insert id="addProject" parameterType="java.util.Map">
 		insert into PROJECT_INFO
 		(PROJECT_NUM,PROJECT_NAME,PROJECT_EMPLOYER,PROJECT_MANAGER,TECHNICAL_DIRECTOR,
-		START_TIME,FINISH_TIME,PROJECT_PRICE,PROJECT_TAX,TOTAL_PRICES,FINAL_NOTAX,FINAL_TAX,FINAL_TOTAL,REMARK,PROJECT_STATE)
+		START_TIME,FINISH_TIME,PROJECT_PRICE,PROJECT_TAX,TOTAL_PRICES,FINAL_NOTAX,FINAL_TAX,FINAL_TOTAL,
+		REMARK,PROJECT_STATE,COST_STATE,PAY_STATE)
 		values
 		(#{PROJECT_NUM},#{PROJECT_NAME},#{PROJECT_EMPLOYER},#{PROJECT_MANAGER},#{TECHNICAL_DIRECTOR},
-		#{START_TIME},#{FINISH_TIME},${PROJECT_PRICE},${PROJECT_TAX},${TOTAL_PRICES},${FINAL_NOTAX},${FINAL_TAX},${FINAL_TOTAL},#{REMARK},#{PROJECT_STATE})
+		#{START_TIME},#{FINISH_TIME},${PROJECT_PRICE},${PROJECT_TAX},${TOTAL_PRICES},${FINAL_NOTAX},${FINAL_TAX},${FINAL_TOTAL},
+		#{REMARK},#{PROJECT_STATE},#{COST_STATE},#{PAY_STATE})
 	</insert>
 	
 	  <!-- 修改项目-->
@@ -308,10 +312,42 @@
 	</delete>
 	
 	  <!-- 关闭一个项目-->
+<!-- 	<update id="closeProject" parameterType="java.util.Map"> -->
+<!-- 		update project_info  -->
+<!-- 		set PROJECT_STATE = #{PROJECT_STATE} -->
+<!-- 		where PROJECT_ID = #{PROJECT_ID} -->
+<!-- 	</update> -->
+	
 	<update id="closeProject" parameterType="java.util.Map">
-		update project_info 
-		set PROJECT_STATE = #{PROJECT_STATE}
-		where PROJECT_ID = #{PROJECT_ID}
+		update project_info p
+		set 
+		 <choose>
+	        <when test="TYPE=='close'">
+	              p.PROJECT_STATE = '01'
+	        </when>
+	         <when test="TYPE=='open'">
+	              p.PROJECT_STATE = '00'
+	        </when>
+	          <when test="TYPE=='del'">
+	             p.PROJECT_STATE = '02'
+	        </when>
+	          <when test="TYPE=='recover'">
+	             p.PROJECT_STATE = '01'
+	        </when>
+	          <when test="TYPE=='closecost'">
+	              p.COST_STATE = '01'
+	        </when>
+	          <when test="TYPE=='opencost'">
+	              p.COST_STATE = '00'
+	        </when>
+	          <when test="TYPE=='closepay'">
+	              p.PAY_STATE = '01'
+	        </when>
+	          <when test="TYPE=='openpay'">
+	              p.PAY_STATE = '00'
+	        </when>
+    	</choose>
+		where p.PROJECT_ID = #{PROJECT_ID}
 	</update>
 	
 	<!-- 查询项目备忘录 -->
@@ -359,6 +395,37 @@
 	</delete>
 
 
+
+		<!-- 查询成本list -->
+	<select id="queryCost" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		c.PROJECT_ID,
+		p.PROJECT_NUM,
+		p.PROJECT_NAME,
+		p.FINAL_TOTAL,
+		sum(c.cost_amount) COST_SUM,
+		p.COST_STATE
+		from project_cost c
+		left join project_info p
+		on c.PROJECT_ID = p.PROJECT_ID
+		where 1=1
+		<if test="PROJECT_NUM!=null and PROJECT_NUM!=''">
+			and p.PROJECT_NUM  like CONCAT('%',#{PROJECT_NUM},'%')
+		</if>
+		<if test="PROJECT_NAME!=null and PROJECT_NAME!=''">
+			and p.PROJECT_NAME like CONCAT('%',#{PROJECT_NAME},'%')
+		</if>
+		 <choose>
+	        <when test="COST_STATE!=null and COST_STATE!=''">
+	            and p.COST_STATE = #{COST_STATE}
+	        </when>
+	        <otherwise>
+	            and p.COST_STATE = '00'
+	        </otherwise>
+    	</choose>
+		group by c.PROJECT_ID
+		
+	</select>
 	<!-- 查询成本 -->
 	<select id="queryCostByProid" parameterType="java.util.Map" resultType="java.util.Map">
 		 select
@@ -434,6 +501,38 @@
 	</delete>
 	
 	
+	
+		<!-- 查询付款 list-->
+	<select id="queryPay" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		a.PROJECT_ID,
+		p.PROJECT_NUM,
+		p.PROJECT_NAME,
+		p.FINAL_TOTAL,
+		sum(a.pay_amount) PAY_SUM,
+		p.PAY_STATE
+		from project_pay a
+		left join project_info p
+		on a.PROJECT_ID = p.PROJECT_ID
+		where 1=1
+		<if test="PROJECT_NUM!=null and PROJECT_NUM!=''">
+			and p.PROJECT_NUM  like CONCAT('%',#{PROJECT_NUM},'%')
+		</if>
+		<if test="PROJECT_NAME!=null and PROJECT_NAME!=''">
+			and p.PROJECT_NAME like CONCAT('%',#{PROJECT_NAME},'%')
+		</if>
+		 <choose>
+	        <when test="PAY_STATE!=null and PAY_STATE!=''">
+	            and p.PAY_STATE = #{PAY_STATE}
+	        </when>
+	        <otherwise>
+	            and p.PAY_STATE = '00'
+	        </otherwise>
+    	</choose>
+		group by a.PROJECT_ID
+
+		
+	</select>
 	
 	
 	<!-- 查询付款 -->

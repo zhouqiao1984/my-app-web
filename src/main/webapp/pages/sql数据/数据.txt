@@ -10,7 +10,7 @@ ID		20		int
 
 项目管理系统一期工程 2017/10/06
 一、
-项目信息表  project_info     共16个字段
+项目信息表  project_info     共18个字段
 PROJECT_ID    			项目ID
 PROJECT_NUM   			项目编号         PJ_
 PROJECT_NAME  			项目名称
@@ -195,4 +195,4 @@ PAY_AMOUNT		金额
 PAY_REMARK	          备注
 PROJECT_ID	关联项目编号
 
-
+决算金额是含税的，合同金额是总价(含税)

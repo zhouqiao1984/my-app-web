@@ -26,9 +26,14 @@
 		<if test="RECORD_NAME!=null and RECORD_NAME!=''">
  			and c.RECORD_NAME like  CONCAT('%',#{RECORD_NAME},'%')
  		</if>
- 		<if test="RECORD_STATE!=null and RECORD_STATE!=''">
- 			and c.RECORD_STATE =  #{RECORD_STATE}
- 		</if>
+ 		 <choose>
+	        <when test="RECORD_STATE!=null and RECORD_STATE!=''">
+	            and c.RECORD_STATE = #{RECORD_STATE}
+	        </when>
+	        <otherwise>
+	            and c.RECORD_STATE = '00'
+	        </otherwise>
+    	</choose>
  		order by c.RECORD_DATE desc
 	</select>
 	
