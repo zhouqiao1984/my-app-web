@@ -1,7 +1,7 @@
 //初始化表
 
 initProject();
-function initProject(){debugger;
+function initProject(){
 	var $page = getCurrentPageObj();//当前页
 	var pTable = $page.find("[tb='projectTable']");
 	var formObj = $page.find("#projectForm");//表单对象

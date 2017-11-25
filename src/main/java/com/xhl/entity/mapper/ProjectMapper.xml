@@ -399,15 +399,13 @@
 		<!-- 查询成本list -->
 	<select id="queryCost" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT
-		c.PROJECT_ID,
+		p.PROJECT_ID,
 		p.PROJECT_NUM,
 		p.PROJECT_NAME,
 		p.FINAL_TOTAL,
-		sum(c.cost_amount) COST_SUM,
+		(select  sum(c.cost_amount) from project_cost c where c.project_id = p.project_id GROUP BY c.project_id) COST_SUM,
 		p.COST_STATE
-		from project_cost c
-		left join project_info p
-		on c.PROJECT_ID = p.PROJECT_ID
+		from project_info p
 		where 1=1
 		<if test="PROJECT_NUM!=null and PROJECT_NUM!=''">
 			and p.PROJECT_NUM  like CONCAT('%',#{PROJECT_NUM},'%')
@@ -423,7 +421,6 @@
 	            and p.COST_STATE = '00'
 	        </otherwise>
     	</choose>
-		group by c.PROJECT_ID
 		
 	</select>
 	<!-- 查询成本 -->
@@ -505,15 +502,13 @@
 		<!-- 查询付款 list-->
 	<select id="queryPay" parameterType="java.util.Map" resultType="java.util.Map">
 		SELECT
-		a.PROJECT_ID,
+		p.PROJECT_ID,
 		p.PROJECT_NUM,
 		p.PROJECT_NAME,
 		p.FINAL_TOTAL,
-		sum(a.pay_amount) PAY_SUM,
+		(select  sum(a.pay_amount) from project_pay a where a.project_id = p.project_id GROUP BY a.project_id) PAY_SUM,
 		p.PAY_STATE
-		from project_pay a
-		left join project_info p
-		on a.PROJECT_ID = p.PROJECT_ID
+		from project_info p
 		where 1=1
 		<if test="PROJECT_NUM!=null and PROJECT_NUM!=''">
 			and p.PROJECT_NUM  like CONCAT('%',#{PROJECT_NUM},'%')
@@ -529,7 +524,6 @@
 	            and p.PAY_STATE = '00'
 	        </otherwise>
     	</choose>
-		group by a.PROJECT_ID
 
 		
 	</select>

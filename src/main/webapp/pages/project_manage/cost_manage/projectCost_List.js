@@ -181,7 +181,11 @@ function initCost(){
 							width : "12%",
 							align : "center",
 							formatter:function(value,row,index){
-								return row.FINAL_TOTAL - row.COST_SUM;
+								var final_total = 0;
+								var cost_sum = 0;
+								if(row.FINAL_TOTAL){final_total = row.FINAL_TOTAL}
+								if(row.COST_SUM){cost_sum = row.COST_SUM}
+								return final_total - cost_sum;
 							}
 						},{
 							field : "COST_STATE",

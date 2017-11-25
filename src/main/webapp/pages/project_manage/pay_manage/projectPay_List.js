@@ -181,7 +181,11 @@ function initpay(){
 							width : "12%",
 							align : "center",
 							formatter:function(value,row,index){
-								return row.FINAL_TOTAL - row.PAY_SUM;
+								var final_total = 0;
+								var pay_sum = 0;
+								if(row.FINAL_TOTAL){final_total = row.FINAL_TOTAL}
+								if(row.PAY_SUM){pay_sum = row.PAY_SUM}
+								return final_total - pay_sum;
 							}
 						},{
 							field : "PAY_STATE",
