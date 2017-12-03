@@ -139,8 +139,8 @@ function initDepositList(){
 							formatter:function(value,row,index){
 								var state = '';
 								if(value == '00'){state = '自营'}
-								else if(value == '01'){state = '挂靠'}
-								else{state = '-'}
+								if(value == '01'){state = '挂靠'}
+								if(value == '02'){state = '陪标'}
 								return state;
 							}
 						}, {
