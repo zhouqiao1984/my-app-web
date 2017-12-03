@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.xhl.dao.InvoiceDao">
+
+ 		<!-- 查询甲方付款 --> 
+	<select id="queryFirstpayment" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 FIRST_ID,
+		 FIRST_NUM,
+		 PROJECT_ID,
+		 PAYDATE,
+		 PAYMENT,
+		 BALANCE,
+		 REMARK
+		 from FIRST_PAYMENT
+		 where PROJECT_ID = #{PROJECT_ID}
+		 union all
+		 select
+		 '-' as FIRST_ID,
+		 '-' as FIRST_NUM,
+		 '00' as PROJECT_ID,
+		 '合计' as PAYDATE,
+		 sum(PAYMENT) as PAYMENT,
+		 '-' as BALANCE,
+		 '-' as REMARK
+		 from FIRST_PAYMENT
+		 where PROJECT_ID = #{PROJECT_ID}
+		 order by PAYDATE asc 
+	</select>	
+		
+	  <!-- 新建甲方付款-->
+	<insert id="addFirstPayment" parameterType="java.util.Map">
+		insert into first_payment
+		(FIRST_NUM,PAYDATE,PAYMENT,BALANCE,REMARK,PROJECT_ID)
+		values
+		(#{FIRST_NUM},#{PAYDATE},${PAYMENT},${BALANCE},#{REMARK},#{PROJECT_ID})
+	</insert>	
+	
+				  <!-- 修改甲方付款-->
+	<update id="editFirstPayment" parameterType="java.util.Map">
+		update first_payment set 
+		PAYDATE = #{PAYDATE},
+		PAYMENT = ${PAYMENT},
+		BALANCE = ${BALANCE},
+		REMARK = #{REMARK}
+		where FIRST_ID = #{FIRST_ID}
+	</update>
+	
+		<!-- 查询给甲方开发票金额表--> 
+	<select id="queryOutinvoice" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 OUT_ID,
+		 OUT_NUM,
+		 PROJECT_ID,
+		 PAYDATE,
+		 PAYMENT,
+		 PAYNOTAX,
+		 TAXVALUE,
+		 UPTAX,
+		 ADDTAX,
+		 OTHERTAX,
+		 BALANCE,
+		 REMARK
+		 from out_invoice 
+		 where PROJECT_ID = #{PROJECT_ID}
+		 union all
+		  select
+		 '-' OUT_ID,
+		 '-' OUT_NUM,
+		 '00' PROJECT_ID,
+		 '合计' PAYDATE,
+		 sum(PAYMENT)  PAYMENT,
+		 sum(PAYNOTAX)  PAYNOTAX,
+		 sum(TAXVALUE)  TAXVALUE,
+		 sum(UPTAX) UPTAX,
+		 sum(ADDTAX) ADDTAX,
+		 sum(OTHERTAX) OTHERTAX,
+		 '-' BALANCE,
+		 '-' REMARK
+		 from out_invoice 
+		 where PROJECT_ID = #{PROJECT_ID}
+		 order by PAYDATE asc
+	</select>	
+	
+	
+	  <!-- 新建给甲方开发票-->
+	<insert id="addOutInvoice" parameterType="java.util.Map">
+		insert into out_invoice
+		(OUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,TAXVALUE,BALANCE,REMARK,PROJECT_ID,UPTAX,ADDTAX,OTHERTAX)
+		values
+		(#{OUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},${TAXVALUE},${BALANCE},#{REMARK},#{PROJECT_ID},${UPTAX},${ADDTAX},${OTHERTAX})
+	</insert>
+	
+				  <!-- 修改甲方开发票-->
+	<update id="editOutInvoice" parameterType="java.util.Map">
+		update out_invoice set 
+		PAYDATE = #{PAYDATE},
+		PAYMENT = ${PAYMENT},
+		PAYNOTAX = ${PAYNOTAX},
+		TAXVALUE = ${TAXVALUE},
+		BALANCE = ${BALANCE},
+		UPTAX = ${UPTAX},
+		ADDTAX = ${ADDTAX},
+		OTHERTAX = ${OTHERTAX},
+		REMARK = #{REMARK}
+		where OUT_ID = #{OUT_ID}
+	</update>
+	
+		<!-- 查询进项发票金额表--> 
+	<select id="queryInputinvoice" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 ii.INPUT_ID,
+		 ii.INPUT_NUM,
+		 ii.PROJECT_ID,
+		 ii.PAYDATE,
+		 ii.PAYMENT,
+		 ii.PAYNOTAX,
+		 ii.TAXVALUE,
+		 ii.TAXBALANCE,
+		 ii.STATE,
+		 ii.TYPE,
+		 ii.COMPANY,
+		 ii.REMARK,
+		 ii.INVOICE_TYPE,
+		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.input_id = ii.INPUT_ID) PAID
+		 from input_invoice ii
+		 where PROJECT_ID = #{PROJECT_ID}
+		 <if test="STATE!=null and STATE!=''">
+			and ii.STATE = #{STATE}
+		</if>
+		<if test="TYPE!=null and TYPE!=''">
+			and ii.TYPE = #{TYPE}
+		</if>
+		<if test="INVOICE_TYPE!=null and INVOICE_TYPE!=''">
+			and ii.INVOICE_TYPE = #{INVOICE_TYPE}
+		</if>
+		 union all
+		 select
+		 '-' INPUT_ID,
+		 '-' INPUT_NUM,
+		 '00' PROJECT_ID,
+		 '合计' PAYDATE,
+		 sum(ii.PAYMENT) PAYMENT,
+		 sum(ii.PAYNOTAX) PAYNOTAX,
+		 sum(ii.TAXVALUE) TAXVALUE,
+		 sum(ii.TAXBALANCE) TAXBALANCE,
+		 '-' STATE,
+		 '-' TYPE,
+		 '-' COMPANY,
+		 '-' REMARK,
+		 '-' INVOICE_TYPE,
+		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.input_id in 
+		 	(select input_id from input_invoice ii2 where ii2.PROJECT_ID = #{PROJECT_ID}
+		 		 <if test="STATE!=null and STATE!=''">
+					and ii2.STATE = #{STATE}
+				</if>
+				<if test="TYPE!=null and TYPE!=''">
+					and ii2.TYPE = #{TYPE}
+				</if>
+				<if test="INVOICE_TYPE!=null and INVOICE_TYPE!=''">
+					and ii2.INVOICE_TYPE = #{INVOICE_TYPE}
+				</if>
+		 	)
+		 ) PAID
+		 from input_invoice ii
+		 where ii.PROJECT_ID = #{PROJECT_ID}
+		  <if test="STATE!=null and STATE!=''">
+			and ii.STATE = #{STATE}
+		</if>
+		<if test="TYPE!=null and TYPE!=''">
+			and ii.TYPE = #{TYPE}
+		</if>
+		<if test="INVOICE_TYPE!=null and INVOICE_TYPE!=''">
+			and ii.INVOICE_TYPE = #{INVOICE_TYPE}
+		</if>
+		 order by PAYDATE asc
+	</select>	
+	
+	  <!-- 新建进项发票-->
+	<insert id="addInputInvoice" parameterType="java.util.Map">
+		insert into input_invoice
+		(INPUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,REMARK,PROJECT_ID,TAXVALUE,TAXBALANCE,
+		STATE,TYPE,COMPANY,INVOICE_TYPE)
+		values
+		(#{INPUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},#{REMARK},#{PROJECT_ID},${TAXVALUE},${TAXBALANCE},
+		#{STATE},#{TYPE},#{COMPANY},#{INVOICE_TYPE})
+	</insert>
+	
+			  <!-- 修改进项发票 -->
+	<update id="editInputInvoice" parameterType="java.util.Map">
+		update input_invoice set 
+		PAYDATE = #{PAYDATE},
+		PAYMENT = ${PAYMENT},
+		PAYNOTAX = ${PAYNOTAX},
+		TAXVALUE = ${TAXVALUE},
+		TAXBALANCE = ${TAXBALANCE},
+		STATE = #{STATE},
+		TYPE = #{TYPE},
+		COMPANY = #{COMPANY},
+		REMARK = #{REMARK}
+		where INPUT_ID = #{INPUT_ID}
+	</update>
+	
+	  <!-- 删除甲方付款记录-->
+	<delete id="delFirstRecord" parameterType="java.util.Map">
+		delete from first_payment
+		where FIRST_ID = #{DEL_ID}
+	</delete>
+	
+	  <!-- 删除开发票-->
+	<delete id="delOutRecord" parameterType="java.util.Map">
+		delete from out_invoice
+		where OUT_ID = #{DEL_ID}
+	</delete>
+	
+	  <!-- 删除进项发票(普票)-->
+	<delete id="delInputRecord" parameterType="java.util.Map">
+		delete from input_invoice
+		where INPUT_ID = #{DEL_ID}
+	</delete>
+	
+	
+	<!-- 查询付款 -->
+	<select id="queryPayByInput" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 IP_ID,
+		 IP_NUM,
+		 IP_DATE,
+		 IP_AMOUNT,
+		 IP_REMARK,
+		 INPUT_ID,
+		 PROJECT_ID
+		 from invoice_pay
+		 where INPUT_ID = #{INPUT_ID}
+		 <if test="PAY_START_TIME!=null and PAY_START_TIME!='' ">
+			and IP_DATE &gt;= #{PAY_START_TIME}
+		</if>
+		<if test="PAY_END_TIME!=null and PAY_END_TIME!=''">
+			and IP_DATE &lt;= #{PAY_END_TIME}
+		</if>
+		
+	</select>	
+	
+		  <!-- 查询付款合计-->
+	<select id="queryIPaySum" parameterType="java.util.Map" resultType="java.util.Map">
+		 select
+		 '00' as IP_ID,
+		 '-' as IP_NUM,
+		 '合计' as IP_DATE,
+		 sum(IP_AMOUNT) as IP_AMOUNT,
+		 '-' as IP_REMARK,
+		 '-' as INPUT_ID,
+		 '-' as PROJECT_ID
+		 from invoice_pay
+		 where INPUT_ID = #{INPUT_ID}
+		 <if test="PAY_START_TIME!=null and PAY_START_TIME!='' ">
+			and IP_DATE &gt;= #{PAY_START_TIME}
+		</if>
+		<if test="PAY_END_TIME!=null and PAY_END_TIME!=''">
+			and IP_DATE &lt;= #{PAY_END_TIME}
+		</if>
+	</select>
+	
+	
+	
+		<!-- 新增付款 -->
+	<insert id="addIPay" parameterType="java.util.Map" >
+		insert into invoice_pay(IP_NUM,IP_DATE,IP_AMOUNT,IP_REMARK,INPUT_ID,PROJECT_ID)
+		values(#{IP_NUM},#{IP_DATE},${IP_AMOUNT},#{IP_REMARK},#{INPUT_ID},#{PROJECT_ID})
+	</insert>
+	
+		<!-- 修改付款 -->
+	<update id="editIPay" parameterType="java.util.Map" >
+		update invoice_pay set
+			IP_DATE = #{IP_DATE},
+			IP_AMOUNT = ${IP_AMOUNT},
+			IP_REMARK = #{IP_REMARK}
+		where INPUT_ID = #{INPUT_ID}
+	</update>
+	
+		<!-- 删除付款  -->
+	<delete id="delIPay" parameterType="java.util.Map" >
+		delete from invoice_pay
+		where IP_ID = #{IP_ID}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+</mapper>

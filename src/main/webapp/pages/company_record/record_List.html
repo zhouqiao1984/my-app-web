@@ -15,6 +15,10 @@
                 <form id="recordForm">
                     <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
                         <tr>
+                        	<td class="ecitic-right">事件编号：</td>
+                            <td>
+                                <input type="text" name="RECORD_NUM" />
+                            </td>
                             <td class="ecitic-right">事件摘要：</td>
                             <td>
                                 <input type="text" name="RECORD_NAME" />
@@ -41,6 +45,7 @@
             <button class="btn btn-ecitic blue" name="addRecord">新增事件</button>
             <button class="btn btn-ecitic blue" name="editRecord">修改事件</button>
              <button class="btn btn-ecitic blue" name="viewRecord">查看事件</button>
+             <button class="btn btn-ecitic blue" name="delRecord">删除事件</button>
         </div>
         <div class="ecitic-new">
             <table tb="recordTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>

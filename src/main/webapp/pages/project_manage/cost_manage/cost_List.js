@@ -17,7 +17,7 @@ function costManage(item){
 		 if('点击选择' == param.COST_END_TIME){
 			 param.COST_END_TIME = '';
 		 }
-		 if('选择类型' == param.COST_TYPE){
+		 if('选择类别' == param.COST_TYPE){
 			 param.COST_TYPE = '';
 		 }
 		 cmTable.bootstrapTable('refresh',{

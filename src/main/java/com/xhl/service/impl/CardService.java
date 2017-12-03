@@ -32,12 +32,28 @@ public class CardService implements ICardService{
 	@Override
 	public Map<String, Object> queryCard(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		String card_state = MyUtil.getParamValue(request,"CARD_STATE");
+		String[] must = new String[]{"limit","offset"};
+		String[] nomust = new String[]{"CARD_NAME","CARD_NUM","CARD_STATE","pop"};
+		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if(null == pmap){
+			resultMap.put("msg","必填项未填");
+			resultMap.put("result","false");
+			return resultMap;
+		}
 			
 		try {
+			List<Map<String, String>> lmap = cardDao.queryCard(pmap);//查询结果
+			List<Map<String, String>> smap = cardDao.queryCardSum(pmap);//查询合计
+			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);//分页结果
+			rmap.add(smap.get(0));//合计与结果合并
+			
 			//查询结果
-			List<Map<String, String>> lmap = cardDao.queryCard(card_state);
-			resultMap.put("rows", lmap);
+			if("true".equals(pmap.get("pop"))){//不查合计
+				resultMap.put("rows", lmap);
+			}else{
+				resultMap.put("rows", rmap);
+			}
+			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
 			return resultMap;
 		} catch (Exception e) {
 			resultMap.put("result", "false");

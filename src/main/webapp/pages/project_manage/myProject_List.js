@@ -3,9 +3,8 @@
 initProject();
 function initProject(){
 	var $page = getCurrentPageObj();//当前页
-	var pTable = $page.find("[tb='projectTable']");
+	var proTable = $page.find("[tb='projectTable']");
 	var formObj = $page.find("#projectForm");//表单对象
-	var pCall = getMillisecond();
 	initProjectTable();//初始化列表
 	
 	//重置按钮
@@ -18,8 +17,22 @@ function initProject(){
 	//查询按钮
 	 $page.find("[name='queryP']").click(function(){
 		 var param = formObj.serialize();
-		 pTable.bootstrapTable('refresh',{
-				url:"project/queryProject.asp?call="+pCall+"&"+param});
+		 proTable.bootstrapTable('refresh',{
+		 		url:"project/queryProject.asp?"+param});
+	 });
+	 
+	 
+	//查看项目
+	 $page.find("[name='viewProject']").click(function(){
+			var seles = proTable.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一个项目进行查看!");
+					return;
+			}
+			
+		 closeAndOpenInnerPageTab("viewProject","项目信息查看","pages/project_manage/project_view.html", function(){
+			 viewProject(seles[0]);
+			});
 	 });
 	 
 	//新建项目
@@ -32,7 +45,7 @@ function initProject(){
 
 	//修改项目
 	 $page.find("[name='editProject']").click(function(){
-			var seles = pTable.bootstrapTable("getSelections");
+			var seles = proTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目进行修改!");
 					return;
@@ -47,26 +60,22 @@ function initProject(){
 			});
 	 });
 	 
-	//账目管理
-	 $page.find("[name='accountManage']").click(function(){
-			var seles = pTable.bootstrapTable("getSelections");
+	 //项目备忘录
+	 $page.find("[name='memoProject']").click(function(){
+			var seles = proTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");
 					return;
 			}
 			
-			if(seles[0].PROJECT_STATE == "01"){
-				alert("已关闭项目不能操作");
-				return;
-			}
-		 closeAndOpenInnerPageTab("accountManage","账目管理","pages/project_manage/project_account.html", function(){
-			 	editAccount(seles[0]);
+		 closeAndOpenInnerPageTab("momeProject","项目备忘录","pages/project_manage/project_memo.html", function(){
+			 memoProject(seles[0]);
 			});
 	 });
 	 
 	//关闭项目
 	 $page.find("[name='closeProject']").click(function(){
-			var seles = pTable.bootstrapTable("getSelections");
+			var seles = proTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");
 					return;
@@ -95,7 +104,7 @@ function initProject(){
 	 
 		//打开项目
 	 $page.find("[name='openProject']").click(function(){
-			var seles = pTable.bootstrapTable("getSelections");
+			var seles = proTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");
 					return;
@@ -124,7 +133,7 @@ function initProject(){
 	 
 		//删除项目
 	 $page.find("[name='delProject']").click(function(){
-			var seles = pTable.bootstrapTable("getSelections");
+			var seles = proTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");
 					return;
@@ -153,7 +162,7 @@ function initProject(){
 	 
 		//恢复项目
 	 $page.find("[name='reProject']").click(function(){
-			var seles = pTable.bootstrapTable("getSelections");
+			var seles = proTable.bootstrapTable("getSelections");
 			if(seles.length!=1){
 					alert("请选择一个项目!");
 					return;
@@ -182,8 +191,8 @@ function initProject(){
 	 
 	//刷新项目列表
 		function refreshProjectTable(){
-			pTable.bootstrapTable('refresh',{
-				url:'project/queryProject.asp?call='+pCall});
+			proTable.bootstrapTable('refresh',{
+				url:'project/queryProject.asp'});
 			
 		}
 	//初始化项目表	
@@ -196,8 +205,8 @@ function initProject(){
 				};
 				return temp;
 			};
-			pTable.bootstrapTable({
-						url : 'project/queryProject.asp?call='+ pCall,
+			proTable.bootstrapTable({
+						url : 'project/queryProject.asp',
 						method : 'get', // 请求方式（*）
 						striped : false, // 是否显示行间隔色
 						cache : false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -215,17 +224,10 @@ function initProject(){
 						cardView : false, // 是否显示详细视图
 						detailView : false, // 是否显示父子表
 						singleSelect : true,// 复选框单选
-						jsonpCallback: pCall,
 						onLoadSuccess : function(data){
 							gaveInfo();
 						},onLoadError:function (data) {
-							if(data	&& data=='200'){
-								nconfirm("登录超时,请重新登录!",function(){
-			            			toLoginPage();
-			            		});
-							}else{
-								alert("数据加载失败！");
-							}
+							alert("数据加载失败！");
 		                },
 						columns : [ {
 							checkbox : true,
@@ -236,24 +238,36 @@ function initProject(){
 							field : 'ORDER_ID',
 							title : '序号',
 							align : "center",
-							width : "6%",
+							width : "8%",
 							formatter:function(value,row,index){
 								return index + 1;
 							}
 						}, {
 							field : "PROJECT_NUM",
 							title : "项目编号",
-							width : "14%",
+							width : "16%",
 							align : "center"
 						}, {
 							field : "PROJECT_NAME",
 							title : "项目名称",
-							width : "30%",
+							width : "24%",
 							align : "center"
+						}, {
+							field : "PROJECT_TYPE",
+							title : "项目类型",
+							width : "10%",
+							align : "center",
+							formatter:function(value,row,index){
+								var state = '';
+								if(value == '00'){state = '自营';}
+								if(value == '01'){state = '挂靠';}
+								if(value == '02'){state = '陪标';}
+								return state;
+							}
 						}, {
 							field : "PROJECT_EMPLOYER",
 							title : "发包商",
-							width : "30%",
+							width : "22%",
 							align : "center"
 						},{
 							field : "PROJECT_MANAGER",

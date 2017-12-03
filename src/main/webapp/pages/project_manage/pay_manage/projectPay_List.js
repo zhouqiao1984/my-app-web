@@ -36,8 +36,21 @@ function initpay(){
 //				alert("已关闭项目不能操作");
 //				return;
 //			}
-		 closeAndOpenInnerPageTab("payManage","成本管理","pages/project_manage/pay_manage/pay_List.html", function(){
+		 closeAndOpenInnerPageTab("payManage","付款管理","pages/project_manage/pay_manage/pay_List.html", function(){
 			 	payManage(seles[0]);
+			});
+	 });
+	 
+	//付款备忘录
+	 $page.find("[name='payRecord']").click(function(){debugger;
+			var seles = payTable.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一个项目!");
+					return;
+			}
+			
+		 closeAndOpenInnerPageTab("commonRecord","备忘录","pages/project_manage/common_recordList.html", function(){
+			 initCRecord(seles[0].PROJECT_ID,'03');//付款03
 			});
 	 });
 	 
@@ -169,12 +182,24 @@ function initpay(){
 							field : "FINAL_TOTAL",
 							title : "决算金额",
 							width : "12%",
-							align : "center"
+							align : "center",
+							formatter:function(value,row,index){
+								if(value == undefined){
+									value = 0;
+								}
+								return value;
+							}
 						},{
 							field : "PAY_SUM",
 							title : "已付款金额",
 							width : "12%",
-							align : "center"
+							align : "center",
+							formatter:function(value,row,index){
+								if(value == undefined){
+									value = 0;
+								}
+								return value;
+							}
 						},{
 							field : "PAY_NOT",
 							title : "未付款金额",

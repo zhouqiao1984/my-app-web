@@ -1,6 +1,6 @@
 
 //初始化
-function editRecord(item){
+function editRecord(item,relate_type,relate_id){
 	var $page = getCurrentPageObj();//当前页
 	if(null == item){//新增
 		initButtonEvent("add");//初始化按钮事件
@@ -22,6 +22,10 @@ function editRecord(item){
 			var params = getPageParam("R");
 			params["TYPE"] = type;
 			params["LNID"] = LN_ID;
+			params["RELATE_TYPE"] = relate_type;
+			if(relate_id != null && relate_id != undefined){
+				params["RELATE_ID"] = relate_id;
+			}
 			baseAjax("record/editRecord.asp",params, function(data) {
 				if (data != undefined&&data!=null&&data.result=="true") {
 					alert(data.msg);

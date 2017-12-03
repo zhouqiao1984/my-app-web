@@ -59,5 +59,20 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 读取用户权限
+	 * 
+	 * @param req
+	 * @param res
+	 */
+	@RequestMapping("/getUserRole")
+	public void getUserRole(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJson(userService.getUserRole(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
  
 }

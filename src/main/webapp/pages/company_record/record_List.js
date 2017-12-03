@@ -5,7 +5,7 @@ function initRecord(){
 	var $page = getCurrentPageObj();//当前页
 	var recordTable = $page.find("[tb='recordTable']");
 	var formObj = $page.find("#recordForm");//表单对象
-	var rCall = getMillisecond();
+	//var rCall = getMillisecond();
 	initRecordTable();//初始化列表
 	
 	//重置按钮
@@ -19,13 +19,13 @@ function initRecord(){
 	 $page.find("[name='queryR']").click(function(){
 		 var param = formObj.serialize();
 		 recordTable.bootstrapTable('refresh',{
-				url:"record/queryRecord.asp?call="+rCall+"&"+param});
+				url:"record/queryRecord.asp?"+param});
 	 });
 	 
 	//新建事件
 	 $page.find("button[name='addRecord']").click(function(){
-		 closeAndOpenInnerPageTab("addRecord","新增时间","pages/company_record/record_edit.html", function(){
-			 editRecord(null);
+		 closeAndOpenInnerPageTab("addRecord","新增事件","pages/company_record/record_edit.html", function(){
+			 editRecord(null,'00');
 			});
 	 });
 	 
@@ -39,10 +39,11 @@ function initRecord(){
 			}
 			
 		 closeAndOpenInnerPageTab("editRecord","事件信息编辑","pages/company_record/record_edit.html", function(){
-			 editRecord(seles[0]);
+			 editRecord(seles[0],'00');
 			});
 	 });
 	
+	 
 	//查看事件
 	 $page.find("[name='viewRecord']").click(function(){
 			var seles = recordTable.bootstrapTable("getSelections");
@@ -51,31 +52,53 @@ function initRecord(){
 					return;
 			}
 			
-		 closeAndOpenInnerPageTab("viewRecord","事件信息编辑","pages/company_record/record_view.html", function(){
+		 closeAndOpenInnerPageTab("viewRecord","事件查看","pages/company_record/record_view.html", function(){
 			 viewRecord(seles[0]);
 			});
 	 });
 
-
+	//删除事件
+	$page.find("[name='delRecord']").click(function(){
+		var seles = recordTable.bootstrapTable("getSelections");
+		if(seles.length!=1){
+				alert("请选择一条记录删除!");
+				return;
+		}
+		nconfirm("确定删除该记录?",function(){
+			var params = {};
+			params["TYPE"] = 'del';
+			params["RECORD_ID"] = seles[0].RECORD_ID;
+			baseAjax('record/editRecord.asp?', params, function(data) {
+				if (data != undefined&&data!=null&&data.result=="true") {
+					alert(data.msg);
+					refreshRecordTable();
+				}else{
+					alert(data.msg);
+				}
+			});
+		});
+	});
+		
 	//刷新用事件列表
-//		function refreshRecordTable(){
-//			recordTable.bootstrapTable('refresh',{
-//				url:'record/queryRecord.asp?call='+rCall});
-//			
-//		}
+	function refreshRecordTable(){
+		recordTable.bootstrapTable('refresh',{
+			url:'record/queryRecord.asp'});
+		
+	}
 		
 	//初始化用户表	
 	 function initRecordTable() {
 		 var queryParams = function(params) {
 				var temp = {
 					limit : params.limit, // 页面大小
-					offset : params.offset
+					offset : params.offset,
+					RELATE_TYPE : '00'
 				// 页码
 				};
 				return temp;
 			};
 			recordTable.bootstrapTable({
-						url : 'record/queryRecord.asp?call='+ rCall,
+						url : 'record/queryRecord.asp',
 						method : 'get', // 请求方式（*）
 						striped : false, // 是否显示行间隔色
 						cache : false, // 是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -93,7 +116,7 @@ function initRecord(){
 						cardView : false, // 是否显示详细视图
 						detailView : false, // 是否显示父子表
 						singleSelect : true,// 复选框单选
-						jsonpCallback: rCall,
+						//jsonpCallback: rCall,
 						onLoadSuccess : function(data){
 							gaveInfo();
 						},onLoadError:function () {

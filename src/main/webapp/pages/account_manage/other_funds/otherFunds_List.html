@@ -10,40 +10,6 @@
 
 <body>
     <div class="main_iframe_con">
-    	 <div class="ecitic-title">
-            <span>账户管理</span>
-        </div>
-   	  	 <div class="ecitic-table" id="ecitic-table">
-            <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
-           		<tr>
-    				<td class="table-text">账户状态：</td>
-                	<td >
-                         <select name="CARD_STATE"  class="requirement-ele-width" style="width: 100%">
-                         	<option value="00">启用</option>
-                         	<option value="01">停用</option>
-                         </select>
-                    </td>
-                    <td><input type="button" class="btn btn-ecitic blue" name="queryC" value="查询" /></td>
-                    <td></td>
-                 </tr>
-            </table>
-         </div>
-
-        <div class="ecitic-operation">
-        	 <button class="btn btn-ecitic blue" name="cardManage">账户明细管理</button>
-            <button class="btn btn-ecitic blue" name="addCard">新建账户</button>
-            <button class="btn btn-ecitic blue" name="editCard">账户信息修改</button>
-             <button class="btn btn-ecitic blue" name="openCard">账户启用</button>
-            <button class="btn btn-ecitic blue" name="closeCard">账户停用</button>
-           
-        </div>
-        <div class="ecitic-new">
-            <table tb="cardTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
-        </div>
-<!--         <div style="width:100%"> -->
-<!--         	<img src="img/line.jpg" /> -->
-<!--         </div> -->
-        <br/><br/>
         <div class="ecitic-title">
             <span>其他款项管理</span>
         </div>
@@ -81,7 +47,7 @@
 <script src="js/commons/commons.js"></script>
 <script src="bootstrap/js/bootstrap-table.min.js"></script>
 <script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
-<script src="pages/account_manage/cardFunds_List.js"></script>
+<script src="pages/account_manage/other_funds/otherFunds_List.js"></script>
 </html>
 
 

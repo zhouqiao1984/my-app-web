@@ -180,7 +180,14 @@ function initUser(){
 							field : "ROLE",
 							title : "权限",
 							width : "10%",
-							align : "center"
+							align : "center",
+							formatter:function(value,row,index){
+								var state = '';
+								if(value == '01'){state = '总经理';}
+								if(value == '02'){state = '包工头';}
+								if(value == '03'){state = '新员工';}
+								return state;
+							}
 						}, {
 							field : "USERSTATE",
 							title : "状态",

@@ -6,21 +6,29 @@
 <mapper namespace="com.xhl.dao.CardDao">
 
 	  <!-- 查询账户-->
-	<select id="queryCard" parameterType="java.lang.String" resultType="java.util.Map">
+	<select id="queryCard" parameterType="java.util.Map" resultType="java.util.Map">
 		select 
 		(select BALANCE from CARD_DETAIL where  DETAIL_ID = (select max(DETAIL_ID) from CARD_DETAIL where CARD_ID = c.CARD_ID) ) BALANCE,
 		c.CARD_ID,c.CARD_NAME,c.CARD_NUM,c.CARD_OWNER,c.CARD_BANK,c.REMARK,c.CARD_STATE
 		from CARD_INFO c
 		where 1=1
+		<if test="CARD_NAME != null and CARD_NAME != '' ">
+			and c.CARD_NAME like CONCAT('%',#{CARD_NAME},'%')
+		</if>
+		<if test="CARD_NUM != null and CARD_NUM != '' ">
+			and c.CARD_NUM like CONCAT('%',#{CARD_NUM},'%')
+		</if>
 		<choose>
-	        <when test="_parameter!=null and _parameter!=''">
-	            and  c.CARD_STATE = #{_parameter}
+	        <when test="CARD_STATE !=null and CARD_STATE!=''">
+	            and  c.CARD_STATE = #{CARD_STATE}
 	        </when>
 	        <otherwise>
 	            and c.CARD_STATE = '00'
 	        </otherwise>
     	</choose>
-		union all
+    </select>
+	  <!-- 查询账户-->
+	<select id="queryCardSum" parameterType="java.util.Map" resultType="java.util.Map">	
 		select sum(a.BALANCE) BALANCE,
 		'00' as  CARD_ID,
 		'合计' as CARD_NAME,
@@ -34,9 +42,15 @@
 		select (select BALANCE from CARD_DETAIL where  DETAIL_ID = (select max(DETAIL_ID) from CARD_DETAIL where CARD_ID = c.CARD_ID) ) BALANCE
 				from CARD_INFO c
 					where 1=1
+			<if test="CARD_NAME != null and CARD_NAME != '' ">
+				and c.CARD_NAME like CONCAT('%',#{CARD_NAME},'%')
+			</if>
+			<if test="CARD_NUM != null and CARD_NUM != '' ">
+				and c.CARD_NUM like CONCAT('%',#{CARD_NUM},'%')
+			</if>
 			<choose>
-		        <when test="_parameter!=null and _parameter!=''">
-		            and  c.CARD_STATE = #{_parameter}
+		        <when test="CARD_STATE !=null and CARD_STATE!=''">
+		            and  c.CARD_STATE = #{CARD_STATE}
 		        </when>
 		        <otherwise>
 		            and c.CARD_STATE = '00'

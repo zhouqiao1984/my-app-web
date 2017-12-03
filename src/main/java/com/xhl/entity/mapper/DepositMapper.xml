@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.xhl.dao.DepositDao">
+
+	  <!-- 查询账户-->
+	<select id="queryDepositList" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		cd.DETAIL_ID,
+		cd.DETAIL_NUM,
+		cd.DETAIL_DATE,
+		cd.DETAIL_EXPLAIN,
+		cd.AMOUNT,
+		cd.PAY_TYPE,
+		cd.BALANCE,
+		cd.PAY_CLASS,
+		cd.PAY_EXPLAIN,
+		cd.BILL_NUM,
+		cd.REMARK,
+		cd.CARD_ID,
+		cd.REAL_AMOUNT,
+		ci.CARD_NAME,
+		ci.CARD_NUM,
+		ci.CARD_OWNER,
+		ci.CARD_BANK,
+		ci.CARD_STATE,
+		pro.PROJECT_NAME,
+		pro.PROJECT_TYPE,
+		pro.PROJECT_STATE,
+		(select sum(dr.RETURN_AMOUNT) from deposit_return  dr where dr.DETAIL_ID = cd.DETAIL_ID ) RETURN_AMOUNT_SUM
+		from card_detail cd
+		left join deposit_manage dm on dm.DETAIL_ID = cd.DETAIL_ID
+		left join card_info ci on ci.CARD_ID = dm.CARD_ID
+		left join project_info pro on pro.PROJECT_ID = dm.PROJECT_ID
+		where cd.PAY_TYPE = '01' and cd.PAY_CLASS = '02'
+		<if test="DETAIL_NUM !=null and DETAIL_NUM !='' ">
+			and cd.DETAIL_NUM like CONCAT('%',#{DETAIL_NUM},'%')
+		</if>
+		<if test="PROJECT_NAME !=null and PROJECT_NAME !=''">
+			and pro.PROJECT_NAME like CONCAT('%',#{PROJECT_NAME},'%')
+		</if>
+		<if test="PROJECT_TYPE !=null and PROJECT_TYPE !='' ">
+			and pro.PROJECT_TYPE = #{PROJECT_TYPE}
+		</if>
+		<if test="PROJECT_STATE !=null and PROJECT_STATE !=''">
+			and pro.PROJECT_STATE = #{PROJECT_STATE}
+		</if>
+		<if test="CARD_NAME !=null and CARD_NAME !='' ">
+			and ci.CARD_NAME like CONCAT('%',#{CARD_NAME},'%')
+		</if>
+		<if test="CARD_NUM !=null and CARD_NUM !=''">
+			and ci.CARD_NUM like CONCAT('%',#{CARD_NUM},'%')
+		</if>
+	</select>
+	
+		  <!-- 查询账户-->
+	<select id="queryDepositSum" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+			'-' DETAIL_ID,
+			'-' DETAIL_NUM,
+			'合计' DETAIL_DATE,
+			'-' DETAIL_EXPLAIN,
+			sum(a.AMOUNT) AMOUNT,
+			'-' PAY_TYPE,
+			'-' BALANCE,
+			'-' PAY_CLASS,
+			'-' PAY_EXPLAIN,
+			'-' BILL_NUM,
+			'-' REMARK,
+			'-' CARD_ID,
+			'-' REAL_AMOUNT,
+			'-' CARD_NAME,
+			'-' CARD_NUM,
+			'-' CARD_OWNER,
+			'-' CARD_BANK,
+			'-' CARD_STATE,
+			'-' PROJECT_NAME,
+			'-' PROJECT_TYPE,
+			sum(a.RETURN_AMOUNT_SUM) RETURN_AMOUNT_SUM
+			from     (  select
+						cd.AMOUNT,
+						(select sum(dr.RETURN_AMOUNT) from deposit_return  dr where dr.DETAIL_ID = cd.DETAIL_ID ) RETURN_AMOUNT_SUM
+						from card_detail cd
+						left join deposit_manage dm on dm.DETAIL_ID = cd.DETAIL_ID
+						left join card_info ci on ci.CARD_ID = dm.CARD_ID
+						left join project_info pro on pro.PROJECT_ID = dm.PROJECT_ID
+						where cd.PAY_TYPE = '01' and cd.PAY_CLASS = '02'
+						<if test="DETAIL_NUM !=null and DETAIL_NUM !='' ">
+							and cd.DETAIL_NUM like CONCAT('%',#{DETAIL_NUM},'%')
+						</if>
+						<if test="PROJECT_NAME !=null and PROJECT_NAME !=''">
+							and pro.PROJECT_NAME like CONCAT('%',#{PROJECT_NAME},'%')
+						</if>
+						<if test="PROJECT_TYPE !=null and PROJECT_TYPE !='' ">
+							and pro.PROJECT_TYPE = #{PROJECT_TYPE}
+						</if>
+						<if test="PROJECT_STATE !=null and PROJECT_STATE !=''">
+							and pro.PROJECT_STATE = #{PROJECT_STATE}
+						</if>
+						<if test="CARD_NAME !=null and CARD_NAME !='' ">
+							and ci.CARD_NAME like CONCAT('%',#{CARD_NAME},'%')
+						</if>
+						<if test="CARD_NUM !=null and CARD_NUM !=''">
+							and ci.CARD_NUM like CONCAT('%',#{CARD_NUM},'%')
+						</if>
+					) a
+		
+	</select>
+	
+	
+	
+	
+	
+			  <!-- 保证金信息维护-->
+	<insert id="editDepositInfo" parameterType="java.util.Map">
+		insert into DEPOSIT_MANAGE
+		(DETAIL_ID,PROJECT_ID,CARD_ID)
+		values
+		(#{DETAIL_ID},#{PROJECT_ID},#{CARD_ID})
+	</insert>
+	
+			  <!-- 保证金信息更新-->
+	<update id="updateDepositInfo" parameterType="java.util.Map">
+		update DEPOSIT_MANAGE set 
+		PROJECT_ID = #{PROJECT_ID},
+		CARD_ID = #{CARD_ID}
+		where DETAIL_ID = #{DETAIL_ID}
+	</update>
+	
+	  <!-- 查询回款明细-->
+	<select id="queryReturnList" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		RETURN_ID,
+		RETURN_DATE,
+		RETURN_AMOUNT,
+		RETURN_REMARK,
+		DETAIL_ID
+		from deposit_return 
+		where DETAIL_ID = #{DETAIL_ID}
+		<if test="RETURN_START_TIME !=null and RETURN_START_TIME !='' ">
+			and RETURN_DATE &gt;= #{RETURN_START_TIME}
+		</if>
+		<if test="RETURN_END_TIME !=null and RETURN_END_TIME !=''">
+			and RETURN_DATE &lt;= #{RETURN_END_TIME}
+		</if>
+		
+		order by RETURN_ID desc
+		
+		
+	</select>
+	
+	  <!-- 查询回款合计-->
+	<select id="queryReturnSum" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		'00' as RETURN_ID,
+		'合计' as RETURN_DATE,
+		(select sum(RETURN_AMOUNT) from deposit_return 
+			where DETAIL_ID = #{DETAIL_ID}
+		<if test="RETURN_START_TIME !=null and RETURN_START_TIME !='' ">
+			and RETURN_DATE &gt;= #{RETURN_START_TIME}
+		</if>
+		<if test="RETURN_END_TIME !=null and RETURN_END_TIME !=''">
+			and RETURN_DATE &lt;= #{RETURN_END_TIME}
+		</if>) as RETURN_AMOUNT,
+		'-' as RETURN_REMARK,
+		'-' as DETAIL_ID
+		from dual
+	</select>
+
+
+		  <!-- 新建回款-->
+	<insert id="addReturn" parameterType="java.util.Map">
+		insert into DEPOSIT_RETURN
+		(RETURN_DATE,RETURN_AMOUNT,RETURN_REMARK,DETAIL_ID)
+		values
+		(#{RETURN_DATE},${RETURN_AMOUNT},#{RETURN_REMARK},#{DETAIL_ID})
+	</insert>
+	
+	  <!-- 修改回款-->
+	<update id="editReturn" parameterType="java.util.Map">
+		update DEPOSIT_RETURN
+		set RETURN_DATE = #{RETURN_DATE},
+			RETURN_AMOUNT = ${RETURN_AMOUNT},
+			RETURN_REMARK = #{RETURN_REMARK}
+		where RETURN_ID = #{RETURN_ID}
+	</update>
+	
+	  <!-- 删除回款-->
+	<delete id="delReturn" parameterType="java.util.Map">
+		delete from DEPOSIT_RETURN
+		where RETURN_ID = #{RETURN_ID}
+	</delete>
+
+	  <!-- 查询保证金管理是佛存在记录-->
+	<select id="getDetailId" parameterType="java.util.Map" resultType="java.lang.String">
+		select DETAIL_ID 
+		from deposit_manage
+		where  DETAIL_ID = #{DETAIL_ID}
+		
+	</select>
+	
+
+	
+	
+</mapper>

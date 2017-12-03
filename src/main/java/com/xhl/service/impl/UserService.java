@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -141,4 +142,31 @@ public class UserService implements IUserService{
 			}
 			return resultMap;
 		}
+		
+		/**
+		 * 读取权限
+		 */
+		@Override
+		public Map<String, Object> getUserRole(HttpServletRequest request) {
+			Map<String, Object> resultMap=new HashMap<String, Object>();
+			try{
+				HttpSession session=request.getSession();
+				User user = (User)session.getAttribute("userinfo");
+				resultMap.put("username", user.getUserName());
+				resultMap.put("loginname", user.getLoginName());
+				resultMap.put("role", user.getRole());
+				resultMap.put("result", "true");
+				return resultMap;
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			resultMap.put("result", "false");
+			resultMap.put("msg", "未知错误!");
+			return resultMap;
+		}
+		
 }
+
+
+
+

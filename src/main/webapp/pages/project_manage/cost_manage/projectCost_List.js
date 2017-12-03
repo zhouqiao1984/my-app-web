@@ -41,6 +41,20 @@ function initCost(){
 			});
 	 });
 	 
+	//成本备忘录
+	 $page.find("[name='costRecord']").click(function(){
+			var seles = costTable.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一个项目!");
+					return;
+			}
+			
+		 closeAndOpenInnerPageTab("commonRecord","备忘录","pages/project_manage/common_recordList.html", function(){
+			 initCRecord(seles[0].PROJECT_ID,'02');//成本02
+			});
+	 });
+	 
+	 
 	//关闭成本管理
 	 $page.find("[name='costClose']").click(function(){
 			var seles = costTable.bootstrapTable("getSelections");
@@ -169,12 +183,24 @@ function initCost(){
 							field : "FINAL_TOTAL",
 							title : "决算金额",
 							width : "12%",
-							align : "center"
+							align : "center",
+							formatter:function(value,row,index){
+								if(value == undefined){
+									value = 0;
+								}
+								return value;
+							}
 						},{
 							field : "COST_SUM",
 							title : "成本",
 							width : "12%",
-							align : "center"
+							align : "center",
+							formatter:function(value,row,index){
+								if(value == undefined){
+									value = 0;
+								}
+								return value;
+							}
 						},{
 							field : "PROFIT",
 							title : "利润",

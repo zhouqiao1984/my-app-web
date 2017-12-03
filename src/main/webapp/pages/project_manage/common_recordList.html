@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>备忘录</title>
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+    <link href="css/mystyle.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="main_iframe_con">
+        <div class="ecitic-inquire" id="ecitic-inquire">
+            <div class="ecitic-table" id="ecitic-table">
+                <form id="crecordForm">
+                    <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
+                        <tr>
+                        	<td class="ecitic-right">事件编号：</td>
+                            <td>
+                                <input type="text" name="RECORD_NUM" />
+                            </td>
+                            <td class="ecitic-right">事件摘要：</td>
+                            <td>
+                                <input type="text" name="RECORD_NAME" />
+                            </td>
+                            <td class="ecitic-right">事件状态：</td>
+                            <td>
+                               <select id="RECORD_STATE" name="RECORD_STATE"   style="width: 100%">
+                               		<option value=" "></option>
+                           			<option value="00">进行中</option>
+                           			<option value="01">已完成</option>
+                           		</select>
+                            </td>
+                             <td>
+							 	<input type="button" class="btn btn-ecitic blue" name="queryCR" value="查询" />
+							 	<div class="dateSelectZ_W">&nbsp</div>
+							 	<input type="button" class="btn btn-ecitic blue" name="resetCR" value="重置" />
+							 </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        <div class="ecitic-operation">
+            <button class="btn btn-ecitic blue" name="addCRecord">新增事件</button>
+            <button class="btn btn-ecitic blue" name="editCRecord">修改事件</button>
+             <button class="btn btn-ecitic blue" name="viewCRecord">查看事件</button>
+             <button class="btn btn-ecitic blue" name="delCRecord">删除事件</button>
+        </div>
+        <div class="ecitic-new">
+            <table tb="crecordTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
+        </div>
+    </div>
+</body>
+<script src="js/commons/commons.js"></script>
+<script src="bootstrap/js/bootstrap-table.min.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script src="pages/project_manage/common_recordList.js"></script>
+</html>
+
+
+
+
+
+
+
+

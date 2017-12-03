@@ -151,7 +151,7 @@ public class MyUtil {
     	if(null != pay){
     		for(int i=0;i<pay.length;i++){
     			payment = pmap.get(pay[i]);
-    			if("".equals(payment) && !"REMARK".equals(pay[i])){
+    			if("".equals(payment) && !"remark".equals(payment)){
     				pmap.put(pay[i],"null");
     			}
     		}
@@ -190,5 +190,53 @@ public class MyUtil {
 		
 		return null;
 	}
+	
+	
+	
+	  /**
+		 * 请求对象request转成map 验证金额
+		 * @param req
+		 * @param must   必填列表
+		 * @param nomust 非必填列表
+		 * @return
+		 */
+		public static Map<String, String> requestToMap(HttpServletRequest req,String[] must,String []nomust,String []money){
+			Map<String, String> map=new HashMap<String, String>();
+			String p=null;
+			if (must!=null) {
+				for (int i = 0; i < must.length; i++) {
+					p=getParamValue(req,must[i]);
+					if (p==null) {
+						p=getParamValue(req,must[i]+"[]");
+					}
+					if (p!=null&&p.trim().length()>0) {
+						map.put(must[i], p);
+					}else{//必填项出现 未填
+						return null;
+					}
+				}
+			}
+			if (nomust!=null) {
+				for (int i = 0; i < nomust.length; i++) {
+					p=getParamValue(req,nomust[i]);
+					if (p!=null&&p.trim().length()>0) {
+						map.put(nomust[i], p);
+					}else{
+						map.put(nomust[i], "");
+					}
+				}
+			}
+	    	if(null != money){
+	    		for(int i=0;i<money.length;i++){
+	    			p=getParamValue(req,money[i]);
+	    			if (p!=null&&p.trim().length()>0) {
+						map.put(money[i], p);
+					}else{
+						map.put(money[i], null);
+					}
+	    		}
+	    	}
+			return map;
+		}
     
 }

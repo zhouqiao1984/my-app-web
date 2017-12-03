@@ -31,7 +31,7 @@ public class RecordService implements IRecordService{
 		@Override
 		public Map<String, Object> queryRecord(HttpServletRequest request) {
 			String[] must = new String[]{"limit","offset"};
-			String[] nomust = new String[]{"RECORD_NAME","RECORD_STATE"};
+			String[] nomust = new String[]{"RECORD_NAME","RECORD_NUM","RECORD_STATE","RELATE_TYPE","RELATE_ID"};
 			Map<String, Object> resultMap = new HashMap<String,Object>();
 	 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 			if (null == pmap) {
@@ -63,7 +63,8 @@ public class RecordService implements IRecordService{
 		public Map<String, String> editRecord(HttpServletRequest req) {
 			Map<String, String> resultMap = new HashMap<String, String>();
 			String[] must = new String[]{"TYPE"};
-			String[] nomust = new String[]{"RECORD_NAME","RECORD_DATE","RECORD_STATE","RECORD_REMARK","LNID","RECORD_ID"};
+			String[] nomust = new String[]{"RECORD_NAME","RECORD_DATE","RECORD_STATE",
+					"RECORD_REMARK","LNID","RECORD_ID","RELATE_ID","RELATE_TYPE"};
 			Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust);
 			if(null == pmap){
 				resultMap.put("msg","必填项未填");
@@ -86,6 +87,10 @@ public class RecordService implements IRecordService{
 					pmap.put("UPDATE_PERSON", pmap.get("LNID"));
 					pmap.put("UPDATE_TIME", DateTimeUtils.getFormatCurrentDate());
 					recordDao.editRecord(pmap);
+				}
+				//删除
+				if("del".equals(type)){
+					recordDao.delRecord(pmap);
 				}
 				resultMap.put("msg", "操作成功");
 				resultMap.put("result", "true");

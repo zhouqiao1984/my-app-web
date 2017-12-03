@@ -46,6 +46,9 @@ function editProject(item){
 		for(var k in item){
 		
 			$page.find("[name='P."+ k +"']").val(item[k]);
+			if(k == 'PROJECT_TYPE'&& item[k] != undefined){
+				setSelected($page.find("[name='P."+ k +"']"),item[k]);
+			}
 		}
 	}
 

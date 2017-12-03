@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface CardDao {
 
 	//查询账户
-	 List<Map<String, String>>  queryCard(String card_state);
+	 List<Map<String, String>>  queryCard(Map<String, String> map);
+	//查询合计
+	List<Map<String, String>>  queryCardSum(Map<String, String> map);
 	//新建账户
 	 void addCard(Map<String, String> map);
 	//修改账户

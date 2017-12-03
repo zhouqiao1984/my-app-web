@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>往来款管理</title>
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+    <link href="css/mystyle.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="main_iframe_con">
+        <div class="ecitic-title">
+            <span>往来款管理</span>
+        </div>
+        <div class="ecitic-title-table">
+        	<input type="hidden" name="P.IP_ID">
+            <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
+                <colgroup>
+						<col style="width: 15%">
+						<col style="width: 35%">
+						<col style="width: 15%">
+						<col style="width: 35%">
+				</colgroup>
+                <tr>
+                	<td class="table-text">日期：</td>
+                    <td ><input type="text" name="P.IP_DATE" onFocus="WdatePicker({})" placeHolder="点击选择" readonly></td>
+                    <td class="table-text">付款金额：</td>
+                    <td ><input type="text" name="P.IP_AMOUNT" class="requirement-ele-width" validate="v.required" valititle="该项为必填项" varify="is_money"></td>
+                </tr>
+                <tr>
+                    <td class="table-text">备注：</td>
+                    <td colspan="5">
+                    	<textarea name="P.IP_REMARK" class="requirement-ele-width" ></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="ecitic-save">
+            <input type="button"  class="btn btn-ecitic green" btn="saveInfo" value="保存"/>
+            <input type="button" class="btn btn-ecitic rosy" name="closePageTabConfirm" value="返回" />
+        </div>
+    </div>
+</body>
+<script src="pages/project_manage/invoice_manage/invoicePay_edit.js"></script>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>项目发票管理</title>
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+     <link href="css/mystyle.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="widget-box">
+		<div class="widget-content nopadding">
+			<div class="control-group">
+				<div class="controls">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#inputs_tab" data-toggle="tab" style="color: red;">进项发票信息</a></li>
+<!-- 						<li><a href="#input_tab" data-toggle="tab" style="color: red;">进项发票(普通)信息</a></li> -->
+						<li><a href="#out_tab" data-toggle="tab" style="color: red;">给甲方开发票金额信息</a></li>
+						<li><a href="#first_tab" data-toggle="tab" style="color: red;">甲方付款信息</a></li>
+					</ul>
+					<div class="tab-content">
+
+<!-- ****** 进项发票	******	-->
+<div class="tab-pane active" id="inputs_tab" >
+        <div class="ecitic-title">
+            <span>进项发票信息记录<em></em></span> <i></i>
+        </div>
+        
+         <div class="ecitic-inquire">
+            <div class="ecitic-table" >
+                <form id="inputsForm">
+                    <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
+                         <colgroup>
+							<col style="width: 10%">
+							<col style="width: 15%">
+							<col style="width: 10%">
+							<col style="width: 15%">
+							<col style="width: 10%">
+							<col style="width: 15%">
+							<col style="width: 10%">
+							<col style="width: 10%">
+						</colgroup>
+                        <tr>
+                        	<td class="ecitic-right">种类：</td>
+                             <td>
+                             	<select  name="SQ.INVOICE_TYPE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">普通</option>
+                                		<option value="01">专用</option>
+                            	 </select>
+                            </td>
+                             <td class="ecitic-right">状态：</td>
+                             <td>
+                             	<select  name="SQ.STATE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">进行中</option>
+                                		<option value="01">已完成</option>
+                            	 </select>
+                            </td>
+                         	  <td class="ecitic-right">类型：</td>
+                             <td>
+                             	<select  name="SQ.TYPE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">垫付</option>
+                                		<option value="01">欠客户</option>
+                                		<option value="02">已打款</option>
+                            	 </select>
+                            </td>
+                            <td>
+                            	 <input type="button" class="btn btn-ecitic blue" name="queryS" value="查询" />
+                            </td>
+                            <td>
+                            	 <input type="button" class="btn btn-ecitic blue" name="resetS" value="重置" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        
+        
+        
+       
+        <div class="ecitic-operation">
+			<button class="btn btn-ecitic blue" btn="addInputInvoiceS" >新增</button>
+			<button class="btn btn-ecitic green" btn="editInputInvoiceS" >修改</button>
+			<button class="btn btn-ecitic red" btn="delInputInvoiceS" >删除</button>
+			<button class="btn btn-ecitic rosy" btn="viewInputInvoiceS" >查看</button>
+			<button class="btn btn-ecitic orange" btn="payManage1" >往来款管理</button>
+		</div>
+			  <!--   进项发票(专用)模态框   -->
+        <div id="inputs_modal" class="modal hide fade" tabindex="-1" z-index="1060" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="">进项发票</h3>
+            </div>
+            <div class="ecitic-title-table modal-body">
+            	<input type="hidden" name="S.INPUT_ID">
+            	<input type="hidden" name="S.OPT_TYPE">
+                <table width="100%" cellspacing="0" cellpadding="0" class="table table-striped table-hover table-bordered tablr-input-text">
+                        <colgroup>
+							<col style="width: 20%">
+							<col style="width: 30%">
+							<col style="width: 20%">
+							<col style="width: 30%">
+						</colgroup>
+                        <tr>
+                            <td class="table-text">发票日期：</td>
+                            <td >
+                                <input type="text" name="S.PAYDATE" onFocus="WdatePicker({})" placeHolder="点击选择" readonly>
+                            </td> 
+                            <td class="table-text">状态：</td>
+                             <td>
+                             	<select  name="S.STATE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">进行中</option>
+                                		<option value="01">已完成</option>
+                            	 </select>
+                            </td>
+                        </tr>
+                          <tr>
+                          	 <td class="table-text">发票种类：</td>
+                             <td>
+                             	<select  name="S.INVOICE_TYPE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">普通</option>
+                                		<option value="01">专用</option>
+                            	 </select>
+                           	 </td>
+                             <td class="table-text">类型：</td>
+                             <td>
+                             	<select  name="S.TYPE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">垫付</option>
+                                		<option value="01">欠客户</option>
+                                		<option value="02">已打款</option>
+                            	 </select>
+                            </td>
+                        </tr>
+                        <tr>
+                        	 <td class="table-text">开票单位：</td>
+                            <td colspan="5">
+                                <input type="text" id="S.COMPANY" name="S.COMPANY" >
+                            </td> 
+                        </tr>
+                        <tr>
+                       		 <td class="table-text">金额：</td>
+							<td >
+								<input type="text" name="S.PAYMENT" varify="is_money">
+							</td>
+                        	<td class="table-text">金额(不含税)：</td>
+                            <td >
+                                <input type="text" name="S.PAYNOTAX" varify="is_money">
+                            </td> 
+                            
+                        </tr>
+                          <tr>
+                          <td class="table-text">税额：</td>
+							<td >
+								<input type="text" name="S.TAXVALUE" varify="is_money">
+							</td>
+                        	<td class="table-text">税额余额：</td>
+                            <td >
+                                <input type="text" name="S.TAXBALANCE" varify="is_money">
+                            </td> 
+                        </tr>
+                          <tr>
+                        	<td class="table-text">备注：</td>
+                            <td colspan="5">
+								<textarea name="S.REMARK" class="requirement-ele-width" ></textarea>
+							</td> 
+                        </tr>
+              
+                </table>
+            </div>
+            <div class="ecitic-save">
+                <input type="button" class="btn btn-ecitic green" value="保存" btn="inputs_save">
+                <button btn="close2" class="btn btn-ecitic rosy" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <input type="button" class="btn btn-ecitic rosy" value="返回" btn="close_modal">
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+        
+        
+		<div class="ecitic-title-table">
+            <table tb="inputInvoiceSTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
+        </div>
+ 	</div>       
+        
+        
+        
+        
+        
+        
+        <!--     给甲方开发票金额      -->
+      <div class="tab-pane fade" id="out_tab" >
+        <div class="ecitic-title">
+            <span>给甲方开发票金额信息记录<em></em></span> <i></i>
+        </div>
+        <div class="ecitic-operation">
+			<button class="btn btn-ecitic blue" btn="addOutInvoice" >新增</button>
+			<button class="btn btn-ecitic green" btn="editOutInvoice" >修改</button>
+			<button class="btn btn-ecitic red" btn="delOutInvoice" >删除</button>
+		</div>
+						  <!--   给甲方开发票金额模态框   -->
+        <div id="out_modal" class="modal hide fade" tabindex="-1" z-index="1060" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="">给甲方开发票</h3>
+            </div>
+            <div class="ecitic-title-table modal-body">
+            	<input type="hidden" name="O.OUT_ID">
+            	<input type="hidden" name="O.OPT_TYPE">
+                <table width="100%" cellspacing="0" cellpadding="0" class="table table-striped table-hover table-bordered tablr-input-text">
+                        <colgroup>
+							<col style="width: 20%">
+							<col style="width: 30%">
+							<col style="width: 20%">
+							<col style="width: 30%">
+						</colgroup>
+                        <tr>
+                            <td class="table-text">日期：</td>
+                            <td >
+                                <input type="text" name="O.PAYDATE" onFocus="WdatePicker({})" placeHolder="点击选择" readonly>
+                            </td> 
+                            <td class="table-text">金额：</td>
+							<td >
+								<input type="text" name="O.PAYMENT" varify="is_money">
+							</td>
+                        </tr>
+                        <tr>
+                        	<td class="table-text">金额(不含税)：</td>
+                            <td >
+                                <input type="text" name="O.PAYNOTAX" varify="is_money">
+                            </td> 
+                            <td class="table-text">税额：</td>
+							<td >
+								<input type="text" name="O.TAXVALUE" varify="is_money">
+							</td>
+                        </tr>
+                          <tr>
+                        	<td class="table-text">余额：</td>
+                            <td >
+                                <input type="text" name="O.BALANCE" varify="is_money">
+                            </td> 
+                            <td class="table-text">增值税额：</td>
+                            <td >
+                                <input type="text" name="O.UPTAX" varify="is_money">
+                            </td> 
+                        </tr>
+                          <tr>
+                        	<td class="table-text">附加税额：</td>
+                            <td >
+                                <input type="text" name="O.ADDTAX" varify="is_money">
+                            </td> 
+                            <td class="table-text">其他税额：</td>
+                            <td >
+                                <input type="text" name="O.OTHERTAX" varify="is_money">
+                            </td> 
+                        </tr>
+                         <tr>
+                        	<td class="table-text">备注：</td>
+                            <td colspan="5">
+								<textarea name="O.REMARK" class="requirement-ele-width" ></textarea>
+							</td> 
+                        </tr>
+              
+                </table>
+            </div>
+            <div class="ecitic-save">
+                <input type="button" class="btn btn-ecitic green" value="保存" btn="out_save">
+                <button btn="close2" class="btn btn-ecitic rosy" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <input type="button" class="btn btn-ecitic rosy" value="返回" btn="close_modal">
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+		 <div class="ecitic-title-table">
+            <table tb="outInvoiceTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
+        </div>
+      </div>
+        
+        
+        
+<!--         甲方付款信息        -->
+	<div class="tab-pane fade" id="first_tab" >
+        <div class="ecitic-title">
+            <span>甲方付款信息记录<em></em></span> <i></i>
+        </div>
+        <div class="ecitic-operation">
+			<button class="btn btn-ecitic blue" btn="addFirstPay" >新增</button>
+			<button class="btn btn-ecitic green" btn="editFirstPay" >修改</button>
+			<button class="btn btn-ecitic red" btn="delFirstPay" >删除</button>
+		</div>
+								  <!--   甲方付款模态框   -->
+        <div id="first_modal" class="modal hide fade" tabindex="-1" z-index="1060" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="">甲方付款</h3>
+            </div>
+            <div class="ecitic-title-table modal-body">
+            	<input type="hidden" name="F.FIRST_ID">
+            	<input type="hidden" name="F.OPT_TYPE">
+                <table width="100%" cellspacing="0" cellpadding="0" class="table table-striped table-hover table-bordered tablr-input-text">
+                        <colgroup>
+							<col style="width: 20%">
+							<col style="width: 30%">
+							<col style="width: 20%">
+							<col style="width: 30%">
+						</colgroup>
+                        <tr>
+                            <td class="table-text">日期：</td>
+                            <td >
+                                <input type="text" name="F.PAYDATE" onFocus="WdatePicker({})" placeHolder="点击选择" readonly>
+                            </td> 
+                            <td class="table-text">金额：</td>
+							<td >
+								<input type="text" name="F.PAYMENT" varify="is_money">
+							</td>
+                        </tr>
+                          <tr>
+                        	<td class="table-text">余额：</td>
+                            <td >
+                                <input type="text" name="F.BALANCE" varify="is_money">
+                            </td> 
+                            <td class="table-text"></td>
+                            <td >
+                            </td> 
+                        </tr>
+                         <tr>
+                        	<td class="table-text">备注：</td>
+                            <td colspan="5">
+								<textarea name="F.REMARK" class="requirement-ele-width" ></textarea>
+							</td> 
+                        </tr>
+              
+                </table>
+            </div>
+            <div class="ecitic-save">
+                <input type="button" class="btn btn-ecitic green" value="保存" btn="first_save">
+                <button btn="close2" class="btn btn-ecitic rosy" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <input type="button" class="btn btn-ecitic rosy" value="返回" btn="close_modal">
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+		<div class="ecitic-title-table">
+            <table tb="firstPaymentTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
+        </div>
+      </div>  
+            
+ 	
+        <div class="ecitic-save">
+            <input type="button" class="btn btn-ecitic rosy" name="closePageTabConfirm" value="返回" />
+        </div>
+        
+        		</div> 
+			</div> 
+		</div> 
+	</div> 
+</div>  
+</body>
+<script src="bootstrap/js/bootstrap-table.min.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script src="pages/project_manage/invoice_manage/project_account.js"></script>
+</html>

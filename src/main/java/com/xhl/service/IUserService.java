@@ -14,5 +14,6 @@ public interface IUserService {
 	Map<String, Object> queryAllUser(HttpServletRequest request);
 	//编辑用户信息
 	public Map<String, String> editUser(HttpServletRequest request);
-
+	//读取用户权限
+	Map<String, Object> getUserRole(HttpServletRequest request);
 }

@@ -36,10 +36,19 @@
                             <td class="ecitic-right">项目状态：</td>
                             <td>
                                 <select name="PROJECT_STATE" diccode="" class="requirement-ele-width" style="width: 100%">
-                                	<option value=""></option>
+                                	<option value="">请选择</option>
                                 	<option value="00">进行中</option>
                                 	<option value="01">已关闭</option>
                                 	<option value="02">已删除</option>
+                                </select>
+                            </td>
+                             <td class="ecitic-right">项目类型：</td>
+                            <td>
+                                <select name="PROJECT_TYPE" diccode="" class="requirement-ele-width" style="width: 100%">
+                                	<option value="">请选择</option>
+                                	<option value="00">自营</option>
+                                	<option value="01">挂靠</option>
+                                	<option value="02">陪标</option>
                                 </select>
                             </td>
                         </tr>
@@ -52,13 +61,14 @@
             </ul>
         </div>
         <div class="ecitic-operation">
+        	<button class="btn btn-ecitic blue" name="viewProject">项目信息查看</button>
             <button class="btn btn-ecitic blue" name="addProject">新建项目</button>
             <button class="btn btn-ecitic blue" name="editProject">项目基本信息维护</button>
-            <button class="btn btn-ecitic blue" name="accountManage">项目发票管理</button>
             <button class="btn btn-ecitic blue" name="closeProject">关闭项目</button>
             <button class="btn btn-ecitic blue" name="openProject">打开项目</button>
              <button class="btn btn-ecitic blue" name="delProject">删除项目</button>
              <button class="btn btn-ecitic blue" name="reProject">恢复项目</button>
+              <button class="btn btn-ecitic blue" name="memoProject">项目备忘录</button>
         </div>
         <div class="ecitic-new">
             <table tb="projectTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>

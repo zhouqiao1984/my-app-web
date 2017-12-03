@@ -25,25 +25,29 @@ TOTAL_PRICES			总价
 FINAL_NOTAX				决算金额(不含税)
 FINAL_TAX				决算税额
 FINAL_TOTAL				决算金额
-PROJECT_STATE			项目状态
+PROJECT_STATE			项目状态   00进行中  01已关闭  02已删除
 REMARK					备注
 COST_STATE				成本管理状态00未01已
 PAY_STATE				付款管理状态00未01已
+PROJECT_TYPE            项目类型 00自营  01挂靠 02陪标
 
 
 二、
-进项发票(普票)  input_invoice 	
-进项发票(专票)  input_invoices  
-
+进项发票(普/专票)  input_invoice 	
 INPUT_ID    ID
 INPUT_NUM	编号    			  GI_   SI_
 PAYDATE		发票日期
 PAYMENT		金额
-PAYNOTAX	金额(不含税)    余额改的
+PAYNOTAX	金额(不含税)    
 TAXVALUE	税额
 TAXBALANCE	税额余额
 REMARK		备注
+COMPANY     开票单位
+STATE		状态                     00进行中  01已完成
+TYPE		类型			00垫付  01欠客户 02 已打款 
 PROJECT_ID	项目ID
+INVOICE_TYPE 发票类型        00普通  01专用
+
 
 三、
 给甲方开发票  out_invoice		
@@ -79,6 +83,7 @@ PROJECT_ID	项目ID
 项目备忘录		project_memo
 
 MEMO_ID				主键
+MEMO_DATE			日期
 MEMO_NUM			记事编号          ME_
 MEMO_TITLE			摘要
 MEMO_CONTENT		记事内容
@@ -122,6 +127,8 @@ REMARK				备注
 CARD_ID				账户ID
 REAL_AMOUNT			实际发生金额(可负)
 
+
+收支类别
 if(value == '00'){state = '工资'}
 if(value == '01'){state = '往来款'}
 if(value == '02'){state = '保证金'}
@@ -172,6 +179,8 @@ CREATE_PERSON	创建人
 CREATE_TIME		创建时间
 UPDATE_PERSON	编辑人
 UPDATE_TIME		编辑时间
+RELATE_ID		关联主键
+RELATE_TYPE     关联类型 00公司  01项目 02成本 03付款
 
 
 十一、
@@ -196,3 +205,33 @@ PAY_REMARK	          备注
 PROJECT_ID	关联项目编号
 
 决算金额是含税的，合同金额是总价(含税)
+
+
+2017/12/01
+
+十三、
+发票关联付款表  invoice_pay			
+IP_ID     	          主键
+IP_DATE     	日期
+IP_AMOUNT		金额
+IP_REMARK	          备注
+INPUT_ID        关联发票ID
+PROJECT_ID	          关联项目ID
+
+十四、
+保证金管理表  deposit_manage
+DETAIL_ID       账户明细ID
+PROJECT_ID  	关联项目ID
+CARD_ID         关联账户ID
+
+
+十五、
+保证金汇款表  deposit_return
+RETURN_ID      主键
+RETURN_DATE    日期
+RETURN_AMOUNT  回款金额
+RETURN_REMARK  备注
+DETAIL_ID       关联账户明细ID
+
+
+

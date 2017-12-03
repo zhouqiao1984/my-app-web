@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>保证金回款管理</title>
+    <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="css/form.css" rel="stylesheet"/>
+    <link href="css/mystyle.css" rel="stylesheet"/>
+</head>
+
+<body>
+    <div class="main_iframe_con">
+   	  	 <div class="ecitic-table" id="ecitic-table">
+   	  	 <form id="returnForm">
+            <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
+         		<tr>
+	         		<td class="ecitic-left" style="width:80px;font-size:18px;">日期：</td>
+					<td>
+						<div class="dateSelectZ_From">
+						<input type="text" id="RETURN_START_TIME" name="RETURN_START_TIME" class="requirement-ele-width"  onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'RETURN_END_TIME\',{d:0});}'})" placeHolder="点击选择"   readonly/>
+						</div>
+						<div class="dateSelectZ_W">&nbsp至&nbsp</div>
+						<div class="dateSelectZ_From">
+						<input type="text" id="RETURN_END_TIME" name="RETURN_END_TIME" class="requirement-ele-width" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'RETURN_START_TIME\',{d:0});}'})" placeHolder="点击选择"  readonly/>
+						</div>
+					</td>
+					 <td>
+					 	<input type="button" class="btn btn-ecitic blue" name="queryReturn" value="查询" />
+					 	<div class="dateSelectZ_W">&nbsp</div>
+					 	<input type="button" class="btn btn-ecitic blue" name="resetReturn" value="重置" />
+					 </td>
+				</tr>
+            </table>
+            </form>
+         </div>
+
+        <div class="ecitic-operation">
+            <button class="btn btn-ecitic blue" name="addReturn">新增</button>
+            <button class="btn btn-ecitic blue" name="editReturn">修改</button>
+            <button class="btn btn-ecitic blue" name="delReturn">删除</button>
+        </div>
+        <div class="ecitic-new">
+            <table tb="returnTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>
+        </div>
+    </div>
+</body>
+<script src="js/commons/commons.js"></script>
+<script src="bootstrap/js/bootstrap-table.min.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script src="pages/account_manage/deposit_manage/return_List.js"></script>
+</html>
+
+
+
+
+
+
+
+
