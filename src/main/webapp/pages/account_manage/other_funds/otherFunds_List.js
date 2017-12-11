@@ -126,7 +126,14 @@ function initCardFundsList(){
 	 }
 	//初始化其他款项表	
 	 function initOtherTable() {
-
+		 var queryParams = function(params) {
+				var temp = {
+					limit : params.limit, // 页面大小
+					offset : params.offset
+				// 页码
+				};
+				return temp;
+			};
 		 otherTable.bootstrapTable({
 						url : 'otherfunds/queryOther.asp?call='+ otherCall,
 						method : 'get', // 请求方式（*）
@@ -136,8 +143,8 @@ function initCardFundsList(){
 						sortOrder : "asc", // 排序方式
 						//queryParams : queryParams,// 传递参数（*）
 						sidePagination : "server", // 分页方式：client客户端分页，server服务端分页（*）
-						pagination : false, // 是否显示分页（*）
-						pageList : [ 5, 10, 15 ], // 可供选择的每页的行数（*）
+						pagination : true, // 是否显示分页（*）
+						pageList : [ 10, 15 ], // 可供选择的每页的行数（*）
 						pageNumber : 1, // 初始化加载第一页，默认第一页
 						pageSize : 5, // 每页的记录行数（*）
 						clickToSelect : true, // 是否启用点击选中行

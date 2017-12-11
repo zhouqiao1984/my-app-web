@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 public interface OtherDao {
 
 	//查询其他款项
-	 List<Map<String, String>>  queryOther(String Other_state);
+	 List<Map<String, String>>  queryOther(Map<String, String> map);
+	//查询其他款项合计
+	List<Map<String, String>>  queryOtherSum(Map<String, String> map);
 	//新建其他款项
 	 void addOther(Map<String, String> map);
 	//修改其他款项

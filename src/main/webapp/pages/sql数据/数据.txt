@@ -43,8 +43,8 @@ TAXVALUE	税额
 TAXBALANCE	税额余额
 REMARK		备注
 COMPANY     开票单位
-STATE		状态                     00进行中  01已完成
-TYPE		类型			00垫付  01欠客户 02 已打款 
+STATE		状态                     00已开 01未开 02完成
+TYPE		类型			00个人垫付  01欠客户   02 公司付款 03 完成 
 PROJECT_ID	项目ID
 INVOICE_TYPE 发票类型        00普通  01专用
 
@@ -126,7 +126,7 @@ BILL_NUM			单据编号
 REMARK				备注
 CARD_ID				账户ID
 REAL_AMOUNT			实际发生金额(可负)
-
+DEPOSIT_STATE       保证金状态  00 未完成  01已完成
 
 收支类别
 if(value == '00'){state = '工资'}
@@ -212,6 +212,7 @@ PROJECT_ID	关联项目编号
 十三、
 发票关联付款表  invoice_pay			
 IP_ID     	          主键
+IP_NUM
 IP_DATE     	日期
 IP_AMOUNT		金额
 IP_REMARK	          备注

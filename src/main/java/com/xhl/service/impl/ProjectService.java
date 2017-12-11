@@ -217,7 +217,7 @@ public class ProjectService implements IProjectService{
 	@Override
 	public Map<String, Object> queryCost(HttpServletRequest request) {
 		String[] must = new String[]{"limit","offset"};
-		String[] nomust = new String[]{"PROJECT_NUM","PROJECT_NAME","COST_STATE"};
+		String[] nomust = new String[]{"PROJECT_NUM","PROJECT_NAME","COST_STATE","PROJECT_TYPE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {

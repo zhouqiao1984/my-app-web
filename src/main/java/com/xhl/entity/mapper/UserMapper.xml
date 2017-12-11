@@ -33,7 +33,7 @@
 		u.USERSTATE,
 		u.REMARK
 		from test_user u
-		where u.USERID != '0'
+		where u.LOGINNAME != 'admin'
 		<if test="LOGINNAME!=null and LOGINNAME!=''">
  			and u.LOGINNAME like  CONCAT('%',#{LOGINNAME},'%')
  		</if>

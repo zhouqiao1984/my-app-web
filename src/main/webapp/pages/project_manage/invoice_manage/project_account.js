@@ -709,9 +709,10 @@ function editAccount(item){
 						align : "center",
 						formatter:function(value,row,index){
 							var type = '';
-							if(value == '00'){ type = '垫付' }
-							if(value == '01'){ type = '欠客户' }
-							if(value == '02'){ type = '已打款' }
+							if(value == '00'){ type = '个人垫付' }
+							if(value == '01'){ type = '未付款' }
+							if(value == '02'){ type = '公司付款' }
+							if(value == '02'){ type = '已完成' }
 							return type;
 						}
 					},{
@@ -721,8 +722,9 @@ function editAccount(item){
 						align : "center",
 						formatter:function(value,row,index){
 							var state = '';
-							if(value == '00'){ state = '进行中' }
-							if(value == '01'){ state = '已完成' }
+							if(value == '00'){ state = '已开' }
+							if(value == '01'){ state = '未开' }
+							if(value == '02'){ state = '完成' }
 							return state;
 						}
 					}
@@ -733,5 +735,17 @@ function editAccount(item){
 	
 }
 
-
-
+function checkPay1(value){
+	var $value3 = getCurrentPageObj().find("[name='S.TAXVALUE']");
+	var value2 = getCurrentPageObj().find("[name='S.PAYNOTAX']").val();
+	if(value2 == '' || value2 == undefined){ value2 = 0;}
+	$value3.val(value - value2);
+}
+function checkPay2(value){
+	var $value3 = getCurrentPageObj().find("[name='S.TAXVALUE']");
+	var value1 = getCurrentPageObj().find("[name='S.PAYMENT']").val();
+	if(value1 == '' || value1 == undefined){ value1 = 0;}
+	$value3.val(value1 - value);
+	
+	
+}

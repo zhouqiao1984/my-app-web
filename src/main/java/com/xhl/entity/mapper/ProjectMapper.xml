@@ -189,12 +189,15 @@
 		(select  sum(c.cost_amount) from project_cost c where c.project_id = p.project_id GROUP BY c.project_id) COST_SUM,
 		p.COST_STATE
 		from project_info p
-		where 1=1 and p.PROJECT_TYPE = '00'
+		where 1=1
 		<if test="PROJECT_NUM!=null and PROJECT_NUM!=''">
 			and p.PROJECT_NUM  like CONCAT('%',#{PROJECT_NUM},'%')
 		</if>
 		<if test="PROJECT_NAME!=null and PROJECT_NAME!=''">
 			and p.PROJECT_NAME like CONCAT('%',#{PROJECT_NAME},'%')
+		</if>
+		<if test="PROJECT_TYPE !=null and PROJECT_TYPE !=''">
+			and p.PROJECT_TYPE = #{PROJECT_TYPE}
 		</if>
 		 <choose>
 	        <when test="COST_STATE!=null and COST_STATE!=''">

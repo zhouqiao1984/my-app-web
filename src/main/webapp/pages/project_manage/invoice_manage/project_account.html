@@ -53,17 +53,19 @@
                              <td>
                              	<select  name="SQ.STATE"   style="width: 100%">
                              			<option value="">请选择</option>
-                                		<option value="00">进行中</option>
-                                		<option value="01">已完成</option>
+                                		<option value="00">已开</option>
+                                		<option value="01">未开</option>
+                                		<option value="02">完成</option>
                             	 </select>
                             </td>
                          	  <td class="ecitic-right">类型：</td>
                              <td>
                              	<select  name="SQ.TYPE"   style="width: 100%">
                              			<option value="">请选择</option>
-                                		<option value="00">垫付</option>
-                                		<option value="01">欠客户</option>
-                                		<option value="02">已打款</option>
+                                		<option value="00">个人垫付</option>
+                                		<option value="01">未付款</option>
+                                		<option value="02">公司付款</option>
+                                		<option value="03">已完成</option>
                             	 </select>
                             </td>
                             <td>
@@ -113,8 +115,9 @@
                              <td>
                              	<select  name="S.STATE"   style="width: 100%">
                              			<option value="">请选择</option>
-                                		<option value="00">进行中</option>
-                                		<option value="01">已完成</option>
+                                		<option value="00">已开</option>
+                                		<option value="01">未开</option>
+                                		<option value="02">完成</option>
                             	 </select>
                             </td>
                         </tr>
@@ -131,37 +134,38 @@
                              <td>
                              	<select  name="S.TYPE"   style="width: 100%">
                              			<option value="">请选择</option>
-                                		<option value="00">垫付</option>
-                                		<option value="01">欠客户</option>
-                                		<option value="02">已打款</option>
+                                		<option value="00">个人垫付</option>
+                                		<option value="01">未付款</option>
+                                		<option value="02">公司付款</option>
+                                		<option value="03">已完成</option>
                             	 </select>
                             </td>
                         </tr>
                         <tr>
                         	 <td class="table-text">开票单位：</td>
                             <td colspan="5">
-                                <input type="text" id="S.COMPANY" name="S.COMPANY" >
+                                <input type="text" id="S.COMPANY" name="S.COMPANY" />
                             </td> 
                         </tr>
                         <tr>
                        		 <td class="table-text">金额：</td>
 							<td >
-								<input type="text" name="S.PAYMENT" varify="is_money">
+								<input type="text" name="S.PAYMENT" varify="is_money" onchange="checkPay1(this.value)"/>
 							</td>
                         	<td class="table-text">金额(不含税)：</td>
                             <td >
-                                <input type="text" name="S.PAYNOTAX" varify="is_money">
+                                <input type="text" name="S.PAYNOTAX" varify="is_money" onchange="checkPay2(this.value)"/>
                             </td> 
                             
                         </tr>
                           <tr>
                           <td class="table-text">税额：</td>
 							<td >
-								<input type="text" name="S.TAXVALUE" varify="is_money">
+								<input type="text" name="S.TAXVALUE" varify="is_money" readonly/>
 							</td>
                         	<td class="table-text">税额余额：</td>
                             <td >
-                                <input type="text" name="S.TAXBALANCE" varify="is_money">
+                                <input type="text" name="S.TAXBALANCE" varify="is_money"/>
                             </td> 
                         </tr>
                           <tr>

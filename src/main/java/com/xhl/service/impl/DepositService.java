@@ -33,7 +33,7 @@ public class DepositService implements IDepositService{
 	public Map<String, Object> queryDepositList(HttpServletRequest request) {
 		String[] must = new String[]{"limit","offset"};
 		String[] nomust = new String[]{"DETAIL_NUM","PROJECT_NAME","PROJECT_TYPE",
-				"PROJECT_STATE","CARD_NAME","CARD_NUM"};
+				"PROJECT_STATE","CARD_NAME","CARD_NUM","CARD_NAME2","DEPOSIT_STATE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -179,61 +179,32 @@ public class DepositService implements IDepositService{
 	
 
 	/**
-	 * 删除最近一条明细记录
+	 * 保证金状态修改
 	 */
-//	@Override
-//	public Map<String, String> delDetail(HttpServletRequest request) {
-//		Map<String, String> resultMap = new HashMap<String, String>();
-//		String[] must = new String[]{"CARD_ID"};
-//		String[] nomust = new String[]{};
-//		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
-//		if(null == pmap){
-//			resultMap.put("msg","缺少参数");
-//			resultMap.put("result","false");
-//			return resultMap;
-//		}
-//		try{
-//			cardDao.delDetail(pmap);
-//			resultMap.put("msg", "操作成功");
-//			resultMap.put("result", "true");
-//		}catch (Exception e) {
-//			resultMap.put("msg","操作失败");
-//			resultMap.put("result", "false");
-//			//logger.info("操作  ProjectDao.editProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
-//			e.printStackTrace();
-//		}
-//		return resultMap;
-//	}
-	
-	
-	/**
-	 * @Description: 查询根据类别统计信息
-	 * @author zhouqiao
-	 */
-//	@Override
-//	public Map<String, Object> queryStatistic(HttpServletRequest request) {
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		String[] must = new String[]{"CARD_ID"};
-//		String[] nomust = new String[]{"START_TIME","END_TIME"};
-//		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
-//		if(null == pmap){
-//			resultMap.put("msg","缺少必填项");
-//			resultMap.put("result","false");
-//			return resultMap;
-//		}
-//		try {
-//			//查询结果
-//			List<Map<String, String>> lmap = cardDao.queryStatistic(pmap);
-//			resultMap.put("rows", lmap);
-//			return resultMap;
-//		} catch (Exception e) {
-//			resultMap.put("result", "false");
-//			//logger.info("操作 CardDao.queryStatistic 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
-//			e.printStackTrace();
-//		}
-//		
-//		return resultMap;
-//	}
+	@Override
+	public Map<String, String> editDepositState(HttpServletRequest request) {
+		Map<String, String> resultMap = new HashMap<String, String>();
+		String[] must = new String[]{};
+		String[] nomust = new String[]{"DETAIL_ID","DEPOSIT_STATE"};
+		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if(null == pmap){
+			resultMap.put("msg","必填项未填");
+			resultMap.put("result","false");
+			return resultMap;
+		}
+		
+		try{
+			depositDao.editDepositState(pmap);
+			resultMap.put("msg", "操作成功");
+			resultMap.put("result", "true");
+		}catch (Exception e) {
+			resultMap.put("msg","操作失败");
+			resultMap.put("result", "false");
+			//logger.info("操作  ProjectDao.editProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		return resultMap;
+	}
 	
 	
 }

@@ -30,6 +30,8 @@ public interface DepositDao {
 	void delReturn(Map<String, String> map);
 	//查询保证金管理是否存在
 	String getDetailId(Map<String, String> map);
+	// 保证金状态修改
+	void editDepositState(Map<String, String> map);
 }
 
 

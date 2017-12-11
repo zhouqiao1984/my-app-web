@@ -15,9 +15,9 @@
                 <form id="depositForm">
                     <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
                         <tr>
-                            <td class="ecitic-right">保证金编号：</td>
+                             <td class="ecitic-right">保证金账户：</td>
                             <td>
-                                <input type="text" name="DETAIL_NUM" />
+                                <input type="text" name="CARD_NAME2" />
                             </td>
                                <td class="ecitic-right">汇入账户：</td>
                             <td>
@@ -52,6 +52,20 @@
                                 </select>
                             </td>
                         </tr>
+                        <tr>
+                        	<td class="ecitic-right">保证金编号：</td>
+                            <td>
+                                <input type="text" name="DETAIL_NUM" />
+                            </td>
+                        	  <td class="ecitic-right">保证金状态：</td>
+                            <td>
+                                 <select name="DEPOSIT_STATE" diccode="" class="requirement-ele-width" style="width: 100%">
+                                	<option value="">请选择</option>
+                                	<option value="00">未完成</option>
+                                	<option value="01">已完成</option>
+                                </select>
+                            </td>
+                        </tr>
                     </table>
                 </form>
             </div>
@@ -63,7 +77,8 @@
 
         <div class="ecitic-operation">
         	 <button class="btn btn-ecitic blue" name="editDeposit">保证金信息维护</button>
-            <button class="btn btn-ecitic blue" name="returnMoney">保证金回款管理</button>           
+             <button class="btn btn-ecitic blue" name="returnMoney">保证金回款管理</button>    
+             <button class="btn btn-ecitic blue" name="editState">保证金状态修改</button>          
         </div>
         <div class="ecitic-new">
             <table tb="depositListTable" class="table table-bordered table-hover table-text-show" id="table-blue"></table>

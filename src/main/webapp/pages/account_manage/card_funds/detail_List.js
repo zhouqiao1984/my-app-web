@@ -131,7 +131,7 @@ function cardManage(item){
 							field : 'ORDER_ID',
 							title : '序号',
 							align : "center",
-							width : "6%",
+							width : "7%",
 							formatter:function(value,row,index){
 								return index + 1;
 							}
@@ -143,7 +143,7 @@ function cardManage(item){
 						}, {
 							field : "DETAIL_EXPLAIN",
 							title : "具体款项",
-							width : "25%",
+							width : "24%",
 							align : "center"
 						}, {
 							field : "AMOUNT",

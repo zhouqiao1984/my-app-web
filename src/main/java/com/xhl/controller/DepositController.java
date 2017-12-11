@@ -80,7 +80,20 @@ public class DepositController {
 		}
 	}
 	
-
+	/**
+	 * 保证金状态修改
+	 * 
+	 * @param req
+	 * @param res
+	 */
+	@RequestMapping("/editDepositState")
+	public void editDepositState(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJson(depositService.editDepositState(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 }

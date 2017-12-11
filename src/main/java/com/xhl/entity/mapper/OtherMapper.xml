@@ -6,21 +6,24 @@
 <mapper namespace="com.xhl.dao.OtherDao">
 
 	  <!-- 查询其他款项-->
-	<select id="queryOther" parameterType="java.lang.String" resultType="java.util.Map">
+	<select id="queryOther" parameterType="java.util.Map" resultType="java.util.Map">
 		select 
 		(select sum(REAL_AMOUNT) from other_detail where OTHER_ID = o.OTHER_ID) BALANCE,
 		o.OTHER_ID,o.OTHER_NAME,o.REMARK,o.OTHER_STATE
 		from OTHER_INFO o
 		where 1=1
 		<choose>
-	        <when test="_parameter!=null and _parameter!=''">
-	            and  o.OTHER_STATE = #{_parameter}
+	        <when test="OTHER_STATE !=null and OTHER_STATE !=''">
+	            and  o.OTHER_STATE = #{OTHER_STATE}
 	        </when>
 	        <otherwise>
 	            and o.OTHER_STATE = '00'
 	        </otherwise>
     	</choose>
-		union all
+	</select>
+	
+	  <!-- 查询其他款项合计-->
+	<select id="queryOtherSum" parameterType="java.util.Map" resultType="java.util.Map">
 		select
 		sum(a.BALANCE) BALANCE,
 		'00' as OTHER_ID,
@@ -32,14 +35,13 @@
 		from OTHER_INFO o
 		where 1=1
 		<choose>
-	        <when test="_parameter!=null and _parameter!=''">
-	            and  o.OTHER_STATE = #{_parameter}
+	        <when test="OTHER_STATE !=null and OTHER_STATE !=''">
+	            and  o.OTHER_STATE = #{OTHER_STATE}
 	        </when>
 	        <otherwise>
 	            and o.OTHER_STATE = '00'
 	        </otherwise>
     	</choose>) a
-    	
 	</select>
 	
 		  <!-- 新建其他款项-->

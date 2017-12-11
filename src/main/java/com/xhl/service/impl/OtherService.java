@@ -31,12 +31,23 @@ public class OtherService implements IOtherService{
 	@Override
 	public Map<String, Object> queryOther(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		String other_state = MyUtil.getParamValue(request,"OTHER_STATE");
+		String[] must = new String[]{"limit","offset"};
+		String[] nomust = new String[]{"OTHER_STATE"};
+		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if(null == pmap){
+			resultMap.put("msg","必填项未填");
+			resultMap.put("result","false");
+			return resultMap;
+		}
 			
 		try {
 			//查询结果
-			List<Map<String, String>> lmap = otherDao.queryOther(other_state);
-			resultMap.put("rows", lmap);
+			List<Map<String, String>> lmap = otherDao.queryOther(pmap);
+			List<Map<String, String>> smap = otherDao.queryOtherSum(pmap);//查询合计
+			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);//分页结果
+			rmap.add(smap.get(0));//合计与结果合并
+			resultMap.put("rows", rmap);
+			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
 			return resultMap;
 		} catch (Exception e) {
 			resultMap.put("result", "false");

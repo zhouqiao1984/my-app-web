@@ -18,6 +18,7 @@
 		cd.PAY_CLASS,
 		cd.PAY_EXPLAIN,
 		cd.BILL_NUM,
+		cd.DEPOSIT_STATE,
 		cd.REMARK,
 		cd.CARD_ID,
 		cd.REAL_AMOUNT,
@@ -26,11 +27,13 @@
 		ci.CARD_OWNER,
 		ci.CARD_BANK,
 		ci.CARD_STATE,
+		car.CARD_NAME CARD_NAME2,
 		pro.PROJECT_NAME,
 		pro.PROJECT_TYPE,
 		pro.PROJECT_STATE,
 		(select sum(dr.RETURN_AMOUNT) from deposit_return  dr where dr.DETAIL_ID = cd.DETAIL_ID ) RETURN_AMOUNT_SUM
 		from card_detail cd
+		left join card_info car on car.CARD_ID = cd.CARD_ID
 		left join deposit_manage dm on dm.DETAIL_ID = cd.DETAIL_ID
 		left join card_info ci on ci.CARD_ID = dm.CARD_ID
 		left join project_info pro on pro.PROJECT_ID = dm.PROJECT_ID
@@ -50,9 +53,20 @@
 		<if test="CARD_NAME !=null and CARD_NAME !='' ">
 			and ci.CARD_NAME like CONCAT('%',#{CARD_NAME},'%')
 		</if>
+		<if test="CARD_NAME2 !=null and CARD_NAME2 !='' ">
+			and car.CARD_NAME like CONCAT('%',#{CARD_NAME2},'%')
+		</if>
 		<if test="CARD_NUM !=null and CARD_NUM !=''">
 			and ci.CARD_NUM like CONCAT('%',#{CARD_NUM},'%')
 		</if>
+		 <choose>
+	        <when test="DEPOSIT_STATE !=null and DEPOSIT_STATE !=''">
+	            and  cd.DEPOSIT_STATE = #{DEPOSIT_STATE}
+	        </when>
+	        <otherwise>
+	            and cd.DEPOSIT_STATE = '00'
+	        </otherwise>
+    	</choose>
 	</select>
 	
 		  <!-- 查询账户-->
@@ -68,6 +82,7 @@
 			'-' PAY_CLASS,
 			'-' PAY_EXPLAIN,
 			'-' BILL_NUM,
+			'-' DEPOSIT_STATE,
 			'-' REMARK,
 			'-' CARD_ID,
 			'-' REAL_AMOUNT,
@@ -102,9 +117,20 @@
 						<if test="CARD_NAME !=null and CARD_NAME !='' ">
 							and ci.CARD_NAME like CONCAT('%',#{CARD_NAME},'%')
 						</if>
+						<if test="CARD_NAME2 !=null and CARD_NAME2 !='' ">
+							and car.CARD_NAME like CONCAT('%',#{CARD_NAME2},'%')
+						</if>
 						<if test="CARD_NUM !=null and CARD_NUM !=''">
 							and ci.CARD_NUM like CONCAT('%',#{CARD_NUM},'%')
 						</if>
+						<choose>
+					        <when test="DEPOSIT_STATE !=null and DEPOSIT_STATE !=''">
+					            and  cd.DEPOSIT_STATE = #{DEPOSIT_STATE}
+					        </when>
+					        <otherwise>
+					            and cd.DEPOSIT_STATE = '00'
+					        </otherwise>
+				    	</choose>
 					) a
 		
 	</select>
@@ -201,7 +227,12 @@
 		
 	</select>
 	
-
+	  <!-- 保证金状态修改-->
+	<update id="editDepositState" parameterType="java.util.Map">
+		update card_detail
+		set DEPOSIT_STATE = #{DEPOSIT_STATE}
+		where DETAIL_ID = #{DETAIL_ID}
+	</update>
 	
 	
 </mapper>

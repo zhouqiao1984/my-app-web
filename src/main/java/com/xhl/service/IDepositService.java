@@ -13,5 +13,6 @@ public interface IDepositService {
 	public Map<String, Object> queryReturnList(HttpServletRequest request);
 	//编辑回款明细
 	public Map<String, String> editReturn(HttpServletRequest request);
-
+	//保证状态修改
+	public Map<String, String> editDepositState(HttpServletRequest request);
 }

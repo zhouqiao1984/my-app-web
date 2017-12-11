@@ -48,6 +48,37 @@ function initDepositList(){
 			});
 	 });
 	 
+		//保证金状态修改
+	 $page.find("[name='editState']").click(function(){
+			var seles = depositTable.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一条数据!");
+					return;
+			}
+			nconfirm("确定改变当前状态?",function(){debugger;
+				var params = {};
+				params.DETAIL_ID = seles[0].DETAIL_ID;
+				var state = seles[0].DEPOSIT_STATE;
+				if(state == '00'){ state = '01';}
+				else{ state = '00';}
+				params.DEPOSIT_STATE = state;
+				baseAjax('deposit/editDepositState.asp', params, function(data) {
+					if(data && data.result=="true"){
+						alert(data.msg);
+						refreshTable();
+					}else{
+						alert(data.msg);
+					}
+				});
+			});
+		
+	 });
+	 
+	 function refreshTable(){
+		 depositTable.bootstrapTable('refresh',{
+		 		url:"deposit/queryDepositList.asp"});
+	 }
+	 
 	//初始化账户表	
 	 function initDepositTable() {
 		 var queryParams = function(params) {
@@ -101,6 +132,11 @@ function initDepositList(){
 							width : "100",
 							align : "center"
 						}, {
+							field : "CARD_NAME2",
+							title : "保证金账户名",
+							width : "140",
+							align : "center"
+						}, {
 							field : "AMOUNT",
 							title : "金额",
 							width : "100",
@@ -125,6 +161,17 @@ function initDepositList(){
 								if(a == undefined){a = 0;}
 								if(b == undefined){b = 0;}
 								return a - b;
+							}
+						}, {
+							field : "DEPOSIT_STATE",
+							title : "保证金状态",
+							width : "120",
+							align : "center",
+							formatter:function(value,row,index){
+								var state = '';
+								if(value == '00'){state = '未完成'}
+								if(value == '01'){state = '已完成'}
+								return state;
 							}
 						}, {
 							field : "PROJECT_NAME",

@@ -194,17 +194,12 @@ function initCardFundsList(){
 						}, {
 							field : "CARD_NUM",
 							title : "账号",
-							width : "15%",
-							align : "center"
-						}, {
-							field : "CARD_BANK",
-							title : "开户行",
-							width : "20%",
+							width : "30%",
 							align : "center"
 						}, {
 							field : "REMARK",
 							title : "备注",
-							width : "20%",
+							width : "25%",
 							align : "center"
 						}, {
 							field : "CARD_STATE",

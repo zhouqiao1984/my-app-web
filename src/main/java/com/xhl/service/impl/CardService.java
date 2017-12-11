@@ -115,7 +115,7 @@ public class CardService implements ICardService{
 	@Override
 	public Map<String, Object> queryDetail(HttpServletRequest request) {
 		String[] must = new String[]{"CARD_ID","limit","offset"};
-		String[] nomust = new String[]{"START_TIME","END_TIME","PAY_CLASS","PAY_TYPE"};
+		String[] nomust = new String[]{"START_TIME","END_TIME","PAY_CLASS","PAY_TYPE","DEPOSIT_STATE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -156,7 +156,7 @@ public class CardService implements ICardService{
 		Map<String, String> resultMap = new HashMap<String, String>();
 		String[] must = new String[]{"DETAIL_DATE","AMOUNT","CARD_ID","PAY_TYPE","PAY_CLASS"};
 		String[] nomust = new String[]{"TYPE","DETAIL_ID","DETAIL_EXPLAIN",
-										"BILL_NUM","PAY_EXPLAIN","REMARK"};
+										"BILL_NUM","PAY_EXPLAIN","REMARK","DEPOSIT_STATE"};
 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if(null == pmap){
 			resultMap.put("msg","缺少必填项");
@@ -205,6 +205,9 @@ public class CardService implements ICardService{
 						pmap.put("REAL_AMOUNT", pmap.get("AMOUNT"));
 					}
 					pmap.put("BALANCE", currBalance.toString());
+					if("02".equals(pmap.get("PAY_CLASS"))){//如果是保证金。初始化状态未完成
+						pmap.put("DEPOSIT_STATE", "00");
+					}
 					cardDao.addDetail(pmap);
 				}
 			}

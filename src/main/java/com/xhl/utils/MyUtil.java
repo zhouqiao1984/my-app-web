@@ -232,7 +232,7 @@ public class MyUtil {
 	    			if (p!=null&&p.trim().length()>0) {
 						map.put(money[i], p);
 					}else{
-						map.put(money[i], null);
+						map.put(money[i], "null");
 					}
 	    		}
 	    	}
