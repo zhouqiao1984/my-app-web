@@ -21,7 +21,7 @@ function editAccount(item){
 
 	/*************************  进项发票  *************************/ 
 	
-	//付款管理
+	//往来款管理
 	 $page.find("[btn='payManage1']").click(function(){
 			var seles = $ss_table.bootstrapTable("getSelections");
 			if(seles.length!=1){
@@ -639,24 +639,24 @@ function editAccount(item){
 						field : 'ORDER_ID',
 						title : '序号',
 						align : "center",
-						width : "6%",
+						width : "80",
 						formatter:function(value,row,index){
 							return index + 1;
 						}
 					}, {
 						field : "PAYDATE",
 						title : "发票日期",
-						width : "12%",
+						width : "100",
 						align : "center"
 					}, {
 						field : "PAYMENT",
 						title : "金额",
-						width : "9%",
+						width : "100",
 						align : "center"
 					}, {
 						field : "PAID",
 						title : "已付金额",
-						width : "9%",
+						width : "100",
 						align : "center",
 						formatter:function(value,row,index){
 						   var paid = value;
@@ -666,7 +666,7 @@ function editAccount(item){
 					}, {
 						field : "",
 						title : "余额",
-						width : "9%",
+						width : "100",
 						align : "center",
 						formatter:function(value,row,index){
 							var payment = row.PAYMENT;
@@ -679,22 +679,27 @@ function editAccount(item){
 					}, {
 						field : "PAYNOTAX",
 						title : "金额(不含税)",
-						width : "10%",
+						width : "100",
 						align : "center"
 					}, {
 						field : "TAXVALUE",
 						title : "税额",
-						width : "9%",
+						width : "100",
 						align : "center"
 					}, {
 						field : "TAXBALANCE",
 						title : "税额余额",
-						width : "9%",
+						width : "100",
+						align : "center"
+					}, {
+						field : "COMPANY",
+						title : "开票单位",
+						width : "100",
 						align : "center"
 					}, {
 						field : "INVOICE_TYPE",
 						title : "发票种类",
-						width : "9%",
+						width : "100",
 						align : "center",
 						formatter:function(value,row,index){
 							var type = '';
@@ -705,20 +710,21 @@ function editAccount(item){
 					},{
 						field : "TYPE",
 						title : "类型",
-						width : "9%",
+						width : "100",
 						align : "center",
 						formatter:function(value,row,index){
 							var type = '';
 							if(value == '00'){ type = '个人垫付' }
 							if(value == '01'){ type = '未付款' }
 							if(value == '02'){ type = '公司付款' }
-							if(value == '02'){ type = '已完成' }
+							if(value == '04'){ type = '库存' }
+							if(value == '03'){ type = '已完成' }
 							return type;
 						}
 					},{
 						field : "STATE",
 						title : "状态",
-						width : "9%",
+						width : "100",
 						align : "center",
 						formatter:function(value,row,index){
 							var state = '';
@@ -736,16 +742,28 @@ function editAccount(item){
 }
 
 function checkPay1(value){
+	var $valiObj = getCurrentPageObj().find("#inputs_tab");
+	if(!is_money($valiObj)){
+		alert('金额输入格式有误');
+		return;
+	}
 	var $value3 = getCurrentPageObj().find("[name='S.TAXVALUE']");
 	var value2 = getCurrentPageObj().find("[name='S.PAYNOTAX']").val();
 	if(value2 == '' || value2 == undefined){ value2 = 0;}
-	$value3.val(value - value2);
+	var value3 = Number(value - value2).toFixed(2);
+	$value3.val(value3);
 }
 function checkPay2(value){
+	var $valiObj = getCurrentPageObj().find("#inputs_tab");
+	if(!is_money($valiObj)){
+		alert('金额输入格式有误');
+		return;
+	}
 	var $value3 = getCurrentPageObj().find("[name='S.TAXVALUE']");
 	var value1 = getCurrentPageObj().find("[name='S.PAYMENT']").val();
 	if(value1 == '' || value1 == undefined){ value1 = 0;}
-	$value3.val(value1 - value);
+	var value3 = Number(value1 - value).toFixed(2);
+	$value3.val(value3);
 	
 	
 }

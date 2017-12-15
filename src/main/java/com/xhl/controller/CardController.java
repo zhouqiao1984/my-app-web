@@ -111,6 +111,40 @@ public class CardController {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * 查询具体款项
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/queryContent")
+	public void queryContent(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,cardService.queryContent(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 具体款项编辑
+	 * 
+	 * @param req
+	 * @param res
+	 */
+	@RequestMapping("/editContent")
+	public void editContent(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJson(cardService.editContent(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
 
 

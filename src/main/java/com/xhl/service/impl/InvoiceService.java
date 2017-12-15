@@ -70,9 +70,9 @@ public class InvoiceService implements IInvoiceService{
 		}
 		
 		try{
+			pmap = MyUtil.formatMoney(pmap, nomust);
 			String opt_type = pmap.get("OPT_TYPE");
 			if("add".equals(opt_type)){
-				pmap = MyUtil.formatMoney(pmap, nomust);
 				String first_num  = "FP_"+ DateTimeUtils.getNumber();
 				pmap.put("FIRST_NUM",first_num);
 				invoiceDao.addFirstPayment(pmap);
@@ -140,9 +140,9 @@ public class InvoiceService implements IInvoiceService{
 		}
 		
 		try{
+			pmap = MyUtil.formatMoney(pmap, nomust);
 			String opt_type = pmap.get("OPT_TYPE");
 			if("add".equals(opt_type)){
-				pmap = MyUtil.formatMoney(pmap, nomust);
 				String out_num = "FI_"+ DateTimeUtils.getNumber();
 				pmap.put("OUT_NUM", out_num);
 				invoiceDao.addOutInvoice(pmap);

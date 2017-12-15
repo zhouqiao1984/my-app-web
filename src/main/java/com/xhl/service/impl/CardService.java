@@ -283,6 +283,88 @@ public class CardService implements ICardService{
 		
 		return resultMap;
 	}
+	
+	/**
+	 * @Description: 查询具体款项
+	 * @author zhouqiao
+	 */
+	@Override
+	public Map<String, Object> queryContent(HttpServletRequest request) {
+		String[] must = new String[]{"DETAIL_ID","limit","offset"};
+		String[] nomust = new String[]{};
+		Map<String, Object> resultMap = new HashMap<String,Object>();
+ 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if (null == pmap) {
+			resultMap.put("result", "false");
+			resultMap.put("msg", "缺少参数!");
+			return resultMap;
+		}
+	
+		try {
+			//查询结果
+			List<Map<String, String>> lmap = cardDao.queryContent(pmap);//查询明细
+			List<Map<String, String>> smap = cardDao.queryContentSum(pmap);//查询明细合计
+			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);
+			rmap.add(smap.get(0));
+			resultMap.put("rows",rmap);//临时
+			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
+			return resultMap;
+		} catch (Exception e) {
+			resultMap.put("result", "false");
+			//logger.info("操作 ProjectDao.queryProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
+	
+	/**
+	 * 编辑具体款项
+	 */
+	@Override
+	public Map<String, String> editContent(HttpServletRequest request) {
+		Map<String, String> resultMap = new HashMap<String, String>();
+		String[] must = new String[]{};
+		String[] nomust = new String[]{"CONTENT_ID","CONTENT_NAME","CONTENT_DATE","CONTENT_TYPE",
+				"DETAIL_ID","REMARK","AMOUNT","TYPE"};
+		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if(null == pmap){
+			resultMap.put("msg","缺少必填项");
+			resultMap.put("result","false");
+			return resultMap;
+		}
+		try{
+			String type = pmap.get("TYPE");
+			//删除
+			if("del".equals(type)){
+				cardDao.delContent(pmap);
+			}else{
+				String contentType = pmap.get("CONTENT_TYPE");
+				if("01".equals(contentType)){//支出
+					pmap.put("AMOUNT","-"+pmap.get("AMOUNT"));
+				}
+				//新建
+				if("add".equals(type)){
+					cardDao.addContent(pmap);
+				}
+				//修改
+				if("edit".equals(type)){
+					cardDao.editContent(pmap);
+				}
+			}
+			resultMap.put("msg", "操作成功");
+			resultMap.put("result", "true");
+		}catch (Exception e) {
+			resultMap.put("msg","操作失败");
+			resultMap.put("result", "false");
+			//logger.info("操作  cardDao.editDetail 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		return resultMap;
+	}
+	
+
+	
 }
 
 

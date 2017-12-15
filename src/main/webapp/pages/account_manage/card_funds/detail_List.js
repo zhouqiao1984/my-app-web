@@ -76,6 +76,19 @@ function cardManage(item){
 		
 	 });
 	 
+	 
+	//具体款项
+	 $page.find("[name='goContent']").click(function(){
+			var seles = detailTable.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一条数据!");
+					return;
+			}
+		 closeAndOpenInnerPageTab("goContent","具体款项","pages/account_manage/card_funds/content_List.html", function(){
+			 goContent(seles[0]);
+			});
+	 });
+	 
 	//查看类别统计表
 	 $page.find("button[name='checkDetail']").click(function(){
 		 closeAndOpenInnerPageTab("checkDetail","类别统计表","pages/account_manage/card_funds/classType_statistic.html", function(){

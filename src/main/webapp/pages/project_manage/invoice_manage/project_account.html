@@ -15,7 +15,7 @@
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#inputs_tab" data-toggle="tab" style="color: red;">进项发票信息</a></li>
 <!-- 						<li><a href="#input_tab" data-toggle="tab" style="color: red;">进项发票(普通)信息</a></li> -->
-						<li><a href="#out_tab" data-toggle="tab" style="color: red;">给甲方开发票金额信息</a></li>
+						<li><a href="#out_tab" data-toggle="tab" style="color: red;">出项发票信息</a></li>
 						<li><a href="#first_tab" data-toggle="tab" style="color: red;">甲方付款信息</a></li>
 					</ul>
 					<div class="tab-content">
@@ -65,6 +65,7 @@
                                 		<option value="00">个人垫付</option>
                                 		<option value="01">未付款</option>
                                 		<option value="02">公司付款</option>
+                                		<option value="04">库存</option>
                                 		<option value="03">已完成</option>
                             	 </select>
                             </td>
@@ -137,6 +138,7 @@
                                 		<option value="00">个人垫付</option>
                                 		<option value="01">未付款</option>
                                 		<option value="02">公司付款</option>
+                                		<option value="04">库存</option>
                                 		<option value="03">已完成</option>
                             	 </select>
                             </td>
@@ -196,21 +198,21 @@
         
         
         
-        <!--     给甲方开发票金额      -->
+        <!--     出项发票信息     -->
       <div class="tab-pane fade" id="out_tab" >
         <div class="ecitic-title">
-            <span>给甲方开发票金额信息记录<em></em></span> <i></i>
+            <span>出项发票信息<em></em></span> <i></i>
         </div>
         <div class="ecitic-operation">
 			<button class="btn btn-ecitic blue" btn="addOutInvoice" >新增</button>
 			<button class="btn btn-ecitic green" btn="editOutInvoice" >修改</button>
 			<button class="btn btn-ecitic red" btn="delOutInvoice" >删除</button>
 		</div>
-						  <!--   给甲方开发票金额模态框   -->
+						  <!--   出项发票信息模态框   -->
         <div id="out_modal" class="modal hide fade" tabindex="-1" z-index="1060" aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="">给甲方开发票</h3>
+                <h3 id="">出项发票</h3>
             </div>
             <div class="ecitic-title-table modal-body">
             	<input type="hidden" name="O.OUT_ID">

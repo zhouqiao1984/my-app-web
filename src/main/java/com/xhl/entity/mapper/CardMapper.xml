@@ -491,4 +491,65 @@
 		from dual
 	</select>
 	
+	
+	
+	
+	
+	
+	 <!-- 查询具体款项-->
+	<select id="queryContent" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		CONTENT_ID,
+		CONTENT_DATE,
+		CONTENT_NAME,
+		AMOUNT,
+		CONTENT_TYPE,
+		REMARK,
+		DETAIL_ID
+		from CONTENT_INFO
+		where DETAIL_ID = #{DETAIL_ID}
+		order by CONTENT_ID desc
+	</select>
+	
+	  <!-- 查询具体款项的合计-->
+	<select id="queryContentSum" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		'00' as CONTENT_ID,
+		'合计' as CONTENT_DATE,
+		'-' as CONTENT_NAME,
+		(select sum(AMOUNT) from CONTENT_INFO where DETAIL_ID = #{DETAIL_ID}) as AMOUNT,
+		'-' as CONTENT_TYPE,
+		'-' as REMARK,
+		'-' as DETAIL_ID
+		from dual
+
+	</select>
+	
+	
+			  <!-- 新建具体款项-->
+	<insert id="addContent" parameterType="java.util.Map">
+		insert into CONTENT_INFO
+		(CONTENT_DATE,CONTENT_NAME,CONTENT_TYPE,AMOUNT,REMARK,DETAIL_ID)
+		values
+		(#{CONTENT_DATE},#{CONTENT_NAME},#{CONTENT_TYPE},${AMOUNT},#{REMARK},#{DETAIL_ID})
+	</insert>
+	
+	  <!-- 修改具体款项-->
+	<update id="editContent" parameterType="java.util.Map">
+		update CONTENT_INFO
+		set CONTENT_DATE = #{CONTENT_DATE},
+		CONTENT_NAME = #{CONTENT_NAME},
+		CONTENT_TYPE = #{CONTENT_TYPE},
+		AMOUNT = ${AMOUNT},
+		REMARK = #{REMARK}
+		where CONTENT_ID = #{CONTENT_ID}
+	</update>
+	
+	
+	  <!-- 删除具体款项-->
+	<delete id="delContent" parameterType="java.util.Map">
+		delete from CONTENT_INFO
+		where CONTENT_ID = #{CONTENT_ID}
+	</delete>
+	
 </mapper>

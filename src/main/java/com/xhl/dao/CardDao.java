@@ -36,6 +36,17 @@ public interface CardDao {
 	void delDetail(Map<String, String> map);
 	//查询根据类别统计信息
 	List<Map<String, String>>  queryStatistic(Map<String, String> map);
+	
+	//查询具体款项
+	List<Map<String, String>>  queryContent(Map<String, String> map);
+	//查询具体款项合计
+	List<Map<String, String>>  queryContentSum(Map<String, String> map);
+	//新建具体款项
+	void addContent(Map<String, String> map);
+	//修改具体款项
+	void editContent(Map<String, String> map);
+	//删除具体款项
+	void delContent(Map<String, String> map);
 }
 
 

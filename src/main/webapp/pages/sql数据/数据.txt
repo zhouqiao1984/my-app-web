@@ -44,13 +44,13 @@ TAXBALANCE	税额余额
 REMARK		备注
 COMPANY     开票单位
 STATE		状态                     00已开 01未开 02完成
-TYPE		类型			00个人垫付  01欠客户   02 公司付款 03 完成 
+TYPE		类型		    00个人垫付  01欠客户   02 公司付款 03 完成 
 PROJECT_ID	项目ID
 INVOICE_TYPE 发票类型        00普通  01专用
 
 
 三、
-给甲方开发票  out_invoice		
+出项发票  out_invoice		
 
 OUT_ID		ID				 
 OUT_NUM		编号			FI_
@@ -64,6 +64,11 @@ ADDTAX		附加税额
 OTHERTAX	其他税额
 REMARK		备注
 PROJECT_ID	项目ID
+12/14新增 字段
+COMPANY     开票单位
+STATE		状态                     00已开 01未开 02完成
+TYPE		类型		    00个人垫付  01欠客户   02 公司付款 03 完成 
+INVOICE_TYPE 发票类型        00普通  01专用
 
 四、
 甲方付款信息	first_payment							
@@ -212,12 +217,14 @@ PROJECT_ID	关联项目编号
 十三、
 发票关联付款表  invoice_pay			
 IP_ID     	          主键
-IP_NUM
+IP_NUM			编号
 IP_DATE     	日期
 IP_AMOUNT		金额
 IP_REMARK	          备注
 INPUT_ID        关联发票ID
 PROJECT_ID	          关联项目ID
+12/14新增 字段
+IP_TYPE         类型 00进项发票  01出项发票
 
 十四、
 保证金管理表  deposit_manage
@@ -233,6 +240,23 @@ RETURN_DATE    日期
 RETURN_AMOUNT  回款金额
 RETURN_REMARK  备注
 DETAIL_ID       关联账户明细ID
+
+
+十六、12/14新增 表
+具体款项表  content_info
+CONTENT_ID     
+CONTENT_NAME   项目名称
+CONTENT_DATE   日期
+CONTENT_TYPE   类型
+AMOUNT         金额
+REMARK         备注
+DETAIL_ID      详情ID
+
+
+
+
+
+
 
 
 

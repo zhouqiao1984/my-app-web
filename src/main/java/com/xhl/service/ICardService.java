@@ -17,4 +17,9 @@ public interface ICardService {
 	public Map<String, String> delDetail(HttpServletRequest request);
 	//查询根据类别统计信息
 	public Map<String, Object> queryStatistic(HttpServletRequest request);
+	//查询具体款项明细
+	public Map<String, Object> queryContent(HttpServletRequest request);
+	//编辑具体款项
+	public Map<String, String> editContent(HttpServletRequest request);
+
 }
