@@ -320,6 +320,87 @@ public class ProjectService implements IProjectService{
 		return resultMap;
 	}
 	
+	
+	/**
+	 * @Description: 查询具体成本
+	 * @author zq
+	 */
+	@Override
+	public Map<String, Object> queryCd(HttpServletRequest request) {
+		String[] must = new String[]{"limit","offset","COST_ID"};
+		String[] nomust = new String[]{};
+		Map<String, Object> resultMap = new HashMap<String,Object>();
+ 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
+		if (null == pmap) {
+			resultMap.put("result", "false");
+			resultMap.put("mess", "缺少参数!");
+			return resultMap;
+		}
+	
+		try {
+			//查询结果
+			List<Map<String, String>> lmap = projectDao.queryCd(pmap);//查询结果
+//			List<Map<String, String>> smap = projectDao.queryCostSum(pmap);//查询合计
+//			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);//分页结果
+//			rmap.add(smap.get(0));//合计与结果合并
+//			resultMap.put("rows", rmap);
+			resultMap.put("rows", lmap);
+			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
+			return resultMap;
+		} catch (Exception e) {
+			resultMap.put("result", "false");
+			//logger.info("操作 ProjectDao.queryProject 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
+	
+	
+	/**
+	 * 编辑具体成本
+	 */
+	@Override
+	public Map<String, String> editCd(HttpServletRequest request) {
+		Map<String, String> resultMap = new HashMap<String, String>();
+		String[] must = new String[]{};
+		String[] nomust = new String[]{"CD_ID","CD_PROJECT","CD_DATE",
+				"CD_TYPE","REMARK","CD_NAME","COST_ID","CD_STANDARD","CD_UNIT"};
+		String[] money = new String[]{"AMOUNT","CD_PRICE","CD_COUNT","TYPE"};
+		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust,money);
+		if(null == pmap){
+			resultMap.put("msg","必填项未填");
+			resultMap.put("result","false");
+			return resultMap;
+		}
+		
+		try{
+			String type = pmap.get("TYPE");
+			//新建
+			if("add".equals(type)){
+				projectDao.addCd(pmap);
+			}
+			//修改
+			if("edit".equals(type)){
+				projectDao.editCd(pmap);
+			}
+			//删除
+			if("del".equals(type)){
+				projectDao.delCd(pmap);
+			}
+		
+			resultMap.put("msg", "操作成功");
+			resultMap.put("result", "true");
+		}catch (Exception e) {
+			resultMap.put("msg","操作失败");
+			resultMap.put("result", "false");
+			//logger.info("操作  otherDao.editOther 出错 uri为 --->>>" + req.getRequestURI()+"错误信息为："+e);
+			e.printStackTrace();
+		}
+		return resultMap;
+	}
+	
+	
 	/**
 	 * @Description: 查询付款list
 	 * @author zq

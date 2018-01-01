@@ -2,6 +2,7 @@
 
 function payManage(item){
 	var $page = getCurrentPageObj();//当前页
+	$page.find("#pn3").text(item.PROJECT_NAME);
 	var pmTable = $page.find("[tb='payManageTable']");
 	var formObj = $page.find("#payManageForm");//表单对象
 	var pmCall = getMillisecond();

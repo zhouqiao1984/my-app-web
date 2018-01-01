@@ -24,12 +24,20 @@
 				</colgroup>
                 <tr>
                     <td class="table-text">款项名称：</td>
-                    <td colspan="5"><input type="text" name="O.OTHER_NAME" class="requirement-ele-width" validate="v.required" valititle="该项为必填项"></td>
+                    <td ><input type="text" name="O.OTHER_NAME" class="requirement-ele-width" validate="v.required" valititle="该项为必填项"></td>
+                	<td class="table-text">收支类型：</td>
+                    <td>
+                      <select name="O.OTHER_TYPE" diccode="" class="requirement-ele-width" style="width: 100%">
+                      			<option value="00">应收</option>
+                              	<option value="01">应付</option>
+                              	<option value="02">流水</option>
+                     	</select>
+                    </td>
                 </tr>
                 <tr>
                     <td class="table-text">备注：</td>
                     <td colspan="5">
-                    	<textarea name="O.REMARK" class="requirement-ele-width" ></textarea>
+                    	<textarea name="O.REMARK" class="requirement-ele-width" style="height:320px"></textarea>
                     </td>
                 </tr>
             </table>

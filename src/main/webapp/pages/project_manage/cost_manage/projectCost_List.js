@@ -36,7 +36,7 @@ function initCost(){
 //				alert("已关闭项目不能操作");
 //				return;
 //			}
-		 closeAndOpenInnerPageTab("costManage","成本管理","pages/project_manage/cost_manage/cost_List.html", function(){
+		 closeAndOpenInnerPageTab("costManage","成本详情管理","pages/project_manage/cost_manage/cost_List.html", function(){
 			 	costManage(seles[0]);
 			});
 	 });
@@ -143,7 +143,7 @@ function initCost(){
 				pagination : true, // 是否显示分页（*）
 				pageList : [ 5, 10, 15 ], // 可供选择的每页的行数（*）
 				pageNumber : 1, // 初始化加载第一页，默认第一页
-				pageSize : 5, // 每页的记录行数（*）
+				pageSize : 10, // 每页的记录行数（*）
 				clickToSelect : true, // 是否启用点击选中行
 				// height: 460, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 				uniqueId : "", // 每一行的唯一标识，一般为主键列
@@ -170,14 +170,9 @@ function initCost(){
 								return index + 1;
 							}
 						}, {
-							field : "PROJECT_NUM",
-							title : "项目编号",
-							width : "18%",
-							align : "center"
-						}, {
 							field : "PROJECT_NAME",
 							title : "项目名称",
-							width : "27%",
+							width : "45%",
 							align : "center"
 						}, {
 							field : "FINAL_TOTAL",
@@ -211,7 +206,7 @@ function initCost(){
 								var cost_sum = 0;
 								if(row.FINAL_TOTAL){final_total = row.FINAL_TOTAL}
 								if(row.COST_SUM){cost_sum = row.COST_SUM}
-								return final_total - cost_sum;
+								return Number(final_total - cost_sum).toFixed(2);
 							}
 						},{
 							field : "COST_STATE",

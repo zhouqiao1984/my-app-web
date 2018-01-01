@@ -40,7 +40,8 @@ PAYDATE		发票日期
 PAYMENT		金额
 PAYNOTAX	金额(不含税)    
 TAXVALUE	税额
-TAXBALANCE	税额余额
+2018/1/1
+TAXBALANCE	税额余额  改为 underfilled 缺少材料 
 REMARK		备注
 COMPANY     开票单位
 STATE		状态                     00已开 01未开 02完成
@@ -58,13 +59,14 @@ PAYDATE		日期
 PAYMENT		开发票金额
 PAYNOTAX	金额(不含税)
 TAXVALUE	税额
-BALANCE		余额
+2018/1/1
+TAXBALANCE	税额余额  改为 underfilled 缺少材料 
 UPTAX		增值税额
 ADDTAX		附加税额
 OTHERTAX	其他税额
 REMARK		备注
 PROJECT_ID	项目ID
-12/14新增 字段
+12/14 新增 字段
 COMPANY     开票单位
 STATE		状态                     00已开 01未开 02完成
 TYPE		类型		    00个人垫付  01欠客户   02 公司付款 03 完成 
@@ -169,7 +171,7 @@ OTHER_PAY_TYPE			收支类型  00收入  01支出
 REMARK					备注
 OTHER_ID				其他款项ID
 REAL_AMOUNT             实际发生金额(有负数)
-
+OTHER_TYPE				类型  00应收  01应付  02流水
 项目管理系统三期工程 2017/11/18
 
 十、
@@ -224,7 +226,7 @@ IP_REMARK	          备注
 INPUT_ID        关联发票ID
 PROJECT_ID	          关联项目ID
 12/14新增 字段
-IP_TYPE         类型 00进项发票  01出项发票
+IP_TYPE         类型 00 进项发票  01出项发票
 
 十四、
 保证金管理表  deposit_manage
@@ -254,6 +256,20 @@ DETAIL_ID      详情ID
 
 
 
+十七、12/31新增 表
+具体成本表  costdetail_info
+CD_ID     
+CD_PROJECT  项目名称
+CD_DATE   	日期
+CD_TYPE   	类型
+AMOUNT      金额
+REMARK      备注
+COST_ID     成本ID
+CD_NAME		名称
+CD_STANDARD 规格
+CD_PRICE    单价
+CD_COUNT	数量
+CD_UNIT		单位
 
 
 

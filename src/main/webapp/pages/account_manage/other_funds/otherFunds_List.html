@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>账簿管理</title>
+    <title>其他款项</title>
     <link href="bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
     <link href="css/form.css" rel="stylesheet"/>
     <link href="css/mystyle.css" rel="stylesheet"/>
@@ -19,12 +19,22 @@
     				<td class="table-text">款项状态：</td>
                 	<td >
                          <select name="OTHER_STATE"  class="requirement-ele-width" style="width: 100%">
+                         	<option value="">请选择</option>
                          	<option value="00">启用</option>
                          	<option value="01">停用</option>
                          </select>
                     </td>
+                    <td class="table-text">款项类型：</td>
+                	<td >
+                         <select name="OTHER_TYPE"  class="requirement-ele-width" style="width: 100%">
+                         	<option value="">请选择</option>
+                         	<option value="00">应收</option>
+                         	<option value="01">应付</option>
+                         	<option value="02">流水</option>
+                         </select>
+                    </td>
                     <td><input type="button" class="btn btn-ecitic blue" name="queryO" value="查询" /></td>
-                    <td></td>
+                    <td><input type="button" class="btn btn-ecitic blue" name="queryR" value="重置" /></td>
                  </tr>
             </table>
          </div>

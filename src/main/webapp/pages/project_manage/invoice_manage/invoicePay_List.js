@@ -1,12 +1,19 @@
 
 
-function ipayManage(item){
+function ipayManage(item,ip_type){//ip_type类型  00进项  01出项
 	var $page = getCurrentPageObj();//当前页
 	var invoice_payTable = $page.find("[tb='ipayManageTable']");
 	var formObj = $page.find("#ipayManageForm");//表单对象
 	var ipCall = getMillisecond();
 	var project_id = item.PROJECT_ID;
-	var input_id = item.INPUT_ID;
+	var input_id = '';
+	if(ip_type == '00'){	
+		input_id = item.INPUT_ID; 
+	}
+	if(ip_type == '01'){
+		input_id = item.OUT_ID;
+		item.INPUT_ID = item.OUT_ID;
+	}
 	if(item.PAYMENT== undefined){item.PAYMENT = 0;}
 	if(item.PAID== undefined){item.PAID = 0;}
 	var invoice_balance = item.PAYMENT - item.PAID;//余额
@@ -40,6 +47,7 @@ function ipayManage(item){
 			 return;
 		 }
 		 item.INVOICE_BALANCE = invoice_balance;
+		 item.IP_TYPE = ip_type;
 		 closeAndOpenInnerPageTab("addIPay","新增付款","pages/project_manage/invoice_manage/invoicePay_edit.html", function(){
 			 editInvoicePay(item,'add');
 			});
@@ -102,6 +110,7 @@ function ipayManage(item){
 					offset : params.offset,// 页码
 					INPUT_ID : input_id,
 					PROJECT_ID : project_id,
+					IP_TYPE : ip_type,
 					call :ipCall
 				};
 				return temp;

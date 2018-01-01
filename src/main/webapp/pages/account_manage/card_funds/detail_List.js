@@ -2,6 +2,7 @@
 
 function cardManage(item){
 	var $page = getCurrentPageObj();//当前页
+	$page.find("#cn1").text(item.CARD_NAME);
 	var detailTable = $page.find("[tb='detailTable']");
 	var detailCall = getMillisecond();
 	var card_id = item.CARD_ID;

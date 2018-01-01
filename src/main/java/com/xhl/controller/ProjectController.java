@@ -198,6 +198,38 @@ public class ProjectController {
 		}
 	}
 	
+	
+	/**
+	 * 查询具体成本
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/queryCd")
+	public void queryCd(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJsonp(request,projectService.queryCd(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 编辑具体成本
+	 * 
+	 * @param req
+	 * @param res
+	 */
+
+	@RequestMapping("/editCd")
+	public void editCd(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			MyUtil.writeUTFJson(response, MyUtil.beanToJson(projectService.editCd(request)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 

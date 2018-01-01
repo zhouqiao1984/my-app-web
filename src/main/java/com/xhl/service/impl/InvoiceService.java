@@ -94,13 +94,13 @@ public class InvoiceService implements IInvoiceService{
 	}
 	
 	/**
-	 * @Description: 查询给甲方开发票金额表
+	 * @Description: 查询出项发票金额表
 	 * @author zhouqiao
 	 */
 	@Override
 	public Map<String, Object> queryOutinvoice(HttpServletRequest request) {
 		String[] must = new String[]{"PROJECT_ID"};	
-		String[] nomust = new String[]{"limit","offset"};
+		String[] nomust = new String[]{"limit","offset","STATE","TYPE","INVOICE_TYPE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -125,14 +125,15 @@ public class InvoiceService implements IInvoiceService{
 	
 	
 	/**
-	 * 新增给甲方开发票金额
+	 * 新增出项发票金额
 	 */
 	@Override
 	public Map<String, String> addOutInvoice(HttpServletRequest req) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		String[] must = new String[]{"PAYDATE","PROJECT_ID","OPT_TYPE"};
-		String[] nomust = new String[]{"PAYMENT","PAYNOTAX","TAXVALUE","BALANCE","REMARK","UPTAX","ADDTAX","OTHERTAX"};
-		Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust);
+		String[] nomust = new String[]{"REMARK","STATE","TYPE","COMPANY","INVOICE_TYPE","UNDERFILLED"};
+		String[] money = new String[]{"PAYMENT","PAYNOTAX","TAXVALUE","UPTAX","ADDTAX","OTHERTAX"};
+		Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust ,money);
 		if(null == pmap){
 			resultMap.put("msg","必填项未填");
 			resultMap.put("result","false");
@@ -143,7 +144,10 @@ public class InvoiceService implements IInvoiceService{
 			pmap = MyUtil.formatMoney(pmap, nomust);
 			String opt_type = pmap.get("OPT_TYPE");
 			if("add".equals(opt_type)){
-				String out_num = "FI_"+ DateTimeUtils.getNumber();
+				String invioce_type = pmap.get("INVOICE_TYPE");
+				String out_num = "";
+				if("00".equals(invioce_type)){ out_num = "GO_"+ DateTimeUtils.getNumber();};//普通
+				if("01".equals(invioce_type)){ out_num = "SO_"+ DateTimeUtils.getNumber();};//专用
 				pmap.put("OUT_NUM", out_num);
 				invoiceDao.addOutInvoice(pmap);
 			}
@@ -201,8 +205,8 @@ public class InvoiceService implements IInvoiceService{
 	public Map<String, String> addInputInvoice(HttpServletRequest req) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		String[] must = new String[]{"PAYDATE","PROJECT_ID","OPT_TYPE"};
-		String[] nomust = new String[]{"REMARK","STATE","TYPE","COMPANY","INVOICE_TYPE"};
-		String[] money = new String[]{"PAYMENT","PAYNOTAX","TAXVALUE","TAXBALANCE"};
+		String[] nomust = new String[]{"REMARK","STATE","TYPE","COMPANY","INVOICE_TYPE","UNDERFILLED"};
+		String[] money = new String[]{"PAYMENT","PAYNOTAX","TAXVALUE"};
 		Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust,money);
 		if(null == pmap){
 			resultMap.put("msg","必填项未填");
@@ -278,13 +282,13 @@ public class InvoiceService implements IInvoiceService{
 	
 	
 	/**
-	 * @Description: 查询付款记录根据进项发票ID
+	 * @Description: 查询付款记录根据发票ID
 	 * @author zq
 	 */
 	@Override
 	public Map<String, Object> queryPayByInput(HttpServletRequest request) {
 		String[] must = new String[]{"limit","offset","INPUT_ID"};
-		String[] nomust = new String[]{"PAY_START_TIME","PAY_END_TIME"};
+		String[] nomust = new String[]{"PAY_START_TIME","PAY_END_TIME","IP_TYPE"};
 		Map<String, Object> resultMap = new HashMap<String,Object>();
  		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if (null == pmap) {
@@ -320,7 +324,7 @@ public class InvoiceService implements IInvoiceService{
 		Map<String, String> resultMap = new HashMap<String, String>();
 		String[] must = new String[]{};
 		String[] nomust = new String[]{"IP_REMARK","TYPE","IP_DATE",
-				"IP_AMOUNT","PROJECT_ID","INPUT_ID","IP_ID"};
+				"IP_AMOUNT","PROJECT_ID","INPUT_ID","IP_ID","IP_TYPE"};
 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if(null == pmap){
 			resultMap.put("msg","必填项未填");

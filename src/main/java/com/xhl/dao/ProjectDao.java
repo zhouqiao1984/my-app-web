@@ -43,6 +43,15 @@ public interface ProjectDao {
 	//删除成本
 	void delCost(Map<String, String> map);
 	
+	//查询具体成本
+	List<Map<String, String>>  queryCd(Map<String, String> map);
+	//新建具体成本
+	void addCd(Map<String, String> map);
+	//修改具体成本
+	void editCd(Map<String, String> map);
+	//删除具体成本
+	void delCd(Map<String, String> map);
+	
 	//查询付款list
 	List<Map<String, String>>  queryPay(Map<String, String> map);
 	//查询付款

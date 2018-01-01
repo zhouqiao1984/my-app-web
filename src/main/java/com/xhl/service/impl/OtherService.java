@@ -32,7 +32,7 @@ public class OtherService implements IOtherService{
 	public Map<String, Object> queryOther(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String[] must = new String[]{"limit","offset"};
-		String[] nomust = new String[]{"OTHER_STATE"};
+		String[] nomust = new String[]{"OTHER_STATE","OTHER_TYPE"};
 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if(null == pmap){
 			resultMap.put("msg","必填项未填");
@@ -65,7 +65,7 @@ public class OtherService implements IOtherService{
 	public Map<String, String> editOther(HttpServletRequest request) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		String[] must = new String[]{};
-		String[] nomust = new String[]{"TYPE","OTHER_ID","OTHER_NAME","REMARK","OTHER_STATE"};
+		String[] nomust = new String[]{"TYPE","OTHER_ID","OTHER_NAME","REMARK","OTHER_STATE","OTHER_TYPE"};
 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if(null == pmap){
 			resultMap.put("msg","必填项未填");

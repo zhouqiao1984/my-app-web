@@ -11,6 +11,11 @@ function initCardFundsList(){
 		 refreshOtherTable();
 	 });
 	 
+	//重置按钮
+		$page.find("[name='queryR']").click(function(){
+			$page.find("table select").val(" ").select2();
+		});
+	 
 	//新建其他款项
 	 $page.find("button[name='addOther']").click(function(){
 		 closeAndOpenInnerPageTab("addOther","新建款项","pages/account_manage/other_funds/other_add.html", function(){
@@ -120,8 +125,9 @@ function initCardFundsList(){
 	 
 	 function refreshOtherTable(){
 		 var other_state = $page.find("[name='OTHER_STATE']").val();
+		 var other_type = $page.find("[name='OTHER_TYPE']").val();
 		 otherTable.bootstrapTable('refresh',{
-				url:"otherfunds/queryOther.asp?call="+otherCall+"&OTHER_STATE="+other_state});
+				url:"otherfunds/queryOther.asp?call="+otherCall+"&OTHER_STATE="+other_state+"&OTHER_TYPE="+other_type});
 		 
 	 }
 	//初始化其他款项表	
@@ -146,7 +152,7 @@ function initCardFundsList(){
 						pagination : true, // 是否显示分页（*）
 						pageList : [ 10, 15 ], // 可供选择的每页的行数（*）
 						pageNumber : 1, // 初始化加载第一页，默认第一页
-						pageSize : 5, // 每页的记录行数（*）
+						pageSize : 10, // 每页的记录行数（*）
 						clickToSelect : true, // 是否启用点击选中行
 						// height: 460, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 						uniqueId : "", // 每一行的唯一标识，一般为主键列
@@ -185,8 +191,21 @@ function initCardFundsList(){
 						}, {
 							field : "REMARK",
 							title : "备注",
-							width : "30%",
+							width : "20%",
 							align : "center"
+						}, {
+							field : "OTHER_TYPE",
+							title : "类型",
+							width : "10%",
+							align : "center",
+							formatter:function(value,row,index){
+								var state = '';
+								if(value == '00'){state = '应收'}
+								else if(value == '01'){state = '应付'}
+								else if(value == '02'){state = '流水'}
+								else{state = '-'}
+								return state;
+							}
 						}, {
 							field : "OTHER_STATE",
 							title : "状态",

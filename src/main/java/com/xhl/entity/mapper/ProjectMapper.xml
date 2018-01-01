@@ -28,8 +28,13 @@
 		 p.COST_STATE,
 		 p.PAY_STATE,
 		 p.REMARK,
-		 (select sum(ii.PAYMENT) from input_invoice ii where ii.project_id = p.PROJECT_ID) INVOICE_PAY,
-		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.project_id = p.PROJECT_ID) PROJECT_PAID
+		 (select sum(pp.PAY_AMOUNT) from project_pay pp where pp.project_id = p.PROJECT_ID) PP_SUM,
+		 (select sum(ii2.PAYNOTAX) from input_invoice ii2 where ii2.project_id = p.PROJECT_ID) PAYNOTAX_SUM,
+		 (select sum(ii3.TAXVALUE) from input_invoice ii3 where ii3.project_id = p.PROJECT_ID) TAXVALUE_SUM,
+		 (select sum(ii.PAYMENT) from input_invoice ii where ii.project_id = p.PROJECT_ID) INPUT_PAY,
+		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.project_id = p.PROJECT_ID and ip.ip_type = '00') INPUT_PAID,
+		 (select sum(oi.PAYMENT) from out_invoice oi where oi.project_id = p.PROJECT_ID) OUT_PAY,
+		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.project_id = p.PROJECT_ID and ip.ip_type = '01') OUT_PAID
 		 from PROJECT_INFO p
 		 where 1=1
 		<if test="PROJECT_NUM!=null and PROJECT_NUM!=''">
@@ -283,7 +288,43 @@
 		where COST_ID = #{COST_ID}
 	</delete>
 	
+	<!-- 查询具体成本 -->
+	<select id="queryCd" parameterType="java.util.Map" resultType="java.util.Map">
+		select ci.* 
+		from costdetail_info ci
+		where ci.COST_ID = #{COST_ID} 
+		
+	</select>	
 	
+		<!-- 新增具体成本 -->
+	<insert id="addCd" parameterType="java.util.Map" >
+		insert into costdetail_info(CD_PROJECT,CD_DATE,CD_TYPE,AMOUNT,REMARK,COST_ID,CD_NAME,
+		CD_STANDARD,CD_PRICE,CD_COUNT,CD_UNIT)
+		values(#{CD_PROJECT},#{CD_DATE},#{CD_TYPE},${AMOUNT},#{REMARK},#{COST_ID},#{CD_NAME},
+		#{CD_STANDARD},${CD_PRICE},${CD_COUNT},#{CD_UNIT})
+	</insert>
+	
+		<!-- 修改具体成本 -->
+	<update id="editCd" parameterType="java.util.Map" >
+		update costdetail_info set
+			CD_PROJECT = #{CD_PROJECT},
+			CD_DATE = #{CD_DATE},
+			CD_TYPE = #{CD_TYPE},
+			AMOUNT = ${AMOUNT},
+			REMARK = #{REMARK},
+			CD_NAME = #{CD_NAME},
+			CD_STANDARD = #{CD_STANDARD},
+			CD_PRICE = ${CD_PRICE},
+			CD_COUNT = ${CD_COUNT},
+			CD_UNIT = #{CD_UNIT}
+		where CD_ID = #{CD_ID}
+	</update>
+	
+		<!-- 删除具体成本  -->
+	<delete id="delCd" parameterType="java.util.Map" >
+		delete from costdetail_info
+		where CD_ID = #{CD_ID}
+	</delete>
 	
 		<!-- 查询付款 list-->
 	<select id="queryPay" parameterType="java.util.Map" resultType="java.util.Map">

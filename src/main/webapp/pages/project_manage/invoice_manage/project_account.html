@@ -8,6 +8,9 @@
      <link href="css/mystyle.css" rel="stylesheet"/>
 </head>
 <body>
+<div>
+     <h4 style="color:#506990;">项目名称  : <span id="pn1"></span></h4>
+</div><br/>
 <div class="widget-box">
 		<div class="widget-content nopadding">
 			<div class="control-group">
@@ -91,7 +94,7 @@
 			<button class="btn btn-ecitic rosy" btn="viewInputInvoiceS" >查看</button>
 			<button class="btn btn-ecitic orange" btn="payManage1" >往来款管理</button>
 		</div>
-			  <!--   进项发票(专用)模态框   -->
+			  <!--   进项发票模态框   -->
         <div id="inputs_modal" class="modal hide fade" tabindex="-1" z-index="1060" aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -163,17 +166,21 @@
                           <tr>
                           <td class="table-text">税额：</td>
 							<td >
-								<input type="text" name="S.TAXVALUE" varify="is_money" readonly/>
+								<input type="text" name="S.TAXVALUE" varify="is_money" />
 							</td>
-                        	<td class="table-text">税额余额：</td>
-                            <td >
-                                <input type="text" name="S.TAXBALANCE" varify="is_money"/>
-                            </td> 
+                        	<td></td>
+                            <td></td> 
+                        </tr>
+                          <tr>
+                        	<td class="table-text">缺少材料：</td>
+                            <td colspan="5">
+								<textarea name="S.UNDERFILLED" class="requirement-ele-width" ></textarea>
+							</td> 
                         </tr>
                           <tr>
                         	<td class="table-text">备注：</td>
                             <td colspan="5">
-								<textarea name="S.REMARK" class="requirement-ele-width" ></textarea>
+								<textarea name="S.REMARK" class="requirement-ele-width" style="height:320px"></textarea>
 							</td> 
                         </tr>
               
@@ -203,10 +210,71 @@
         <div class="ecitic-title">
             <span>出项发票信息<em></em></span> <i></i>
         </div>
+        
+          <div class="ecitic-inquire">
+            <div class="ecitic-table" >
+                <form id="outputForm">
+                    <table style="align:center;width:100%; border:0; cellspacing:0; cellpadding:0;" class="table table-bordered table-bor-pad">
+                         <colgroup>
+							<col style="width: 10%">
+							<col style="width: 15%">
+							<col style="width: 10%">
+							<col style="width: 15%">
+							<col style="width: 10%">
+							<col style="width: 15%">
+							<col style="width: 10%">
+							<col style="width: 10%">
+						</colgroup>
+                        <tr>
+                        	<td class="ecitic-right">种类：</td>
+                             <td>
+                             	<select  name="OQ.INVOICE_TYPE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">普通</option>
+                                		<option value="01">专用</option>
+                            	 </select>
+                            </td>
+                             <td class="ecitic-right">状态：</td>
+                             <td>
+                             	<select  name="OQ.STATE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">已开</option>
+                                		<option value="01">未开</option>
+                                		<option value="02">完成</option>
+                            	 </select>
+                            </td>
+                         	  <td class="ecitic-right">类型：</td>
+                             <td>
+                             	<select  name="OQ.TYPE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">个人垫付</option>
+                                		<option value="01">未付款</option>
+                                		<option value="02">公司付款</option>
+                                		<option value="04">库存</option>
+                                		<option value="03">已完成</option>
+                            	 </select>
+                            </td>
+                            <td>
+                            	 <input type="button" class="btn btn-ecitic blue" name="queryO" value="查询" />
+                            </td>
+                            <td>
+                            	 <input type="button" class="btn btn-ecitic blue" name="resetO" value="重置" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+        
+        
+        
+        
         <div class="ecitic-operation">
 			<button class="btn btn-ecitic blue" btn="addOutInvoice" >新增</button>
 			<button class="btn btn-ecitic green" btn="editOutInvoice" >修改</button>
 			<button class="btn btn-ecitic red" btn="delOutInvoice" >删除</button>
+			<button class="btn btn-ecitic rosy" btn="viewOutInvoice" >查看</button>
+			<button class="btn btn-ecitic orange" btn="payManage2" >往来款管理</button>
 		</div>
 						  <!--   出项发票信息模态框   -->
         <div id="out_modal" class="modal hide fade" tabindex="-1" z-index="1060" aria-hidden="true">
@@ -229,33 +297,67 @@
                             <td >
                                 <input type="text" name="O.PAYDATE" onFocus="WdatePicker({})" placeHolder="点击选择" readonly>
                             </td> 
-                            <td class="table-text">金额：</td>
-							<td >
-								<input type="text" name="O.PAYMENT" varify="is_money">
-							</td>
+                              <td class="table-text">状态：</td>
+                             <td>
+                             	<select  name="O.STATE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">已开</option>
+                                		<option value="01">未开</option>
+                                		<option value="02">完成</option>
+                            	 </select>
+                            </td>
                         </tr>
-                        <tr>
+                         <tr>
+                          	 <td class="table-text">发票种类：</td>
+                             <td>
+                             	<select  name="O.INVOICE_TYPE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">普通</option>
+                                		<option value="01">专用</option>
+                            	 </select>
+                           	 </td>
+                             <td class="table-text">类型：</td>
+                             <td>
+                             	<select  name="O.TYPE"   style="width: 100%">
+                             			<option value="">请选择</option>
+                                		<option value="00">个人垫付</option>
+                                		<option value="01">未付款</option>
+                                		<option value="02">公司付款</option>
+                                		<option value="04">库存</option>
+                                		<option value="03">已完成</option>
+                            	 </select>
+                            </td>
+                        </tr>
+                           <tr>
+                        	 <td class="table-text">开票单位：</td>
+                            <td colspan="5">
+                                <input type="text" id="O.COMPANY" name="O.COMPANY" />
+                            </td> 
+                        </tr>
+                        
+                         <tr>
+                       		 <td class="table-text">金额：</td>
+							<td >
+								<input type="text" name="O.PAYMENT" varify="is_money" onchange="checkPay3(this.value)"/>
+							</td>
                         	<td class="table-text">金额(不含税)：</td>
                             <td >
-                                <input type="text" name="O.PAYNOTAX" varify="is_money">
+                                <input type="text" name="O.PAYNOTAX" varify="is_money" onchange="checkPay4(this.value)"/>
                             </td> 
-                            <td class="table-text">税额：</td>
-							<td >
-								<input type="text" name="O.TAXVALUE" varify="is_money">
-							</td>
+                            
                         </tr>
-                          <tr>
-                        	<td class="table-text">余额：</td>
-                            <td >
-                                <input type="text" name="O.BALANCE" varify="is_money">
-                            </td> 
-                            <td class="table-text">增值税额：</td>
+                         <tr>
+                          <td class="table-text">税额：</td>
+							<td >
+								<input type="text" name="O.TAXVALUE" varify="is_money" />
+							</td>
+							<td class="table-text">增值税额：</td>
                             <td >
                                 <input type="text" name="O.UPTAX" varify="is_money">
                             </td> 
                         </tr>
                           <tr>
-                        	<td class="table-text">附加税额：</td>
+                            <td class="table-text">附加税额：</td>
                             <td >
                                 <input type="text" name="O.ADDTAX" varify="is_money">
                             </td> 
@@ -265,9 +367,15 @@
                             </td> 
                         </tr>
                          <tr>
+                            <td class="table-text">缺少材料：</td>
+                             <td colspan="5">
+								<textarea name="O.UNDERFILLED" class="requirement-ele-width" ></textarea>
+							</td> 
+                        </tr>
+                         <tr>
                         	<td class="table-text">备注：</td>
                             <td colspan="5">
-								<textarea name="O.REMARK" class="requirement-ele-width" ></textarea>
+								<textarea name="O.REMARK" class="requirement-ele-width" style="height:320px"></textarea>
 							</td> 
                         </tr>
               

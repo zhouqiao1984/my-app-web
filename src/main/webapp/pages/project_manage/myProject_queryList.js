@@ -59,7 +59,7 @@ function initQueryProject(){
 						pagination : true, // 是否显示分页（*）
 						pageList : [ 5, 10, 15 ], // 可供选择的每页的行数（*）
 						pageNumber : 1, // 初始化加载第一页，默认第一页
-						pageSize : 5, // 每页的记录行数（*）
+						pageSize : 10, // 每页的记录行数（*）
 						clickToSelect : true, // 是否启用点击选中行
 						// height: 460, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 						uniqueId : "", // 每一行的唯一标识，一般为主键列

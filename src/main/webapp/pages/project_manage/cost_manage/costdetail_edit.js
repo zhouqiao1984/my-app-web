@@ -1,13 +1,13 @@
 
 //初始化
-function editContent(item,detail_id){
+function editCD(item,cost_id){
 	var $page = getCurrentPageObj();//当前页
 	initVlidate($page);//渲染必填项
 	if(null == item){//新增
 		initButtonEvent("add");//初始化按钮事件
 	}else{//修改
 		initButtonEvent("edit");//初始化按钮事件
-		initContentInfo(item);//初始化明细信息
+		initCDInfo(item);//初始化明细信息
 	}
 	
 	//按钮事件
@@ -24,10 +24,10 @@ function editContent(item,detail_id){
 				alert('金额输入格式有误');
 				return;
 			}
-			params["DETAIL_ID"] = detail_id;
+			params["COST_ID"] = cost_id;
 			params["TYPE"] = type;
 			
-			baseAjax("cardfunds/editContent.asp",params, function(data) {
+			baseAjax("project/editCd.asp",params, function(data) {
 				if (data && data.result=="true") {
 					alert(data.msg);
 					closeCurrPageTab();
@@ -43,18 +43,15 @@ function editContent(item,detail_id){
 
 
 	//初始化信息
-	function initContentInfo(item){
-//		$page.find("[name='D.DETAIL_DATE']").removeAttr('onFocus');
-//		$page.find("[name='D.AMOUNT']").attr('readonly',true);
-//		$page.find("[name='D.PAY_TYPE']").attr('disabled','disabled');
-		var contentType = item.CONTENT_TYPE;
-		if(contentType == '01'){
-			item.AMOUNT = (""+item.AMOUNT).substring(1);
-		}
+	function initCDInfo(item){
+//		var contentType = item.CONTENT_TYPE;
+//		if(contentType == '01'){
+//			item.AMOUNT = (""+item.AMOUNT).substring(1);
+//		}
 		for(var k in item){
 			$page.find("[name='C."+ k +"']").val(item[k]);
-			if(k == 'CONTENT_TYPE'){
-				setSelected($page.find("[name='C.CONTENT_TYPE']"),item[k]);
+			if(k == 'CD_TYPE'){
+				setSelected($page.find("[name='C.CD_TYPE']"),item[k]);
 			}
 		}
 	}

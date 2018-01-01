@@ -49,62 +49,108 @@
 		where FIRST_ID = #{FIRST_ID}
 	</update>
 	
-		<!-- 查询给甲方开发票金额表--> 
+		<!-- 查询出项发票金额表--> 
 	<select id="queryOutinvoice" parameterType="java.util.Map" resultType="java.util.Map">
 		 select
-		 OUT_ID,
-		 OUT_NUM,
-		 PROJECT_ID,
-		 PAYDATE,
-		 PAYMENT,
-		 PAYNOTAX,
-		 TAXVALUE,
-		 UPTAX,
-		 ADDTAX,
-		 OTHERTAX,
-		 BALANCE,
-		 REMARK
-		 from out_invoice 
+		 ii.OUT_ID,
+		 ii.OUT_NUM,
+		 ii.PROJECT_ID,
+		 ii.PAYDATE,
+		 ii.PAYMENT,
+		 ii.PAYNOTAX,
+		 ii.TAXVALUE,
+		 ii.UNDERFILLED,
+		 ii.UPTAX,
+		 ii.ADDTAX,
+		 ii.OTHERTAX,
+		 ii.STATE,
+		 ii.TYPE,
+		 ii.COMPANY,
+		 ii.REMARK,
+		 ii.INVOICE_TYPE,
+		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.input_id = ii.OUT_ID and ip.IP_TYPE = '01') PAID
+		 from out_invoice ii
 		 where PROJECT_ID = #{PROJECT_ID}
+		 <if test="STATE!=null and STATE!=''">
+			and ii.STATE = #{STATE}
+		</if>
+		<if test="TYPE!=null and TYPE!=''">
+			and ii.TYPE = #{TYPE}
+		</if>
+		<if test="INVOICE_TYPE!=null and INVOICE_TYPE!=''">
+			and ii.INVOICE_TYPE = #{INVOICE_TYPE}
+		</if>
 		 union all
-		  select
+		 select
 		 '-' OUT_ID,
 		 '-' OUT_NUM,
 		 '00' PROJECT_ID,
 		 '合计' PAYDATE,
-		 sum(PAYMENT)  PAYMENT,
-		 sum(PAYNOTAX)  PAYNOTAX,
-		 sum(TAXVALUE)  TAXVALUE,
-		 sum(UPTAX) UPTAX,
-		 sum(ADDTAX) ADDTAX,
-		 sum(OTHERTAX) OTHERTAX,
-		 '-' BALANCE,
-		 '-' REMARK
-		 from out_invoice 
-		 where PROJECT_ID = #{PROJECT_ID}
+		 sum(ii.PAYMENT) PAYMENT,
+		 sum(ii.PAYNOTAX) PAYNOTAX,
+		 sum(ii.TAXVALUE) TAXVALUE,
+		 '-' UNDERFILLED,
+		 sum(ii.UPTAX) UPTAX,
+		 sum(ii.ADDTAX) ADDTAX,
+		 sum(ii.OTHERTAX) OTHERTAX,
+		 '-' STATE,
+		 '-' TYPE,
+		 '-' COMPANY,
+		 '-' REMARK,
+		 '-' INVOICE_TYPE,
+		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where  ip.IP_TYPE = '01' and ip.input_id in 
+		 	(select out_id from out_invoice ii2 where ii2.PROJECT_ID = #{PROJECT_ID} 
+		 		 <if test="STATE!=null and STATE!=''">
+					and ii2.STATE = #{STATE}
+				</if>
+				<if test="TYPE!=null and TYPE!=''">
+					and ii2.TYPE = #{TYPE}
+				</if>
+				<if test="INVOICE_TYPE!=null and INVOICE_TYPE!=''">
+					and ii2.INVOICE_TYPE = #{INVOICE_TYPE}
+				</if>
+		 	)
+		 ) PAID
+		 from out_invoice ii
+		 where ii.PROJECT_ID = #{PROJECT_ID}
+		  <if test="STATE!=null and STATE!=''">
+			and ii.STATE = #{STATE}
+		</if>
+		<if test="TYPE!=null and TYPE!=''">
+			and ii.TYPE = #{TYPE}
+		</if>
+		<if test="INVOICE_TYPE!=null and INVOICE_TYPE!=''">
+			and ii.INVOICE_TYPE = #{INVOICE_TYPE}
+		</if>
 		 order by PAYDATE asc
+	
 	</select>	
 	
 	
-	  <!-- 新建给甲方开发票-->
+	  <!-- 新建出项发票-->
 	<insert id="addOutInvoice" parameterType="java.util.Map">
 		insert into out_invoice
-		(OUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,TAXVALUE,BALANCE,REMARK,PROJECT_ID,UPTAX,ADDTAX,OTHERTAX)
+		(OUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,TAXVALUE,UNDERFILLED,REMARK,PROJECT_ID,UPTAX,
+		ADDTAX,OTHERTAX,STATE,TYPE,COMPANY,INVOICE_TYPE)
 		values
-		(#{OUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},${TAXVALUE},${BALANCE},#{REMARK},#{PROJECT_ID},${UPTAX},${ADDTAX},${OTHERTAX})
+		(#{OUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},${TAXVALUE},#{UNDERFILLED},#{REMARK},#{PROJECT_ID},${UPTAX},
+		${ADDTAX},${OTHERTAX},#{STATE},#{TYPE},#{COMPANY},#{INVOICE_TYPE})
 	</insert>
-	
-				  <!-- 修改甲方开发票-->
+				  <!-- 修改出项发票-->
 	<update id="editOutInvoice" parameterType="java.util.Map">
 		update out_invoice set 
 		PAYDATE = #{PAYDATE},
 		PAYMENT = ${PAYMENT},
 		PAYNOTAX = ${PAYNOTAX},
 		TAXVALUE = ${TAXVALUE},
-		BALANCE = ${BALANCE},
+		UNDERFILLED = #{UNDERFILLED},
 		UPTAX = ${UPTAX},
 		ADDTAX = ${ADDTAX},
 		OTHERTAX = ${OTHERTAX},
+		STATE = #{STATE},
+		TYPE = #{TYPE},
+		COMPANY = #{COMPANY},
+		INVOICE_TYPE =#{INVOICE_TYPE},
 		REMARK = #{REMARK}
 		where OUT_ID = #{OUT_ID}
 	</update>
@@ -119,13 +165,13 @@
 		 ii.PAYMENT,
 		 ii.PAYNOTAX,
 		 ii.TAXVALUE,
-		 ii.TAXBALANCE,
+		 ii.UNDERFILLED,
 		 ii.STATE,
 		 ii.TYPE,
 		 ii.COMPANY,
 		 ii.REMARK,
 		 ii.INVOICE_TYPE,
-		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.input_id = ii.INPUT_ID) PAID
+		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.input_id = ii.INPUT_ID and ip.IP_TYPE = '00') PAID
 		 from input_invoice ii
 		 where PROJECT_ID = #{PROJECT_ID}
 		 <if test="STATE!=null and STATE!=''">
@@ -146,14 +192,14 @@
 		 sum(ii.PAYMENT) PAYMENT,
 		 sum(ii.PAYNOTAX) PAYNOTAX,
 		 sum(ii.TAXVALUE) TAXVALUE,
-		 sum(ii.TAXBALANCE) TAXBALANCE,
+		 '-' UNDERFILLED,
 		 '-' STATE,
 		 '-' TYPE,
 		 '-' COMPANY,
 		 '-' REMARK,
 		 '-' INVOICE_TYPE,
-		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where ip.input_id in 
-		 	(select input_id from input_invoice ii2 where ii2.PROJECT_ID = #{PROJECT_ID}
+		 (select sum(ip.IP_AMOUNT) from invoice_pay ip where  ip.IP_TYPE = '00' and ip.input_id in 
+		 	(select input_id from input_invoice ii2 where ii2.PROJECT_ID = #{PROJECT_ID} 
 		 		 <if test="STATE!=null and STATE!=''">
 					and ii2.STATE = #{STATE}
 				</if>
@@ -182,10 +228,10 @@
 	  <!-- 新建进项发票-->
 	<insert id="addInputInvoice" parameterType="java.util.Map">
 		insert into input_invoice
-		(INPUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,REMARK,PROJECT_ID,TAXVALUE,TAXBALANCE,
+		(INPUT_NUM,PAYDATE,PAYMENT,PAYNOTAX,REMARK,PROJECT_ID,TAXVALUE,UNDERFILLED,
 		STATE,TYPE,COMPANY,INVOICE_TYPE)
 		values
-		(#{INPUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},#{REMARK},#{PROJECT_ID},${TAXVALUE},${TAXBALANCE},
+		(#{INPUT_NUM},#{PAYDATE},${PAYMENT},${PAYNOTAX},#{REMARK},#{PROJECT_ID},${TAXVALUE},#{UNDERFILLED},
 		#{STATE},#{TYPE},#{COMPANY},#{INVOICE_TYPE})
 	</insert>
 	
@@ -196,10 +242,11 @@
 		PAYMENT = ${PAYMENT},
 		PAYNOTAX = ${PAYNOTAX},
 		TAXVALUE = ${TAXVALUE},
-		TAXBALANCE = ${TAXBALANCE},
+		UNDERFILLED = #{UNDERFILLED},
 		STATE = #{STATE},
 		TYPE = #{TYPE},
 		COMPANY = #{COMPANY},
+		INVOICE_TYPE =#{INVOICE_TYPE},
 		REMARK = #{REMARK}
 		where INPUT_ID = #{INPUT_ID}
 	</update>
@@ -232,6 +279,7 @@
 		 IP_AMOUNT,
 		 IP_REMARK,
 		 INPUT_ID,
+		 IP_TYPE,
 		 PROJECT_ID
 		 from invoice_pay
 		 where INPUT_ID = #{INPUT_ID}
@@ -240,6 +288,9 @@
 		</if>
 		<if test="PAY_END_TIME!=null and PAY_END_TIME!=''">
 			and IP_DATE &lt;= #{PAY_END_TIME}
+		</if>
+		<if test="IP_TYPE !=null and IP_TYPE !=''">
+			and IP_TYPE = #{IP_TYPE}
 		</if>
 		
 	</select>	
@@ -262,14 +313,17 @@
 		<if test="PAY_END_TIME!=null and PAY_END_TIME!=''">
 			and IP_DATE &lt;= #{PAY_END_TIME}
 		</if>
+		<if test="IP_TYPE !=null and IP_TYPE !=''">
+			and IP_TYPE = #{IP_TYPE}
+		</if>
 	</select>
 	
 	
 	
 		<!-- 新增付款 -->
 	<insert id="addIPay" parameterType="java.util.Map" >
-		insert into invoice_pay(IP_NUM,IP_DATE,IP_AMOUNT,IP_REMARK,INPUT_ID,PROJECT_ID)
-		values(#{IP_NUM},#{IP_DATE},${IP_AMOUNT},#{IP_REMARK},#{INPUT_ID},#{PROJECT_ID})
+		insert into invoice_pay(IP_NUM,IP_DATE,IP_AMOUNT,IP_REMARK,INPUT_ID,PROJECT_ID,IP_TYPE)
+		values(#{IP_NUM},#{IP_DATE},${IP_AMOUNT},#{IP_REMARK},#{INPUT_ID},#{PROJECT_ID},#{IP_TYPE})
 	</insert>
 	
 		<!-- 修改付款 -->

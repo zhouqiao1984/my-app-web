@@ -64,7 +64,7 @@ function initInvoice(){
 						pagination : true, // 是否显示分页（*）
 						pageList : [ 5, 10, 15 ], // 可供选择的每页的行数（*）
 						pageNumber : 1, // 初始化加载第一页，默认第一页
-						pageSize : 5, // 每页的记录行数（*）
+						pageSize : 10, // 每页的记录行数（*）
 						clickToSelect : true, // 是否启用点击选中行
 						// height: 460, //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 						uniqueId : "", // 每一行的唯一标识，一般为主键列
@@ -85,25 +85,20 @@ function initInvoice(){
 							field : 'ORDER_ID',
 							title : '序号',
 							align : "center",
-							width : "8%",
+							width : "70",
 							formatter:function(value,row,index){
 								return index + 1;
 							}
 						}, {
-							field : "PROJECT_NUM",
-							title : "项目编号",
-							width : "15%",
-							align : "center"
-						}, {
 							field : "PROJECT_NAME",
 							title : "项目名称",
-							width : "22%",
+							width : "260",
 							align : "center"
-						}, {
-							field : "INVOICE_PAY",
-							title : "进项发票金额",
-							width : "15%",
+						},{
+							field : 'FINAL_TOTAL',
+							title : '决算金额',
 							align : "center",
+							width : "120",
 							formatter:function(value,row,index){
 								if(value == undefined){
 									value = 0;
@@ -111,31 +106,73 @@ function initInvoice(){
 								return value;
 							}
 						},{
-							field : "PROJECT_PAID",
-							title : "发票已付金额",
-							width : "15%",
+							field : 'FINAL_NOTAX',
+							title : '决算金额(不含税)',
 							align : "center",
+							width : "160",
 							formatter:function(value,row,index){
 								if(value == undefined){
 									value = 0;
 								}
 								return value;
 							}
-						}, {
-							field : " ",
-							title : "未付金额",
+						},{
+							field : '',
+							title : '决算(不含税)剩余',
 							align : "center",
-							width : "15%",
+							width : "160",
 							formatter:function(value,row,index){
-								if(row.INVOICE_PAY == undefined){row.INVOICE_PAY = 0;}
-								if(row.PROJECT_PAID == undefined){row.PROJECT_PAID = 0;}
-								return row.INVOICE_PAY - row.PROJECT_PAID; 
+								if(row.FINAL_NOTAX == undefined){row.FINAL_NOTAX = 0;}
+								if(row.PAYNOTAX_SUM == undefined){row.PAYNOTAX_SUM = 0;}
+								return Number(row.FINAL_NOTAX - row.PAYNOTAX_SUM).toFixed(2);
+							}
+						},{
+							field : 'FINAL_TAX',
+							title : '决算税额',
+							align : "center",
+							width : "140",
+							formatter:function(value,row,index){
+								if(value == undefined){
+									value = 0;
+								}
+								return value;
+							}
+						},{
+							field : '',
+							title : '决算税额剩余',
+							align : "center",
+							width : "140",
+							formatter:function(value,row,index){
+								if(row.FINAL_TAX == undefined){row.FINAL_TAX = 0;}
+								if(row.TAXVALUE_SUM == undefined){row.TAXVALUE_SUM = 0;}
+								return Number(row.FINAL_TAX - row.TAXVALUE_SUM).toFixed(2); 
+							}
+						},{
+							field : 'PP_SUM',
+							title : '已付款金额',
+							align : "center",
+							width : "140",
+							formatter:function(value,row,index){
+								if(value == undefined){
+									value = 0;
+								}
+								return value;
+							}
+						},{
+							field : '',
+							title : '已付款金额剩余',
+							align : "center",
+							width : "140",
+							formatter:function(value,row,index){
+								if(row.PP_SUM == undefined){row.PP_SUM = 0;}
+								if(row.INPUT_PAID == undefined){row.INPUT_PAID = 0;}
+								return Number(row.PP_SUM - row.INPUT_PAID).toFixed(2); 
 							}
 						}, {
 							field : "PROJECT_STATE",
 							title : "项目状态",
 							align : "center",
-							width : "10%",
+							width : "100",
 							formatter:function(value,row,index){
 								var state = '';
 								if(value == '00'){state = '进行中';}
@@ -144,6 +181,71 @@ function initInvoice(){
 								return state;
 							}
 						}
+//						, {
+//							field : "INPUT_PAY",
+//							title : "进项发票金额",
+//							width : "120",
+//							align : "center",
+//							formatter:function(value,row,index){
+//								if(value == undefined){
+//									value = 0;
+//								}
+//								return value;
+//							}
+//						},{
+//							field : "INPUT_PAID",
+//							title : "进项已付",
+//							width : "120",
+//							align : "center",
+//							formatter:function(value,row,index){
+//								if(value == undefined){
+//									value = 0;
+//								}
+//								return value;
+//							}
+//						}, {
+//							field : " ",
+//							title : "进项未付",
+//							align : "center",
+//							width : "120",
+//							formatter:function(value,row,index){
+//								if(row.INPUT_PAY == undefined){row.INPUT_PAY = 0;}
+//								if(row.INPUT_PAID == undefined){row.INPUT_PAID = 0;}
+//								return row.INPUT_PAY - row.INPUT_PAID; 
+//							}
+//						}, {
+//							field : "OUT_PAY",
+//							title : "出项发票金额",
+//							width : "120",
+//							align : "center",
+//							formatter:function(value,row,index){
+//								if(value == undefined){
+//									value = 0;
+//								}
+//								return value;
+//							}
+//						},{
+//							field : "OUT_PAID",
+//							title : "出项已付",
+//							width : "120",
+//							align : "center",
+//							formatter:function(value,row,index){
+//								if(value == undefined){
+//									value = 0;
+//								}
+//								return value;
+//							}
+//						}, {
+//							field : " ",
+//							title : "出项未付",
+//							align : "center",
+//							width : "120",
+//							formatter:function(value,row,index){
+//								if(row.OUT_PAY == undefined){row.OUT_PAY = 0;}
+//								if(row.OUT_PAID == undefined){row.OUT_PAID = 0;}
+//								return row.OUT_PAY - row.OUT_PAID; 
+//							}
+//						}
 						]
 					});
 		}

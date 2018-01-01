@@ -4,6 +4,10 @@ function editInvoicePay(item,opt){
 	var $page = getCurrentPageObj();//当前页
 	var project_id = item.PROJECT_ID;
 	var input_id = item.INPUT_ID;
+	var ip_type = '';
+	if(item.IP_TYPE != undefined){
+		ip_type = item.IP_TYPE;
+	}
 	initVlidate($page);//渲染必填项
 	if(opt == 'add'){//新增
 		initButtonEvent("add");//初始化按钮事件
@@ -39,6 +43,7 @@ function editInvoicePay(item,opt){
 			params["PROJECT_ID"] = project_id;
 			params["INPUT_ID"] = input_id;
 			params["TYPE"] = type;
+			params["IP_TYPE"] = ip_type;
 			var ipcCall = getMillisecond();
 			baseAjaxJsonp("invoice/editInvoicePay.asp?call=" + ipcCall,params, function(data) {
 				if (data && data.result=="true") {

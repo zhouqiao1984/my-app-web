@@ -9,7 +9,7 @@
 	<select id="queryOther" parameterType="java.util.Map" resultType="java.util.Map">
 		select 
 		(select sum(REAL_AMOUNT) from other_detail where OTHER_ID = o.OTHER_ID) BALANCE,
-		o.OTHER_ID,o.OTHER_NAME,o.REMARK,o.OTHER_STATE
+		o.OTHER_ID,o.OTHER_NAME,o.REMARK,o.OTHER_STATE,o.OTHER_TYPE
 		from OTHER_INFO o
 		where 1=1
 		<choose>
@@ -20,6 +20,9 @@
 	            and o.OTHER_STATE = '00'
 	        </otherwise>
     	</choose>
+    	<if test="OTHER_TYPE !=null and OTHER_TYPE !='' ">
+			and o.OTHER_TYPE = #{OTHER_TYPE}
+		</if>
 	</select>
 	
 	  <!-- 查询其他款项合计-->
@@ -29,7 +32,8 @@
 		'00' as OTHER_ID,
 		'合计' as OTHER_NAME,
 		'-' as REMARK,
-		'-' as OTHER_STATE
+		'-' as OTHER_STATE,
+		'-' as OTHER_TYPE
 		from
 		(select (select sum(REAL_AMOUNT) from other_detail where OTHER_ID = o.OTHER_ID) BALANCE
 		from OTHER_INFO o
@@ -41,21 +45,25 @@
 	        <otherwise>
 	            and o.OTHER_STATE = '00'
 	        </otherwise>
-    	</choose>) a
+    	</choose>
+    	<if test="OTHER_TYPE !=null and OTHER_TYPE !='' ">
+			and o.OTHER_TYPE = #{OTHER_TYPE}
+		</if>) a
 	</select>
 	
 		  <!-- 新建其他款项-->
 	<insert id="addOther" parameterType="java.util.Map">
 		insert into OTHER_INFO
-		(OTHER_NAME,REMARK,OTHER_STATE)
+		(OTHER_NAME,REMARK,OTHER_STATE,OTHER_TYPE)
 		values
-		(#{OTHER_NAME},#{REMARK},#{OTHER_STATE})
+		(#{OTHER_NAME},#{REMARK},#{OTHER_STATE},#{OTHER_TYPE})
 	</insert>
 	
 	  <!-- 修改其他款项-->
 	<update id="editOther" parameterType="java.util.Map">
 		update OTHER_INFO
 		set OTHER_NAME = #{OTHER_NAME},
+			OTHER_TYPE = #{OTHER_TYPE},
 			REMARK = #{REMARK}
 		where OTHER_ID = #{OTHER_ID}
 	</update>

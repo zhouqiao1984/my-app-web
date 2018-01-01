@@ -2,6 +2,7 @@
 
 function otherManage(item){
 	var $page = getCurrentPageObj();//当前页
+	$page.find("#on1").text(item.OTHER_NAME);
 	var otherDetailTable = $page.find("[tb='otherDetailTable']");
 	var odCall = getMillisecond();
 	var other_id = item.OTHER_ID;

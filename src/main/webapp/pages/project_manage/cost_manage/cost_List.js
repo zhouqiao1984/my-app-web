@@ -2,6 +2,7 @@
 
 function costManage(item){
 	var $page = getCurrentPageObj();//当前页
+	$page.find("#pn2").text(item.PROJECT_NAME);
 	var cmTable = $page.find("[tb='costManageTable']");
 	var formObj = $page.find("#costManageForm");//表单对象
 	var cmCall = getMillisecond();
@@ -80,6 +81,18 @@ function costManage(item){
 				},decCall,false);
 			});
 		
+	 });
+	 
+		//具体成本
+	 $page.find("[name='goCost']").click(function(){
+			var seles = cmTable.bootstrapTable("getSelections");
+			if(seles.length!=1){
+					alert("请选择一条数据!");
+					return;
+			}
+		 closeAndOpenInnerPageTab("goCost","具体成本管理","pages/project_manage/cost_manage/costdetail_List.html", function(){
+			 goCost(seles[0]);
+			});
 	 });
 	 
 	 function refreshCostTable(){
