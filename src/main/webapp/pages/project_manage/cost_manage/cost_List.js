@@ -143,29 +143,41 @@ function costManage(item){
 							field : 'ORDER_ID',
 							title : '序号',
 							align : "center",
-							width : "10%",
+							width : "8%",
 							formatter:function(value,row,index){
 								return index + 1;
 							}
 						}, {
 							field : "COST_DATE",
 							title : "日期",
-							width : "15%",
+							width : "12%",
 							align : "center"
 						}, {
 							field : "COST_AMOUNT",
 							title : "金额",
-							width : "15%",
+							width : "12%",
 							align : "center"
+						}, {
+							field : "COST_TYPE2",
+							title : "收入/支出",
+							width : "12%",
+							align : "center",
+							formatter:function(value,row,index){
+								var state = '';
+								if(value == '00'){state = '收入'}
+								else if(value == '01'){state = '支出'}
+								else{state = '-'}
+								return state;
+							}
 						}, {
 							field : "COST_DETAIL",
 							title : "明细",
-							width : "25%",
+							width : "24%",
 							align : "center"
 						},{
 							field : "COST_TYPE",
 							title : "类别",
-							width : "15%",
+							width : "12%",
 							align : "center",
 							formatter:function(value,row,index){
 								var state = '';

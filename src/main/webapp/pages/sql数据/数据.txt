@@ -125,7 +125,7 @@ DETAIL_NUM  		明细编号
 DETAIL_DATE         日期
 DETAIL_EXPLAIN		具体详情说明
 AMOUNT				数额
-PAY_TYPE			收支类型  00收入  01支出
+PAY_TYPE			收支类型  00收入  01支出  
 BALANCE				当前余额
 PAY_CLASS			收支类别
 PAY_EXPLAIN			类别说明
@@ -137,8 +137,8 @@ DEPOSIT_STATE       保证金状态  00 未完成  01已完成
 
 收支类别
 if(value == '00'){state = '工资'}
-if(value == '01'){state = '往来款'}
-if(value == '02'){state = '保证金'}
+if(value == '01'){state = '往来款'}  
+if(value == '02'){state = '保证金'} PAY_CLASS
 if(value == '03'){state = '工程款'}
 if(value == '04'){state = '餐费'}
 if(value == '05'){state = '日常花销'}
@@ -197,6 +197,7 @@ COST_NUM  		编号			PC_
 COST_DATE     	日期
 COST_DETAIL     成本明细
 COST_AMOUNT		金额
+COST_TYPE2		收支类型  00收入  01支出  
 COST_TYPE		类别
 COST_REMARK	          备注
 PROJECT_ID		关联项目编号
@@ -236,7 +237,7 @@ CARD_ID         关联账户ID
 
 
 十五、
-保证金汇款表  deposit_return
+保证金回款表  deposit_return
 RETURN_ID      主键
 RETURN_DATE    日期
 RETURN_AMOUNT  回款金额

@@ -190,8 +190,10 @@
 		p.PROJECT_ID,
 		p.PROJECT_NUM,
 		p.PROJECT_NAME,
+		p.PROJECT_TYPE,
 		p.FINAL_TOTAL,
-		(select  sum(c.cost_amount) from project_cost c where c.project_id = p.project_id GROUP BY c.project_id) COST_SUM,
+		(select  sum(c.cost_amount) from project_cost c where c.project_id = p.project_id and c.COST_TYPE2 = '00' GROUP BY c.project_id) COST_SUM,
+		(select  sum(c.cost_amount) from project_cost c where c.project_id = p.project_id and c.COST_TYPE2 = '01' GROUP BY c.project_id) COST_OUT,
 		p.COST_STATE
 		from project_info p
 		where 1=1
@@ -223,6 +225,7 @@
 		 COST_DETAIL,
 		 COST_AMOUNT,
 		 COST_TYPE,
+		 COST_TYPE2,
 		 COST_REMARK,
 		 PROJECT_ID
 		 from project_cost
@@ -239,19 +242,43 @@
 		
 	</select>	
 	
-		  <!-- 查询成本合计-->
-	<select id="queryCostSum" parameterType="java.util.Map" resultType="java.util.Map">
+		  <!-- 查询成本收入-->
+	<select id="queryCostSumIn" parameterType="java.util.Map" resultType="java.math.BigDecimal">
 		 select
-		 '00' as COST_ID,
-		 '-' as COST_NUM,
-		 '合计' as COST_DATE,
-		 '-' as COST_DETAIL,
-		 sum(COST_AMOUNT) as COST_AMOUNT,
-		 '-' as COST_TYPE,
-		 '-' as COST_REMARK,
-		 '-' as PROJECT_ID
+<!-- 		 '00' as COST_ID, -->
+<!-- 		 '-' as COST_NUM, -->
+<!-- 		 '合计' as COST_DATE, -->
+<!-- 		 '-' as COST_DETAIL, -->
+		 sum(COST_AMOUNT) as COST_AMOUNT
+<!-- 		 '-' as COST_TYPE, -->
+<!-- 		 '-' as COST_REMARK, -->
+<!-- 		 '-' as PROJECT_ID -->
 		 from project_cost
-		 where PROJECT_ID = #{PROJECT_ID}
+		 where PROJECT_ID = #{PROJECT_ID} and COST_TYPE2 = '00'
+		 <if test="COST_START_TIME!=null and COST_START_TIME!='' ">
+			and COST_DATE &gt;= #{COST_START_TIME}
+		</if>
+		<if test="COST_END_TIME!=null and COST_END_TIME!=''">
+			and COST_DATE &lt;= #{COST_END_TIME}
+		</if>
+		<if test="COST_TYPE!=null and COST_TYPE!=''">
+			and COST_TYPE = #{COST_TYPE}
+		</if>
+	</select>
+	
+		  <!-- 查询成本支出-->
+	<select id="queryCostSumOut" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+		 select
+<!-- 		 '00' as COST_ID, -->
+<!-- 		 '-' as COST_NUM, -->
+<!-- 		 '合计' as COST_DATE, -->
+<!-- 		 '-' as COST_DETAIL, -->
+		 sum(COST_AMOUNT) as COST_AMOUNT
+<!-- 		 '-' as COST_TYPE, -->
+<!-- 		 '-' as COST_REMARK, -->
+<!-- 		 '-' as PROJECT_ID -->
+		 from project_cost
+		 where PROJECT_ID = #{PROJECT_ID} and COST_TYPE2 = '01'
 		 <if test="COST_START_TIME!=null and COST_START_TIME!='' ">
 			and COST_DATE &gt;= #{COST_START_TIME}
 		</if>
@@ -264,11 +291,10 @@
 	</select>
 	
 	
-	
 		<!-- 新增成本 -->
 	<insert id="addCost" parameterType="java.util.Map" >
-		insert into project_cost(COST_NUM,COST_DATE,COST_DETAIL,COST_AMOUNT,COST_TYPE,COST_REMARK,PROJECT_ID)
-		values(#{COST_NUM},#{COST_DATE},#{COST_DETAIL},${COST_AMOUNT},#{COST_TYPE},#{COST_REMARK},#{PROJECT_ID})
+		insert into project_cost(COST_NUM,COST_DATE,COST_DETAIL,COST_AMOUNT,COST_TYPE,COST_TYPE2,COST_REMARK,PROJECT_ID)
+		values(#{COST_NUM},#{COST_DATE},#{COST_DETAIL},${COST_AMOUNT},#{COST_TYPE},#{COST_TYPE2},#{COST_REMARK},#{PROJECT_ID})
 	</insert>
 	
 		<!-- 修改成本 -->
@@ -278,6 +304,7 @@
 			COST_DETAIL = #{COST_DETAIL},
 			COST_AMOUNT = ${COST_AMOUNT},
 			COST_TYPE = #{COST_TYPE},
+			COST_TYPE2 = #{COST_TYPE2},
 			COST_REMARK = #{COST_REMARK}
 		where COST_ID = #{COST_ID}
 	</update>

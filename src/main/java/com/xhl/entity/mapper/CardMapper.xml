@@ -188,6 +188,9 @@
 		DETAIL_EXPLAIN = #{DETAIL_EXPLAIN},
 		BILL_NUM = #{BILL_NUM},
 		PAY_EXPLAIN = #{PAY_EXPLAIN},
+		<if test="DEPOSIT_STATE !=null and DEPOSIT_STATE !=''">
+			DEPOSIT_STATE = #{DEPOSIT_STATE},
+		</if>
 		REMARK = #{REMARK}
 		where DETAIL_ID = #{DETAIL_ID}
 	</update>

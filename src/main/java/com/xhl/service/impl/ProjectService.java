@@ -1,5 +1,6 @@
 package com.xhl.service.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -260,9 +261,31 @@ public class ProjectService implements IProjectService{
 		try {
 			//查询结果
 			List<Map<String, String>> lmap = projectDao.queryCostByProid(pmap);//查询结果
-			List<Map<String, String>> smap = projectDao.queryCostSum(pmap);//查询合计
+			BigDecimal sumIn = projectDao.queryCostSumIn(pmap);//查询收入合计
+			if(null == sumIn){
+				sumIn = new BigDecimal(0);
+			}
+			BigDecimal sumOut = projectDao.queryCostSumOut(pmap);//查询支出合计
+			if(null == sumOut){
+				sumOut = new BigDecimal(0);
+			}
+			BigDecimal sum = sumIn.subtract(sumOut);//计算差值
+			Map<String, String> smap = new HashMap<String, String>();
+			smap.put("COST_ID", "00");
+			smap.put("COST_NUM", "-");
+			smap.put("COST_DATE", "合计");
+			smap.put("COST_DETAIL", "-");
+			smap.put("COST_AMOUNT", sum.toString());
+			smap.put("COST_TYPE", "-");
+			smap.put("COST_REMARK", "-");
+			smap.put("PROJECT_ID", "-");
+//			List<Map<String, String>> smap = projectDao.queryCostSumIn(pmap);
+//			List<Map<String, String>> omap = projectDao.queryCostSumOut(pmap);
+//			smap.get(0).get("COST_AMOUNT");
+//			omap.get(0).get("COST_AMOUNT");
+			//smap.get(0).put("", "");
 			List<Map<String, String>> rmap = MyUtil.getPaging(pmap, lmap);//分页结果
-			rmap.add(smap.get(0));//合计与结果合并
+			rmap.add(smap);//合计与结果合并
 			resultMap.put("rows", rmap);
 			resultMap.put("total", pmap.containsKey("total")?pmap.get("total"):lmap.size());
 			return resultMap;
@@ -283,7 +306,7 @@ public class ProjectService implements IProjectService{
 	public Map<String, String> editProjectCost(HttpServletRequest request) {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		String[] must = new String[]{};
-		String[] nomust = new String[]{"COST_TYPE","COST_DETAIL","COST_REMARK",
+		String[] nomust = new String[]{"COST_TYPE","COST_TYPE2","COST_DETAIL","COST_REMARK",
 				"TYPE","COST_DATE","COST_AMOUNT","PROJECT_ID","COST_ID"};
 		Map<String, String> pmap = MyUtil.requestToMap(request, must, nomust);
 		if(null == pmap){

@@ -199,20 +199,27 @@ public class CardService implements ICardService{
 							return resultMap;
 						}
 						pmap.put("REAL_AMOUNT", "-"+pmap.get("AMOUNT"));
+						
+						if("02".equals(pmap.get("PAY_CLASS"))){//如果是保证金。初始化状态未完成
+							pmap.put("DEPOSIT_STATE", "00");
+						}
 					}
 					if("00".equals(pmap.get("PAY_TYPE"))){//收入
 						currBalance = currBalance.add(amount);
 						pmap.put("REAL_AMOUNT", pmap.get("AMOUNT"));
 					}
 					pmap.put("BALANCE", currBalance.toString());
-					if("02".equals(pmap.get("PAY_CLASS"))){//如果是保证金。初始化状态未完成
-						pmap.put("DEPOSIT_STATE", "00");
-					}
+					
 					cardDao.addDetail(pmap);
 				}
 			}
 			//修改
 			if("edit".equals(type)){
+				if("01".equals(pmap.get("PAY_TYPE"))&&"02".equals(pmap.get("PAY_CLASS"))){//如果是保证金支出。初始化状态未完成
+					if(!"01".equals(pmap.get("DEPOSIT_STATE"))){
+						pmap.put("DEPOSIT_STATE", "00");
+					}
+				}
 				cardDao.editDetail(pmap);
 			}
 			resultMap.put("msg", "操作成功");

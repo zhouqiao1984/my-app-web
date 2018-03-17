@@ -1,5 +1,6 @@
 package com.xhl.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +35,10 @@ public interface ProjectDao {
 	List<Map<String, String>>  queryCost(Map<String, String> map);
 	//查询成本
 	List<Map<String, String>>  queryCostByProid(Map<String, String> map);
-	//查询成本合计
-	List<Map<String, String>>  queryCostSum(Map<String, String> map);
+	//查询成本收入合计
+	BigDecimal queryCostSumIn(Map<String, String> map);
+	//查询成本支出合计
+	BigDecimal  queryCostSumOut(Map<String, String> map);
 	//新建成本
 	void addCost(Map<String, String> map);
 	//修改成本

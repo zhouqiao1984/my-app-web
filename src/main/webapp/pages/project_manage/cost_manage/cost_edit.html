@@ -17,19 +17,26 @@
         	<input type="hidden" name="C.COST_ID">
             <table class="table table-striped table-hover table-bordered tablr-input-text requirement-table">
                 <colgroup>
-						<col style="width: 12%">
-						<col style="width: 21%">
-						<col style="width: 12%">
-						<col style="width: 21%">
-						<col style="width: 12%">
-						<col style="width: 22%">
+						<col style="width: 20%">
+						<col style="width: 30%">
+						<col style="width: 20%">
+						<col style="width: 30%">
 				</colgroup>
                 <tr>
                 	<td class="table-text">日期：</td>
                     <td ><input type="text" name="C.COST_DATE" onFocus="WdatePicker({})" placeHolder="点击选择" readonly></td>
                     <td class="table-text">金额：</td>
                     <td ><input type="text" name="C.COST_AMOUNT" class="requirement-ele-width" validate="v.required" valititle="该项为必填项" varify="is_money"></td>
-                	<td class="table-text">收支类型：</td>
+                </tr>
+                <tr>	
+                	<td class="table-text">收支：</td>
+                    <td>
+                      <select name="C.COST_TYPE2"  class="requirement-ele-width" style="width: 100%">
+                              	<option value="01">支出</option>
+                              	<option value="00">收入</option>
+                     	</select>
+                    </td>
+                	<td class="table-text">类别：</td>
                     <td>
                       <select name="C.COST_TYPE"  class="requirement-ele-width" style="width: 100%">
                               	<option value="00">材料</option>

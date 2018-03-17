@@ -172,8 +172,26 @@ function initCost(){
 						}, {
 							field : "PROJECT_NAME",
 							title : "项目名称",
-							width : "45%",
+							width : "35%",
 							align : "center"
+						}, {
+							field : "PROJECT_TYPE",
+							title : "项目类型",
+							width : "10%",
+							align : "center",
+							formatter:function(value,row,index){
+								var result = '';
+								if(value == 00){
+									result = '自营';
+								}
+								if(value == 01){
+									result = '挂靠';
+								}
+								if(value == 02){
+									result = '陪标';
+								}
+								return result;
+							}
 						}, {
 							field : "FINAL_TOTAL",
 							title : "决算金额",
@@ -191,10 +209,11 @@ function initCost(){
 							width : "12%",
 							align : "center",
 							formatter:function(value,row,index){
-								if(value == undefined){
-									value = 0;
-								}
-								return value;
+								var cost_sum = 0;
+								var cost_out = 0;
+								if(row.COST_SUM){cost_sum = row.COST_SUM;}
+								if(row.COST_OUT){cost_out = row.COST_OUT;}
+								return Number(cost_out - cost_sum).toFixed(2);
 							}
 						},{
 							field : "PROFIT",
@@ -204,9 +223,11 @@ function initCost(){
 							formatter:function(value,row,index){
 								var final_total = 0;
 								var cost_sum = 0;
+								var cost_out = 0;
 								if(row.FINAL_TOTAL){final_total = row.FINAL_TOTAL}
 								if(row.COST_SUM){cost_sum = row.COST_SUM}
-								return Number(final_total - cost_sum).toFixed(2);
+								if(row.COST_OUT){cost_out = row.COST_OUT;}
+								return Number(final_total + cost_sum - cost_out).toFixed(2);
 							}
 						},{
 							field : "COST_STATE",

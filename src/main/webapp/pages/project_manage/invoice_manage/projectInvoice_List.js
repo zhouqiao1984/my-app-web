@@ -141,7 +141,7 @@ function initInvoice(){
 							field : '',
 							title : '决算税额剩余',
 							align : "center",
-							width : "140",
+							width : "160",
 							formatter:function(value,row,index){
 								if(row.FINAL_TAX == undefined){row.FINAL_TAX = 0;}
 								if(row.TAXVALUE_SUM == undefined){row.TAXVALUE_SUM = 0;}
@@ -162,11 +162,11 @@ function initInvoice(){
 							field : '',
 							title : '已付款金额剩余',
 							align : "center",
-							width : "140",
+							width : "160",
 							formatter:function(value,row,index){
 								if(row.PP_SUM == undefined){row.PP_SUM = 0;}
-								if(row.INPUT_PAID == undefined){row.INPUT_PAID = 0;}
-								return Number(row.PP_SUM - row.INPUT_PAID).toFixed(2); 
+								if(row.INPUT_PAY == undefined){row.INPUT_PAY = 0;}
+								return Number(row.PP_SUM - row.INPUT_PAY).toFixed(2); 
 							}
 						}, {
 							field : "PROJECT_STATE",
