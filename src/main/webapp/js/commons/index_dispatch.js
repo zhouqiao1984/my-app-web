@@ -3,6 +3,8 @@
  */
 var buttonPermission={};
 
+var currentUserRole = "";//add 20180428
+
 /**
  * 当前系统的菜单数据
  */
@@ -37,40 +39,45 @@ function initMenu(){
 		dataType : "json",
 		success : function(data) {
 			if(data && data.result == "true"){
+				currentUserRole = data.role;//add 20180428
 				//首页
 				var homepage = {"MENU_NAME":"首页","ORDER_ID":"00","MENU_NO":"homepage","MENU_ICON":"001.icon","MENU_LEVEL":"0"};
 				var engineer_manager =	{"MENU_NAME":"企航项目管理系统","ORDER_ID":"01","MENU_NO":"engineer_manager","MENU_ICON":"img/project_01.png","MENU_LEVEL":"0"};
 				var index = {"MENU_NAME":"首页1","ORDER_ID":"00","SUPMENU_NO":"homepage","MENU_URL":"indexC.html","MENU_NO":"index","MENU_LEVEL":"1"}
-				//项目
+				//项目管理  1级
 				var project_manage = {"MENU_NAME":"项目管理","ORDER_ID":"00","SUPMENU_NO":"engineer_manager","MENU_NO":"project_manage","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"1"};
+				//项目管理 2级
 				var project_info = {"MENU_NAME":"项目信息管理","ORDER_ID":"01","SUPMENU_NO":"project_manage","MENU_URL":"pages/project_manage/myProject_List.html","MENU_NO":"project_info","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"};
 				var project_invoice = {"MENU_NAME":"发票管理","ORDER_ID":"02","SUPMENU_NO":"project_manage","MENU_URL":"pages/project_manage/invoice_manage/projectInvoice_List.html","MENU_NO":"project_invoice","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"};
 				var project_cost  = {"MENU_NAME":"成本管理","ORDER_ID":"03","SUPMENU_NO":"project_manage","MENU_URL":"pages/project_manage/cost_manage/projectCost_List.html","MENU_NO":"project_cost","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"};
 				var project_pay  = {"MENU_NAME":"付款管理","ORDER_ID":"04","SUPMENU_NO":"project_manage","MENU_URL":"pages/project_manage/pay_manage/projectPay_List.html","MENU_NO":"project_pay","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"};
 				var project_query = {"MENU_NAME":"项目信息查看","ORDER_ID":"05","SUPMENU_NO":"project_manage","MENU_URL":"pages/project_manage/myProject_queryList.html","MENU_NO":"project_query","MENU_ICON":"img/icon/582761.png","MENU_LEVEL":"2"};
 
-				
+				//账户及款项管理 1级
 				var account_manage  = {"MENU_NAME":"账户及款项管理","ORDER_ID":"01","SUPMENU_NO":"engineer_manager","MENU_NO":"account_manage","MENU_ICON":"img/icon/582766.png","MENU_LEVEL":"1"};
+				//账户及款项管理 2级
 				var card_funds  = {"MENU_NAME":"账户管理","ORDER_ID":"1","SUPMENU_NO":"account_manage","MENU_URL":"pages/account_manage/card_funds/cardFunds_List.html","MENU_NO":"card_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"};
 				var other_funds  = {"MENU_NAME":"其它款项管理","ORDER_ID":"2","SUPMENU_NO":"account_manage","MENU_URL":"pages/account_manage/other_funds/otherFunds_List.html","MENU_NO":"other_funds","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"};
 				var deposit_manage  = {"MENU_NAME":"保证金管理","ORDER_ID":"3","SUPMENU_NO":"account_manage","MENU_URL":"pages/account_manage/deposit_manage/deposit_queryList.html","MENU_NO":"deposit_manage","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"};
-
+				
+				//公司记事 1级
 				var  company_record = {"MENU_NAME":"公司记事","ORDER_ID":"02","SUPMENU_NO":"engineer_manager","MENU_NO":"company_record","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"1"};
 				var  my_record = {"MENU_NAME":"备忘录","ORDER_ID":"1","SUPMENU_NO":"company_record","MENU_URL":"pages/company_record/record_List.html","MENU_NO":"my_record","MENU_ICON":"img/icon/582762.png","MENU_LEVEL":"2"};
-				
+				//公司记事 2级
 				var system_manage  = {"MENU_NAME":"系统管理","ORDER_ID":"03","SUPMENU_NO":"engineer_manager","MENU_NO":"system_manage","MENU_ICON":"img/icon/582766.png","MENU_LEVEL":"1"};
 				var user_manage  = {"MENU_NAME":"用户管理","ORDER_ID":"1","SUPMENU_NO":"system_manage","MENU_URL":"pages/system_manage/user_manage/user_List.html","MENU_NO":"user_manage","MENU_ICON":"img/icon/582765.png","MENU_LEVEL":"2"};
+				
 				var msg = {"level1":[homepage,engineer_manager],"engineer_manager":[project_manage],"homepage":[index]};
 				if(data.loginname == 'admin' || data.role == '00'){//管理员
 					msg = {"level1":[homepage,engineer_manager],
 						   "engineer_manager":[project_manage,project_info,project_invoice,project_cost,project_pay,
-							   		project_query,account_manage,card_funds,other_funds,
-									deposit_manage,company_record,my_record,system_manage,user_manage],
+							   		project_query,account_manage,card_funds,other_funds,deposit_manage,
+							   		company_record,my_record,system_manage,user_manage],
 					       "homepage":[index]};
 				}else if(data.role == '01'){//1级
 					msg = {"level1":[homepage,engineer_manager],
 							   "engineer_manager":[project_manage,project_info,project_invoice,project_cost,project_pay,account_manage,card_funds,other_funds,
-										deposit_manage,company_record,my_record,system_manage,user_manage],
+										deposit_manage,company_record,my_record,system_manage],
 						       "homepage":[index]};
 				}
 				else if(data.role == '02'){//2级

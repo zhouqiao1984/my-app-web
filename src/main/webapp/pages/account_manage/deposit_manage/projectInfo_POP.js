@@ -63,7 +63,9 @@ function initProjectPopTable(item){
                 		projece_type = '自营';
                 	}else if(projece_type == '01'){
                 		projece_type = '挂靠';
-                	}else{
+                	}else if(projece_type == '02'){
+                		projece_type = '陪标';
+                	}else {
                 		projece_type = '未定义';
                 	} 
                 	item.PROJECT_TYPE.val(projece_type);
@@ -101,6 +103,7 @@ function initProjectPopTable(item){
 						var state = '';
 						if(value == '00'){state = '自营';}
 						if(value == '01'){state = '挂靠';}
+						if(value == '02'){state = '陪标';}
 						return state;
 					}
 				}, {
