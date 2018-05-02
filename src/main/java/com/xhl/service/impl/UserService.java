@@ -1,5 +1,6 @@
 package com.xhl.service.impl;
 
+import java.security.interfaces.RSAPrivateKey;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.xhl.dao.UserDao;
 import com.xhl.entity.User;
 import com.xhl.service.IUserService;
-import com.xhl.utils.DateTimeUtils;
 import com.xhl.utils.MyUtil;
+import com.xhl.utils.RSAUtil.MD5Util;
+import com.xhl.utils.RSAUtil.RSAUtils;
 
 @Service
 @Transactional
@@ -31,12 +33,22 @@ public class UserService implements IUserService{
 		 */
 		@Override
 		public Map<String, Object> userLogin(HttpServletRequest request) {
+			
 			String []must={"LOGINNAME","PASSWORD"};
 			Map<String, String> pmap=MyUtil.requestToMap(request, must, null);
 			Map<String, Object> resultMap=new HashMap<String, Object>();
+			
+
+			RSAUtils rsa = new RSAUtils();
+			String Modulus = (String) request.getSession().getAttribute("Modulus");
+			String private_exponent = (String)request.getSession().getAttribute("private_exponent");
+			//根据模和私钥指数获取私钥
+			RSAPrivateKey prkey = RSAUtils.getPrivateKey(Modulus,private_exponent);
+			//解密
+			String pw = pmap.get("PASSWORD");
+			
 			try{
-				
-				String password=pmap.get("PASSWORD");
+				String password = rsa.decrypttoStr(prkey,pw);
 				pmap.remove("PASSWORD");
 				User user=userDao.findUser(pmap);
 				if(user==null){
@@ -44,14 +56,15 @@ public class UserService implements IUserService{
 					resultMap.put("msg", "用户名不存在!");
 					return resultMap;
 				}
-				
-				pmap.put("PASSWORD", password);
+				String sqlPw = MD5Util.getMD5(password);//MD5加密
+				pmap.put("PASSWORD", sqlPw);
 				User user1=userDao.findUser(pmap);
 				if(user1==null){
 					resultMap.put("result", "false");
 					resultMap.put("msg", "密码错误!");
 					return resultMap;
 				}
+				user1.setPassWord("");//清空密码
 				resultMap.put("userinfo", user1);
 				resultMap.put("result", "true");
 				return resultMap;
@@ -104,7 +117,7 @@ public class UserService implements IUserService{
 			Map<String, String> resultMap = new HashMap<String, String>();
 			String[] must = new String[]{};
 			String[] nomust = new String[]{"TYPE","USERID","LOGINNAME","PASSWORD",
-					"USERNAME","ROLE","REMARK"};
+					"USERNAME","ROLE","REMARK","NPASSWORD"};
 			Map<String, String> pmap = MyUtil.requestToMap(req, must, nomust);
 			if(null == pmap){
 				resultMap.put("msg","必填项未填");
@@ -124,12 +137,19 @@ public class UserService implements IUserService{
 						resultMap.put("msg", "用户名已存在!");
 						return resultMap;
 					}
-					pmap.put("PASSWORD", password);
+					String sqlPw = MD5Util.getMD5(password);//MD5加密
+					pmap.put("PASSWORD", sqlPw);
+					//pmap.put("PASSWORD", password);
 					pmap.put("USERSTATE", "00");//执行中
 					userDao.addUser(pmap);
 				}
 				//修改
 				if("edit".equals(type)){
+					String npassword=pmap.get("NPASSWORD");
+					if(!"".equals(npassword)){
+						String sqlPw = MD5Util.getMD5(npassword);//MD5加密
+						pmap.put("NPASSWORD", sqlPw);
+					}
 					userDao.editUser(pmap);
 				}
 				resultMap.put("msg", "操作成功");
@@ -164,6 +184,7 @@ public class UserService implements IUserService{
 			resultMap.put("msg", "未知错误!");
 			return resultMap;
 		}
+		
 		
 }
 

@@ -9,6 +9,8 @@
 <script type="text/javascript" src="js/jquery/jquery-1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/login/jquery.SuperSlide.2.1.1.js" ></script>
 <script type="text/javascript" src="js/login/login.js" ></script>
+<!-- 加密传输 -->
+<script type="text/javascript" src="js/login/security.js"></script>
 </head>
 <body onkeydown="if(event.keyCode==13){onLogin()}">
 	<div class="ecitic-login-all">
@@ -103,7 +105,64 @@ function onLogin(){
 	  	$(".ecitic-user .ecitic-error").hide();
 	  	$(".ecitic-password .ecitic-error").text("");
 	  	$(".ecitic-password .ecitic-error").hide();
-	    $.ajax({
+	  	
+	  	$.ajax({
+ 			type : "post",
+ 			url : "loginrsa.asp",
+ 			async : true,
+ 			data : {},
+ 			dataType : "json",
+ 			success : function(msg) {
+ 				 if(msg!=null){
+ 					 var rd = msg.RSA;
+                     //加密模
+                     var Modulus = rd.split(';')[0];
+                     //公钥指数
+                     var public_exponent = rd.split(';')[1];
+                     //通过模和公钥参数获取公钥
+                     var key = new RSAUtils.getKeyPair(public_exponent, "", Modulus);
+                     //颠倒密码的顺序，要不然后解密后会发现密码顺序是反的
+                     var reversedPwd = password.val().split("").reverse().join("");
+                     //对密码进行加密传输 
+                     var encrypedPwd = RSAUtils.encryptedString(key,reversedPwd);
+                		
+                     $.ajax({
+         	 			type : "post",
+         	 			url : "login.asp",
+         	 			async : true,
+         	 			data : {LOGINNAME:loginname.val(),PASSWORD:encrypedPwd},
+         	 			dataType : "json",
+         	 			success : function(msg) {
+         	 				if("true"==msg.result){
+         	 					window.location="main.asp";
+         	 					return;
+         	 				}else{
+         	 					$(".ecitic-password .ecitic-error").show();
+         	 					$(".ecitic-password .ecitic-error").html("<i></i>"+msg.msg);
+         	 				}
+         	 				onLogin.state=true;
+         	 				$("#login_btn").text("立即登录");
+         	 			},
+         	 			error : function() {
+         	 				$(".ecitic-password .ecitic-error").show();
+         					$(".ecitic-password .ecitic-error").html("<i></i>登录异常!");
+         	 				onLogin.state=true;
+         	 				$("#login_btn").text("立即登录");
+         	 			}
+         	 		});
+                 
+                 }
+ 			},
+ 			error : function() {
+ 				$(".ecitic-password .ecitic-error").show();
+				$(".ecitic-password .ecitic-error").html("<i></i>登录异常!");
+ 				onLogin.state=true;
+ 				$("#login_btn").text("立即登录");
+ 			}
+ 		});
+    
+	  	
+	    /* $.ajax({
 	 			type : "post",
 	 			url : "login.asp",
 	 			async : true,
@@ -126,7 +185,7 @@ function onLogin(){
 	 				onLogin.state=true;
 	 				$("#login_btn").text("立即登录");
 	 			}
-	 		});
+	 		}); */
 	    }
 	    
 //背景图

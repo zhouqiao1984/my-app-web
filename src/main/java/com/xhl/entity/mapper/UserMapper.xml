@@ -53,7 +53,9 @@
 	  <!-- 修改用户-->
 	<update id="editUser" parameterType="java.util.Map">
 		update test_user set
-			PASSWORD = #{PASSWORD},
+			<if test="NPASSWORD !=null and NPASSWORD != ''">
+				PASSWORD = #{NPASSWORD},
+			</if>
 			USERNAME = #{USERNAME},
 			ROLE = #{ROLE},
 			REMARK = #{REMARK}

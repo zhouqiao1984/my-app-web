@@ -28,7 +28,6 @@ function editUser(item){
 					alert('密码输入格式有误');
 					return;
 				}
-				params.PASSWORD = params.NPASSWORD;
 			}
 			params["TYPE"] = type;
 			baseAjax("user/editUser.asp",params, function(data) {
