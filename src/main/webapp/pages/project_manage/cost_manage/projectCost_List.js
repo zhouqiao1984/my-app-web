@@ -3,6 +3,7 @@
 initCost();
 function initCost(){
 	var $page = getCurrentPageObj();//当前页
+	btnDisabled($page,currentRole);//禁用操作按钮
 	var costTable = $page.find("[tb='costTable']");
 	var formObj = $page.find("#costForm");//表单对象
 	var cCall = getMillisecond() + '0';

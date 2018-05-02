@@ -3,6 +3,7 @@
 initpay();
 function initpay(){
 	var $page = getCurrentPageObj();//当前页
+	btnDisabled($page,currentRole);//禁用操作按钮
 	var payTable = $page.find("[tb='payTable']");
 	var formObj = $page.find("#payForm");//表单对象
 	var payCall = getMillisecond() + '1';

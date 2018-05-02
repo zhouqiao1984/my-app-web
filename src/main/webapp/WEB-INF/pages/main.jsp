@@ -5,6 +5,7 @@
 		String user_name=user.getUserName();
 		String login_name=user.getLoginName();
 		int user_id = user.getUserId();
+		String role = user.getRole();
 		
 %>
 <!DOCTYPE html>
@@ -50,6 +51,7 @@
 	<input type="hidden" value="" id="isCreate"/>
 	<input type="hidden" value="" id="currentLoginName"/>
 	<input type="hidden" value="<%=login_name%>" id="currentUserId"/>
+	<input type="hidden" value="<%=role%>" id="currentRole"/>
 	<input type="hidden" value="" id="currentLoginNoOrg_no"/>
 	<input type="hidden" value="00" id="currentLoginskin"/>
 	<div class="main_header">

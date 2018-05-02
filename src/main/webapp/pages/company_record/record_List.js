@@ -3,6 +3,7 @@
 initRecord();
 function initRecord(){
 	var $page = getCurrentPageObj();//当前页
+	btnDisabled($page,currentRole);//禁用操作按钮
 	var recordTable = $page.find("[tb='recordTable']");
 	var formObj = $page.find("#recordForm");//表单对象
 	//var rCall = getMillisecond();

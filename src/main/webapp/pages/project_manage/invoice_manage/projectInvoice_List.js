@@ -3,10 +3,11 @@
 initInvoice();
 function initInvoice(){
 	var $page = getCurrentPageObj();//当前页
+	btnDisabled($page,currentRole);//禁用操作按钮
 	var proInvoiceTable = $page.find("[tb='projectInvoiceTable']");
 	var formObj = $page.find("#invoiceForm");//表单对象
 	initProjectTable();//初始化列表
-	
+
 	//重置按钮
 	$page.find("[name='resetI']").click(function(){
 		$page.find("table input").val("");

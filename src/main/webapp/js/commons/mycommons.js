@@ -55,3 +55,21 @@ function is_password(str){
  	}
  	return false;
 }
+
+/*
+ * $page 页面对象
+ * 
+ * 
+ * 
+ * 根据角色禁用页面按钮
+ * 
+ * */
+
+function btnDisabled($page,role){
+	var r = $("#currentRole").val();
+	if(r != '00' && r != '01' ){
+		$page.find("[btnrole='restricted']").attr("disabled",true);
+	}
+	
+}
+

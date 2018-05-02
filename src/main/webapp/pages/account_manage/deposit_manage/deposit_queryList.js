@@ -3,6 +3,7 @@
 initDepositList();
 function initDepositList(){
 	var $page = getCurrentPageObj();//当前页
+	btnDisabled($page,currentRole);//禁用操作按钮
 	var depositTable = $page.find("[tb='depositListTable']");
 	var formObj = $page.find("#depositForm");//表单对象
 	initDepositTable();//初始化保证金列表

@@ -3,6 +3,7 @@
 initCardFundsList();
 function initCardFundsList(){
 	var $page = getCurrentPageObj();//当前页
+	btnDisabled($page,currentRole);//禁用操作按钮
 	var cardTable = $page.find("[tb='cardTable']");
 	var cardCall = getMillisecond();
 	initCardTable();//初始化账户列表
