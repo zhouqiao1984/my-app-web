@@ -270,7 +270,7 @@
 		var reSysB = document.getElementById("cgb-system-plan");
 		var reSysL = document.getElementById("cgb-system-research");
 		
-		var reSysList_Len=Math.ceil($(".cgb-system-list li").length/4);//判断li有多少行
+		var reSysList_Len=Math.ceil(($(".cgb-system-list li").length)/4);//判断li有多少行
 		var reSysList_H40=reSysList_Hli*reSysList_Len+reSysList_Hh;
 		var reSysList_H404=reSysList_H40;
 		//var reSysList_H404=reSysList_H40+4;
